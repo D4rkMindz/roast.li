@@ -47,10 +47,11 @@ class UserRepository extends AppRepository
     }
 
     /**
-     * Get a password by username
+     * Get a password by username.
      *
      * @param string $username
      * @return string
+     * @throws DomainException
      */
     public function getPasswordByUsername(string $username): string
     {
@@ -63,6 +64,28 @@ class UserRepository extends AppRepository
         $row = $query->execute()->fetch('assoc');
         if (!empty($row)) {
             return $row['password'];
+        }
+        throw new DomainException(__('Username not found'));
+    }
+
+    /**
+     * Get user id by username.
+     *
+     * @param string $username
+     * @return string
+     * @throws DomainException
+     */
+    public function getIdByUsername(string $username): string
+    {
+        $where = ['username' => $username];
+        if (is_email($username)) {
+            $where = ['email' => $username];
+        }
+        $query = $this->userTable->newSelect();
+        $query->select(['id'])->where($where);
+        $row = $query->execute()->fetch('assoc');
+        if (!empty($row)) {
+            return $row['id'];
         }
         throw new DomainException(__('Username not found'));
     }

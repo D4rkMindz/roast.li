@@ -3,6 +3,7 @@
 namespace App\Controller;
 
 
+use App\Repository\UserRepository;
 use App\Service\Authentication;
 use Interop\Container\Exception\ContainerException;
 use Psr\Http\Message\ResponseInterface;
@@ -21,6 +22,11 @@ class AuthenticationController extends AppController
     private $authentication;
 
     /**
+     * @var UserRepository
+     */
+    private $userRepository;
+
+    /**
      * AuthenticationController constructor.
      *
      * @param Container $container
@@ -30,6 +36,7 @@ class AuthenticationController extends AppController
     {
         parent::__construct($container);
         $this->authentication = $container->get(Authentication::class);
+        $this->userRepository = $container->get(UserRepository::class);
     }
 
     /**
@@ -57,7 +64,8 @@ class AuthenticationController extends AppController
         $password = $request->getParsedBodyParam('password');
         $canLogin = $this->authentication->authenticate($username, $password);
         if ($canLogin) {
-            $this->setLoggedIn();
+            $userId = $this->userRepository->getIdByUsername($username);
+            $this->setLoggedIn($this->getUserId());
             return $this->redirect($response, $this->router->pathFor('root'));
         }
         return $this->render($response,$request, 'Authentication/login.twig');

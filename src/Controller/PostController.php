@@ -11,6 +11,7 @@ namespace App\Controller;
 
 use App\Repository\PostRepository;
 use App\Service\Validation\PostValidation;
+use App\Util\ValidationResult;
 use Psr\Http\Message\ResponseInterface;
 use Slim\Container;
 use Slim\Http\Request;
@@ -64,6 +65,38 @@ class PostController extends AppController
     }
 
     /**
+     * Like a post
+     *
+     * @param Request $request
+     * @param Response $response
+     * @param array $args
+     * @return ResponseInterface
+     */
+    public function likePostAction(Request $request, Response $response, array $args): ResponseInterface
+    {
+        $postId = $args['post_id'];
+        $this->setLoggedIn(2);
+        $userId = $this->getUserId();
+        $validationResult = $this->postValidation->validateLike($postId, $userId);
+        if ($validationResult->fails()) {
+            return $this->json($response, $validationResult->toArray());
+        }
+        $liked = $this->postRepository->like($postId, $userId);
+        if ($liked) {
+            return $this->json($response, ['success' => true]);
+        }
+
+        $message = __('Liking post failed!');
+        $valResult = new ValidationResult($message);
+        $valResult->setError('post', $message);
+        $responseData = [
+            'success' => false,
+            'validation' => $valResult->toArray(),
+        ];
+        return $this->json($response, $responseData);
+    }
+
+    /**
      * @param Request $request
      * @param Response $response
      * @return ResponseInterface
@@ -87,14 +120,12 @@ class PostController extends AppController
             return $this->json($response, ['success' => true], 200);
         }
 
+        $message = __('Creating post failed!');
+        $valResut = new ValidationResult($message);
+        $valResut->setError('post', $message);
         $responseData = [
             'success' => false,
-            'validation' => [
-                'message' => __('Creating post failed!'),
-                'errors' => [
-                    ['field' => 'text', 'message' => __('Creating post failed!')]
-                ],
-            ],
+            'validation' => $valResut->toArray(),
         ];
         return $this->json($response, $responseData, 500);
     }

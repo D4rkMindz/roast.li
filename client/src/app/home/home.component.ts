@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { finalize } from 'rxjs/operators';
 
-import { QuoteService } from './quote.service';
+import { Post, PostService } from '@app/shared/post/post.service';
 
 @Component({
   selector: 'app-home',
@@ -9,22 +9,30 @@ import { QuoteService } from './quote.service';
   styleUrls: ['./home.component.scss']
 })
 export class HomeComponent implements OnInit {
-  quote: string;
+  posts: Post[];
   isLoading: boolean;
 
-  constructor(private quoteService: QuoteService) {}
+  constructor(private postService: PostService) {
+  }
 
   ngOnInit() {
     this.isLoading = true;
-    this.quoteService
-      .getRandomQuote({ category: 'dev' })
+    this.postService.getHotPosts()
       .pipe(
         finalize(() => {
           this.isLoading = false;
         })
-      )
-      .subscribe((quote: string) => {
-        this.quote = quote;
+      ).subscribe((posts: Post[]) => {
+      this.posts = posts;
+    });
+  }
+
+  like(postId: string) {
+    this.postService.like(postId)
+      .subscribe((response) => {
+        if (response.success === true) {
+          alert('liked');
+        }
       });
   }
 }

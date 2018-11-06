@@ -4,6 +4,7 @@ namespace App\Repository;
 
 use App\Table\LikedPostTable;
 use App\Table\PostTable;
+use App\Table\UserTable;
 use Interop\Container\Exception\ContainerException;
 use Slim\Container;
 
@@ -23,6 +24,11 @@ class PostRepository extends AppRepository
     private $likedPostTable;
 
     /**
+     * @var UserTable
+     */
+    private $userTable;
+
+    /**
      * PostRepository constructor.
      * @param Container $container
      * @throws ContainerException
@@ -31,6 +37,7 @@ class PostRepository extends AppRepository
     {
         $this->postTable = $container->get(PostTable::class);
         $this->likedPostTable = $container->get(LikedPostTable::class);
+        $this->userTable = $container->get(UserTable::class);
     }
 
     /**
@@ -87,6 +94,9 @@ class PostRepository extends AppRepository
             $postQuery->select('*')->where(['id' => $like['post_id']]);
             $post = $postQuery->execute()->fetch('assoc');
             $post['likes'] = $like['count'];
+            $userQuery = $this->userTable->newSelect();
+            $userQuery->select(['username', 'thumbnail_url', 'id'])->where(['id' => $post['created_by']]);
+            $post['user'] = $userQuery->execute()->fetch('assoc');
             $posts[] = $post;
         }
 

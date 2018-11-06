@@ -1,14 +1,22 @@
 <div class="container">
-  <mat-card>
-    <p>
-      <img class="logo" src="assets/ngx-rocket-logo.png" alt="angular logo"/>
-    </p>
-    <mat-card-content>
-      <mat-card-title translate>Hello world !</mat-card-title>
-      <mat-card-subtitle>
-        <app-loader [isLoading]="isLoading" size="1.5"></app-loader>
-        <q [hidden]="isLoading">{{quote}}</q>
-      </mat-card-subtitle>
-    </mat-card-content>
-  </mat-card>
+  <app-loader [isLoading]="isLoading" size="1.5"></app-loader>
+  <div *ngFor="let post of posts">
+    <mat-card style="margin-top: 30px;" [hidden]="isLoading">
+      <mat-card-header>
+        <div mat-card-avatar>
+          <img width="100%" style="object-fit: cover; -webkit-border-radius: 50%;-moz-border-radius: 50%;border-radius: 50%;" src="{{post.user.thumbnail_url || 'https://ssl.gstatic.com/images/branding/product/1x/avatar_circle_blue_512dp.png'}}" alt="">
+        </div>
+        <mat-card-title>{{post.user.username}}</mat-card-title>
+        <mat-card-subtitle>User</mat-card-subtitle>
+      </mat-card-header>
+      <mat-card-content>
+        <p>{{post.content}}</p>
+      </mat-card-content>
+      <mat-card-actions>
+        <div fxFlex></div>
+        <button mat-button (click)="like(post.id)">LIKE</button>
+        <!--<button mat-button>SHARE</button>-->
+      </mat-card-actions>
+    </mat-card>
+  </div>
 </div>

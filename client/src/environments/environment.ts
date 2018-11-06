@@ -8,9 +8,9 @@ import env from './.env';
 export const environment = {
   production: false,
   version: env.npm_package_version + '-dev',
-  serverUrl: '/api',
+  serverUrl: 'https://nicipedia.dev/api',
   defaultLanguage: 'en-US',
-  supportedLanguages: ['en-US', 'fr-FR']
+  supportedLanguages: ['en-US', 'de-CH']
 };
 
 /*

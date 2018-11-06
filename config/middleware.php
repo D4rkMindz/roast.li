@@ -38,9 +38,6 @@ $app->add(function (Request $request, Response $response, $next) use ($container
     if (!isset($whitelist[$language])) {
         throw new NotFoundException($request, $response);
     }
-    if (!$hasLanguage) {
-        return $response->withRedirect($container->get('router')->pathFor('root', ['language' => $language]));
-    }
 
     return $next($request, $response);
 });
@@ -58,6 +55,30 @@ $app->add(function (Request $request, Response $response, $next) {
 });
 
 /**
+ * Options middleware
+ */
+$app->add(function (Request $request, Response $response, $next) {
+    $method = $request->getMethod();
+    if (strtoupper($method) == 'OPTIONS') {
+        return $response->withStatus(200);
+    }
+    return $next($request, $response);
+});
+
+/**
+ * For CORS
+ */
+$app->add(function (Request $request, Response $response, $next) use ($container) {
+    /** @var Response $response */
+    $response = $next($request, $response);
+    $response = $response->withHeader('Access-Control-Allow-Origin', 'http://localhost:4200')
+        ->withHeader('Access-Control-Allow-Headers', 'Authentication, X-App-Language, X-Token, Content-Type')
+        ->withHeader('Access-Control-Allow-Credentials', 'true')
+        ->withHeader('Access-Control-Allow-Methods', 'GET, POST, PUT, DELETE, OPTIONS');
+    return $response;
+});
+
+/**
  * Session Middleware
  *
  * @return Response
@@ -66,6 +87,5 @@ $app->add(function (Request $request, Response $response, $next) {
     $session = $this->get(Session::class);
     $response = $next($request, $response);
     $session->commit();
-
     return $response;
 });

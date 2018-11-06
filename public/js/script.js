@@ -14,7 +14,7 @@ function baseurl() {
  * @param data
  * @return Promise
  */
-function sendGetAjax(url, data) {
+function get(url, data) {
 	return new Promise((resolve,
 						reject = function (xhr) {
 							hideLoader();
@@ -30,12 +30,11 @@ function sendGetAjax(url, data) {
 			contentType: 'application/json',
 			cache: false,
 			processData: true,
-			headers: {"Authorization": token},
 			url: url
 		}).done(function (response) {
 			resolve(response);
 		}).fail((xhr) => {
-			ajaxFail(xhr, resolve, reject, 'GET', url, {});
+			// TODO handle ajax error
 		});
 	});
 }
@@ -47,7 +46,7 @@ function sendGetAjax(url, data) {
  * @param data
  * @returns {Promise}
  */
-function sendPostAjax(url, data) {
+function post(url, data) {
 	return new Promise((resolve, reject = function (xhr) {
 		alert(xhr.responseText);
 	}) => {
@@ -63,7 +62,7 @@ function sendPostAjax(url, data) {
 		}).done(function (response) {
 			resolve(response);
 		}).fail(function (xhr) {
-			reject(xhr);
+            // TODO handle ajax error
 		});
 	});
 }
