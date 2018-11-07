@@ -1,0 +1,31 @@
+<app-loader [isLoading]="isLoading" size="1.5"></app-loader>
+<div *ngFor="let post of posts" style="margin-top: 15px;">
+  <mat-card [hidden]="isLoading">
+    <mat-card-header>
+      <div mat-card-avatar>
+        <img width="100%"
+             style="object-fit: cover; -webkit-border-radius: 50%;-moz-border-radius: 50%;border-radius: 50%;"
+             src="{{post.user.thumbnail_url || 'https://ssl.gstatic.com/images/branding/product/1x/avatar_circle_blue_512dp.png'}}"
+             alt="">
+      </div>
+      <mat-card-title>{{post.user.username}}</mat-card-title>
+      <mat-card-subtitle>User</mat-card-subtitle>
+    </mat-card-header>
+    <mat-card-content fxLayout="column">
+      <p fxLayout="row" fxFlex="100%">{{post.content}}</p>
+      <div fxLayoutAlign="right"  fxFlex="100%"  fxLayout="row">
+        <sub [fxShow]="post.modified_at === null">
+          {{m(post.created_at).format('MMM Do YYYY, HH:mm')}}
+        </sub>
+        <sub [fxShow]="post.modified_at !== null">
+          Edited - {{m(post.modified_at).format('MM Do YYYY, hh:mm')}}
+        </sub>
+      </div>
+    </mat-card-content>
+    <mat-card-actions>
+      <div fxFlex></div>
+      <button  mat-button [disabled]="!(username !== null && post.user.username !== username)" (click)="like(post.id)">LIKE</button>
+      <!--<button mat-button>SHARE</button>-->
+    </mat-card-actions>
+  </mat-card>
+</div>

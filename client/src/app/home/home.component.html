@@ -1,22 +1,16 @@
-<div class="container">
-  <app-loader [isLoading]="isLoading" size="1.5"></app-loader>
-  <div *ngFor="let post of posts">
-    <mat-card style="margin-top: 30px;" [hidden]="isLoading">
-      <mat-card-header>
-        <div mat-card-avatar>
-          <img width="100%" style="object-fit: cover; -webkit-border-radius: 50%;-moz-border-radius: 50%;border-radius: 50%;" src="{{post.user.thumbnail_url || 'https://ssl.gstatic.com/images/branding/product/1x/avatar_circle_blue_512dp.png'}}" alt="">
-        </div>
-        <mat-card-title>{{post.user.username}}</mat-card-title>
-        <mat-card-subtitle>User</mat-card-subtitle>
-      </mat-card-header>
-      <mat-card-content>
-        <p>{{post.content}}</p>
-      </mat-card-content>
-      <mat-card-actions>
-        <div fxFlex></div>
-        <button mat-button (click)="like(post.id)">LIKE</button>
-        <!--<button mat-button>SHARE</button>-->
-      </mat-card-actions>
-    </mat-card>
-  </div>
+<div class="container"
+     fxLayout="column"
+     fxLayoutAlign="center"
+     fxFlex="60%"
+     fxFlexOffset="20%"
+     fxFlex.lt-sm="100%"
+     fxFlexOffset.lt-sm="0">
+    <mat-tab-group mat-align-tabs="center">
+      <mat-tab label="Hot">
+        <post-stream sort="hot"></post-stream>
+      </mat-tab>
+      <mat-tab label="New">
+        <post-stream sort="new"></post-stream>
+      </mat-tab>
+    </mat-tab-group>
 </div>

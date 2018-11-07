@@ -1,10 +1,9 @@
 import { Component, OnInit } from '@angular/core';
-import { Router, ActivatedRoute } from '@angular/router';
-import { FormGroup, FormBuilder, Validators } from '@angular/forms';
-import { finalize } from 'rxjs/operators';
+import { ActivatedRoute, Router } from '@angular/router';
+import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 
 import { environment } from '@env/environment';
-import { Logger, I18nService, AuthenticationService } from '@app/core';
+import { AuthenticationService, extract, I18nService, Logger } from '@app/core';
 
 const log = new Logger('Login');
 
@@ -29,30 +28,22 @@ export class LoginComponent implements OnInit {
     this.createForm();
   }
 
-  ngOnInit() {}
+  ngOnInit() {
+  }
 
-  login() {
+  async login() {
     this.isLoading = true;
-    this.authenticationService
-      .login(this.loginForm.value)
-      .pipe(
-        finalize(() => {
-          this.loginForm.markAsPristine();
-          this.isLoading = false;
-        })
-      )
-      .subscribe(
-        credentials => {
-          log.debug(`${credentials.username} successfully logged in`);
-          this.route.queryParams.subscribe(params =>
-            this.router.navigate([params.redirect || '/'], { replaceUrl: true })
-          );
-        },
-        error => {
-          log.debug(`Login error: ${error}`);
-          this.error = error;
-        }
+    const loggedIn = await this.authenticationService
+      .login(this.loginForm.value);
+    this.loginForm.markAsPristine();
+    this.isLoading = false;
+    if (loggedIn) {
+      this.route.queryParams.subscribe(params =>
+        this.router.navigate([params.redirect || '/'], { replaceUrl: true })
       );
+      return;
+    }
+    this.error = extract('Username or password invalid');
   }
 
   setLanguage(language: string) {

@@ -44,6 +44,6 @@ class Authentication
         if (password_verify($password, $hash)) {
             return true;
         }
-        throw new AuthenticationException(__('Username or password invalid'), AuthenticationExceptionType::CREDENTIALS_INVALID);
+        return false;
     }
 }

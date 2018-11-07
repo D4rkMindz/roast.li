@@ -29,12 +29,13 @@
     <mat-icon>person</mat-icon>
   </button>
   <mat-menu #userMenu="matMenu">
-    <mat-list>
+    <mat-list [fxShow]="username !== null">
       <mat-list-item>
         <span translate>Logged in as</span>&nbsp;<b>{{username}}</b>
       </mat-list-item>
       <mat-divider></mat-divider>
     </mat-list>
-    <button mat-menu-item (click)="logout()" translate>Logout</button>
+    <button mat-menu-item  [fxShow]="username !== null" (click)="logout()" translate>Logout</button>
+    <button mat-menu-item  [fxShow]="username === null" routerLink="/login" translate>Login</button>
   </mat-menu>
 </mat-toolbar>

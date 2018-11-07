@@ -1,5 +1,6 @@
 <?php
 
+use Aura\Session\Segment;
 use Aura\Session\Session;
 use Slim\Exception\NotFoundException;
 use Slim\Http\Request;
@@ -72,7 +73,8 @@ $app->add(function (Request $request, Response $response, $next) use ($container
     /** @var Response $response */
     $response = $next($request, $response);
     $response = $response->withHeader('Access-Control-Allow-Origin', 'http://localhost:4200')
-        ->withHeader('Access-Control-Allow-Headers', 'Authentication, X-App-Language, X-Token, Content-Type')
+        ->withHeader('Access-Control-Allow-Headers', 'X-Authenticated, X-App-Language, X-Token, Content-Type')
+        ->withHeader('Access-Control-Expose-Headers', 'X-Authenticated')
         ->withHeader('Access-Control-Allow-Credentials', 'true')
         ->withHeader('Access-Control-Allow-Methods', 'GET, POST, PUT, DELETE, OPTIONS');
     return $response;
@@ -84,8 +86,11 @@ $app->add(function (Request $request, Response $response, $next) use ($container
  * @return Response
  */
 $app->add(function (Request $request, Response $response, $next) {
+    /** @var Session $session */
     $session = $this->get(Session::class);
+    /** @var Response $response */
     $response = $next($request, $response);
+    $response = $response->withHeader('X-Authenticated', $session->getSegment('app')->get('logged_in'));
     $session->commit();
     return $response;
 });

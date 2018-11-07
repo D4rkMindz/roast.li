@@ -65,9 +65,9 @@ class AuthenticationController extends AppController
         $canLogin = $this->authentication->authenticate($username, $password);
         if ($canLogin) {
             $userId = $this->userRepository->getIdByUsername($username);
-            $this->setLoggedIn($this->getUserId());
-            return $this->redirect($response, $this->router->pathFor('root'));
+            $this->setLoggedIn($userId);
+            return $this->json($response, ['success' => true]);
         }
-        return $this->render($response,$request, 'Authentication/login.twig');
+        return $this->json($response, ['success' => false]);
     }
 }

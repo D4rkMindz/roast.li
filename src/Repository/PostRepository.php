@@ -62,7 +62,11 @@ class PostRepository extends AppRepository
             $likeQuery->select(['count' => $query->func()->count('*')])
                 ->where(['post_id' => $post['id']]);
 
-            $posts[$key]['likes'] = $likeQuery->execute()->fetch();
+            $posts[$key]['likes'] = $likeQuery->execute()->fetch('assoc')['count'] ?: '0';
+
+            $userQuery = $this->userTable->newSelect();
+            $userQuery->select(['username', 'thumbnail_url', 'id'])->where(['id' => $post['created_by']]);
+            $posts[$key]['user'] = $userQuery->execute()->fetch('assoc');
         }
 
         return $posts;

@@ -9,6 +9,7 @@ import { MaterialModule } from '@app/material.module';
 import { HomeRoutingModule } from './home-routing.module';
 import { HomeComponent } from './home.component';
 import { QuoteService } from './quote.service';
+import { PostStreamComponent } from './post-stream/post-stream.component';
 
 @NgModule({
   imports: [
@@ -20,7 +21,7 @@ import { QuoteService } from './quote.service';
     MaterialModule,
     HomeRoutingModule
   ],
-  declarations: [HomeComponent],
+  declarations: [HomeComponent, PostStreamComponent],
   providers: [QuoteService]
 })
 export class HomeModule {}
