@@ -1,6 +1,6 @@
-import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
+import { Component, EventEmitter, HostListener, Input, OnInit, Output } from '@angular/core';
 import { Post, PostService } from '@app/shared/post/post.service';
-import { AuthenticationService } from '@app/core';
+import { AuthenticationService, extract } from '@app/core';
 import * as moment from 'moment';
 import { finalize } from 'rxjs/operators';
 import { throwError } from 'rxjs';
@@ -12,13 +12,13 @@ export interface ScrollDirection {
   /**
    * Either upwards or downwards
    */
-  readonly direction: string;
+  direction: string;
 }
 
 export class ScrollDirection implements ScrollDirection {
   readonly up: string = 'upwards';
   readonly down: string = 'downwards';
-  readonly direction: string;
+  direction: string;
 
   public constructor(dir: string) {
     if (dir !== this.up && dir !== this.down) {
@@ -34,14 +34,16 @@ export class ScrollDirection implements ScrollDirection {
   styleUrls: ['./post-stream.component.scss']
 })
 export class PostStreamComponent implements OnInit {
-
-  @Input() sort: string;
-  @Output() scroll = new EventEmitter<ScrollDirection>();
-
   posts: Post[] = [];
+  loadedLastItem = false;
   isLoading: boolean;
   username: string = null;
   m: any;
+
+  @Input()
+  sort: string;
+  @Output()
+  scroll = new EventEmitter<ScrollDirection>();
 
   constructor(private postService: PostService, auth: AuthenticationService) {
     const credentials = auth.credentials;
@@ -57,12 +59,11 @@ export class PostStreamComponent implements OnInit {
   }
 
   like(postId: string) {
-    this.postService.like(postId)
-      .subscribe((response: any) => {
-        if (response.success === true) {
-          alert('liked');
-        }
-      });
+    this.postService.like(postId).subscribe((response: any) => {
+      if (response.success === true) {
+        alert('liked');
+      }
+    });
   }
 
   onScroll() {
@@ -91,7 +92,11 @@ export class PostStreamComponent implements OnInit {
   }
 
   private getHotPosts() {
-    this.postService.getHotPosts(this.posts.length)
+    if (this.loadedLastItem) {
+      return;
+    }
+    this.postService
+      .getHotPosts(this.posts.length)
       .pipe(
         finalize(() => {
           this.isLoading = false;
@@ -99,13 +104,19 @@ export class PostStreamComponent implements OnInit {
       )
       .subscribe((posts: Post[]) => {
         console.log(`Loaded ${posts.length} hot posts`);
+        if (posts.length < 1) {
+          this.loadedLastItem = true;
+        }
         this.posts.push(...posts);
-
       });
   }
 
   private getNewPosts() {
-    this.postService.getNewPosts(this.posts.length)
+    if (this.loadedLastItem) {
+      return;
+    }
+    this.postService
+      .getNewPosts(this.posts.length)
       .pipe(
         finalize(() => {
           this.isLoading = false;
@@ -113,6 +124,9 @@ export class PostStreamComponent implements OnInit {
       )
       .subscribe((posts: Post[]) => {
         console.log(`Loaded ${posts.length} new posts`);
+        if (posts.length < 1) {
+          this.loadedLastItem = true;
+        }
         this.posts.push(...posts);
       });
   }

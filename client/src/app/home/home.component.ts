@@ -1,7 +1,6 @@
 import { Component } from '@angular/core';
 import { ScrollDirection } from './post-stream/post-stream.component';
 
-
 @Component({
   selector: 'app-home',
   templateUrl: './home.component.html',

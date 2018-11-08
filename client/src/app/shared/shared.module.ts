@@ -7,17 +7,8 @@ import { LoaderComponent } from './loader/loader.component';
 import { InfiniteScrollModule } from 'ngx-infinite-scroll';
 
 @NgModule({
-  imports: [
-    FlexLayoutModule,
-    MaterialModule,
-    CommonModule,
-    InfiniteScrollModule
-  ],
+  imports: [FlexLayoutModule, MaterialModule, CommonModule, InfiniteScrollModule],
   declarations: [LoaderComponent],
-  exports: [
-    LoaderComponent,
-    InfiniteScrollModule
-  ]
+  exports: [LoaderComponent, InfiniteScrollModule]
 })
-export class SharedModule {
-}
+export class SharedModule {}

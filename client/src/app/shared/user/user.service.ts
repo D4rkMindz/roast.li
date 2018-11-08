@@ -10,7 +10,5 @@ export interface User {
   providedIn: 'root'
 })
 export class UserService {
-
-  constructor() {
-  }
+  constructor() {}
 }

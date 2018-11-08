@@ -13,6 +13,7 @@ export interface Post {
   modified_by?: string;
   archived_at?: Moment;
   archived_by?: string;
+  likes: string;
   user: User;
 }
 
@@ -20,9 +21,7 @@ export interface Post {
   providedIn: 'root'
 })
 export class PostService {
-
-  constructor(private http: HttpClient) {
-  }
+  constructor(private http: HttpClient) {}
 
   public getHotPosts(offset: number = 0): Observable<Post[]> {
     return this.http.get<Post[]>(`/posts/hot?offset=${offset}`, { withCredentials: true });

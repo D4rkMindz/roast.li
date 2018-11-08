@@ -14,17 +14,14 @@ export class HeaderComponent implements OnInit {
   @Input()
   sidenav: MatSidenav;
 
-
   constructor(
     private router: Router,
     private titleService: Title,
     private authenticationService: AuthenticationService,
     private i18nService: I18nService
-  ) {
-  }
+  ) {}
 
-  ngOnInit() {
-  }
+  ngOnInit() {}
 
   setLanguage(language: string) {
     this.i18nService.language = language;

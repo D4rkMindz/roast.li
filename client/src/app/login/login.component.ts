@@ -28,19 +28,15 @@ export class LoginComponent implements OnInit {
     this.createForm();
   }
 
-  ngOnInit() {
-  }
+  ngOnInit() {}
 
   async login() {
     this.isLoading = true;
-    const loggedIn = await this.authenticationService
-      .login(this.loginForm.value);
+    const loggedIn = await this.authenticationService.login(this.loginForm.value);
     this.loginForm.markAsPristine();
     this.isLoading = false;
     if (loggedIn) {
-      this.route.queryParams.subscribe(params =>
-        this.router.navigate([params.redirect || '/'], { replaceUrl: true })
-      );
+      this.route.queryParams.subscribe(params => this.router.navigate([params.redirect || '/'], { replaceUrl: true }));
       return;
     }
     this.error = extract('Username or password invalid');

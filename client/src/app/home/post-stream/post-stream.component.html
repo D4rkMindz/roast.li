@@ -1,12 +1,11 @@
 <app-loader [isLoading]="isLoading" size="1.5"></app-loader>
-<div class="search-results"
-     infinite-scroll
-     [infiniteScrollDistance]="1"
-     [infiniteScrollThrottle]="0"
+<div infinite-scroll
+     infiniteScrollContainer="#mat-sidenav-content"
+     [fromRoot]="true"
      [scrollWindow]="false"
      (scrolled)="onScroll()"
      (scrolledUp)="onScrollUp()">
-  <div *ngFor="let post of posts" style="margin-top: 15px;">
+  <div *ngFor="let post of posts" #postsContainer class="post">
     <mat-card [hidden]="isLoading">
       <mat-card-header>
         <div mat-card-avatar>
@@ -31,12 +30,22 @@
       </mat-card-content>
       <mat-card-actions>
         <div fxFlex></div>
-        <button mat-button [disabled]="!(username !== null && post.user.username !== username)" (click)="like(post.id)">
-          <mat-icon>thumb_up</mat-icon>
-          LIKE
+        <button mat-button
+                [disabled]="!(username !== null && post.user.username !== username)"
+                (click)="like(post.id)">
+          {{post.likes}}
+          <mat-icon>favorite_outline</mat-icon>
         </button>
         <!--<button mat-button>SHARE</button>-->
       </mat-card-actions>
     </mat-card>
   </div>
+  <mat-card [fxShow]="!isLoading && loadedLastItem" class="post">
+    <mat-card-header>
+      <mat-card-title translate>You've reached the end</mat-card-title>
+    </mat-card-header>
+    <mat-card-content fxLayout="column">
+      <p fxLayout="row" fxFlex="100%" translate>Thank you, that you have been soooo interested in nicipedia. Really appreciate it. Come back later or check out the new posts.</p>
+    </mat-card-content>
+  </mat-card>
 </div>
