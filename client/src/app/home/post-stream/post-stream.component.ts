@@ -1,8 +1,32 @@
-import { Component, Input, OnInit } from '@angular/core';
+import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
 import { Post, PostService } from '@app/shared/post/post.service';
 import { AuthenticationService } from '@app/core';
 import * as moment from 'moment';
 import { finalize } from 'rxjs/operators';
+import { throwError } from 'rxjs';
+
+export interface ScrollDirection {
+  readonly up: string;
+  readonly down: string;
+
+  /**
+   * Either upwards or downwards
+   */
+  readonly direction: string;
+}
+
+export class ScrollDirection implements ScrollDirection {
+  readonly up: string = 'upwards';
+  readonly down: string = 'downwards';
+  readonly direction: string;
+
+  public constructor(dir: string) {
+    if (dir !== this.up && dir !== this.down) {
+      throwError(`Scrolldirection must either be ${this.up} or ${this.down}`);
+    }
+    this.direction = dir;
+  }
+}
 
 @Component({
   selector: 'post-stream',
@@ -12,9 +36,9 @@ import { finalize } from 'rxjs/operators';
 export class PostStreamComponent implements OnInit {
 
   @Input() sort: string;
+  @Output() scroll = new EventEmitter<ScrollDirection>();
 
-  posts: Post[];
-  posts: Post[];
+  posts: Post[] = [];
   isLoading: boolean;
   username: string = null;
   m: any;
@@ -29,47 +53,67 @@ export class PostStreamComponent implements OnInit {
 
   ngOnInit() {
     this.isLoading = true;
-    switch (this.sort) {
-      case 'hot':
-        this.getHostPosts();
-        break;
-      case 'new':
-        this.getNewPosts();
-        break;
-      default:
-        this.getHostPosts();
-        break;
-    }
+    this.loadPosts();
   }
 
   like(postId: string) {
     this.postService.like(postId)
-      .subscribe((response) => {
+      .subscribe((response: any) => {
         if (response.success === true) {
           alert('liked');
         }
       });
   }
 
-  private getHostPosts() {
-    this.postService.getHotPosts()
+  onScroll() {
+    console.log('[POSTSTREAM] Scroll down');
+    this.scroll.emit(new ScrollDirection('downwards'));
+    this.loadPosts();
+  }
+
+  onScrollUp() {
+    console.log('[POSTSTREAM] Scroll up');
+    this.scroll.emit(new ScrollDirection('upwards'));
+  }
+
+  private loadPosts() {
+    switch (this.sort) {
+      case 'hot':
+        this.getHotPosts();
+        break;
+      case 'new':
+        this.getNewPosts();
+        break;
+      default:
+        this.getHotPosts();
+        break;
+    }
+  }
+
+  private getHotPosts() {
+    this.postService.getHotPosts(this.posts.length)
       .pipe(
         finalize(() => {
           this.isLoading = false;
         })
-      ).subscribe((posts: Post[]) => {
-      this.posts = posts;
-    });
+      )
+      .subscribe((posts: Post[]) => {
+        console.log(`Loaded ${posts.length} hot posts`);
+        this.posts.push(...posts);
+
+      });
   }
 
   private getNewPosts() {
-    this.postService.getNewPosts()
+    this.postService.getNewPosts(this.posts.length)
       .pipe(
         finalize(() => {
           this.isLoading = false;
         })
-      ).subscribe((posts: Post[]) => {
-      this.posts = posts;
-    });
+      )
+      .subscribe((posts: Post[]) => {
+        console.log(`Loaded ${posts.length} new posts`);
+        this.posts.push(...posts);
+      });
   }
 }
