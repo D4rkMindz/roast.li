@@ -58,14 +58,6 @@ export class PostStreamComponent implements OnInit {
     this.loadPosts();
   }
 
-  like(postId: string) {
-    this.postService.like(postId).subscribe((response: any) => {
-      if (response.success === true) {
-        alert('liked');
-      }
-    });
-  }
-
   onScroll() {
     console.log('[POSTSTREAM] Scroll down');
     this.scroll.emit(new ScrollDirection('downwards'));
@@ -76,6 +68,8 @@ export class PostStreamComponent implements OnInit {
     console.log('[POSTSTREAM] Scroll up');
     this.scroll.emit(new ScrollDirection('upwards'));
   }
+
+  async like(post: Post) {}
 
   private loadPosts() {
     switch (this.sort) {
@@ -129,5 +123,21 @@ export class PostStreamComponent implements OnInit {
         }
         this.posts.push(...posts);
       });
+  }
+
+  private async likePost(post: Post) {
+    await this.postService.like(post.id);
+    const updatedPost = await this.postService.getPost(post.id);
+
+    const index = this.posts.indexOf(post);
+    this.posts[index] = updatedPost;
+  }
+
+  private async unlikePost(post: Post) {
+    await this.postService.unlike(post.id);
+    const updatedPost = await this.postService.getPost(post.id);
+
+    const index = this.posts.indexOf(post);
+    this.posts[index] = updatedPost;
   }
 }

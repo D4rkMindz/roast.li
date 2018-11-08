@@ -32,9 +32,11 @@
         <div fxFlex></div>
         <button mat-button
                 [disabled]="!(username !== null && post.user.username !== username)"
-                (click)="like(post.id)">
+                (click)="like(post)">
           {{post.likes}}
-          <mat-icon>favorite_outline</mat-icon>
+          <mat-icon color="{{post.liked_by_user ? 'warn' : ''}}">
+            {{post.liked_by_user ? 'favorite' : 'favorite_outline'}}
+          </mat-icon>
         </button>
         <!--<button mat-button>SHARE</button>-->
       </mat-card-actions>
@@ -45,7 +47,8 @@
       <mat-card-title translate>You've reached the end</mat-card-title>
     </mat-card-header>
     <mat-card-content fxLayout="column">
-      <p fxLayout="row" fxFlex="100%" translate>Thank you, that you have been soooo interested in nicipedia. Really appreciate it. Come back later or check out the new posts.</p>
+      <p fxLayout="row" fxFlex="100%" translate>Thank you, that you have been soooo interested in nicipedia. Really
+        appreciate it. Come back later or check out the new posts.</p>
     </mat-card-content>
   </mat-card>
 </div>

@@ -30,6 +30,7 @@ class PostRepository extends AppRepository
 
     /**
      * PostRepository constructor.
+     *
      * @param Container $container
      * @throws ContainerException
      */
@@ -41,12 +42,35 @@ class PostRepository extends AppRepository
     }
 
     /**
+     * Get single post.
+     *
+     * @param string $postId
+     * @param string $currentUserId
+     * @return array
+     */
+    public function getPost(string $postId, string $currentUserId): array
+    {
+        $query = $this->postTable->newSelect();
+        $query->select('*')->where(['id' => $postId]);
+        $post = $query->execute()->fetch('assoc');
+        if (empty($post)) {
+            return null;
+        }
+        $post['likes'] = $this->getLikes($post['id']);
+        $post['user'] = $this->getPostOwner($post['created_by']);
+        $post['liked_by_user'] = $this->hasAlreadyLiked($post['id'], $currentUserId);
+
+        return $post;
+    }
+
+    /**
      * Get posts ordered by their submission.
      *
+     * @param string $userId
      * @param int $offset
      * @return array
      */
-    public function getNewPosts(int $offset = 0)
+    public function getNewPosts(string $userId, int $offset = 0): array
     {
         $query = $this->postTable->newSelect();
         $query->select('*')
@@ -58,15 +82,9 @@ class PostRepository extends AppRepository
             ->fetchAll('assoc');
 
         foreach ($posts as $key => $post) {
-            $likeQuery = $this->likedPostTable->newSelect(false);
-            $likeQuery->select(['count' => $query->func()->count('*')])
-                ->where(['post_id' => $post['id']]);
-
-            $posts[$key]['likes'] = $likeQuery->execute()->fetch('assoc')['count'] ?: '0';
-
-            $userQuery = $this->userTable->newSelect();
-            $userQuery->select(['username', 'thumbnail_url', 'id'])->where(['id' => $post['created_by']]);
-            $posts[$key]['user'] = $userQuery->execute()->fetch('assoc');
+            $posts[$key]['likes'] = $this->getLikes($post['id']);
+            $posts[$key]['liked_by_user'] = $this->hasAlreadyLiked($post['id'], $userId);
+            $posts[$key]['user'] = $this->getPostOwner($post['created_by']);
         }
 
         return $posts;
@@ -75,10 +93,11 @@ class PostRepository extends AppRepository
     /**
      * Get posts ordered by their votes.
      *
+     * @param string $userId
      * @param int $offset
      * @return array
      */
-    public function getHotPosts(int $offset = 0)
+    public function getHotPosts(string $userId, int $offset = 0): array
     {
         $query = $this->likedPostTable->newSelect(false);
         $query->select([
@@ -94,14 +113,7 @@ class PostRepository extends AppRepository
 
         $posts = [];
         foreach ($likes as $key => $like) {
-            $postQuery = $this->postTable->newSelect();
-            $postQuery->select('*')->where(['id' => $like['post_id']]);
-            $post = $postQuery->execute()->fetch('assoc');
-            $post['likes'] = $like['count'];
-            $userQuery = $this->userTable->newSelect();
-            $userQuery->select(['username', 'thumbnail_url', 'id'])->where(['id' => $post['created_by']]);
-            $post['user'] = $userQuery->execute()->fetch('assoc');
-            $posts[] = $post;
+            $posts[] = $this->getPost($like['post_id'], $userId);
         }
 
         return $posts;
@@ -121,6 +133,7 @@ class PostRepository extends AppRepository
             'created_by' => $userId,
             'created_at' => date('Y-m-d H:i:s'),
         ];
+
         return (bool)$this->postTable->insert($row);
     }
 
@@ -148,6 +161,20 @@ class PostRepository extends AppRepository
     }
 
     /**
+     * Get the owner of a post
+     *
+     * @param string $userId
+     * @return null
+     */
+    public function getPostOwner(string $userId)
+    {
+        $userQuery = $this->userTable->newSelect();
+        $userQuery->select(['username', 'thumbnail_url', 'id'])->where(['id' => $userId]);
+
+        return $userQuery->execute()->fetch('assoc') ?: null;
+    }
+
+    /**
      * Check if the user is the owner of a post.
      *
      * @param string $postId
@@ -159,7 +186,39 @@ class PostRepository extends AppRepository
         $query = $this->postTable->newSelect();
         $query->select(1)->where(['id' => $postId, 'created_by' => $userId]);
         $row = $query->execute()->fetch();
+
         return !empty($row);
+    }
+
+    /**
+     * Check if the user already liked a post.
+     *
+     * @param string $postId
+     * @param string $userId
+     * @return bool
+     */
+    public function hasAlreadyLiked(string $postId, string $userId): bool
+    {
+        $query = $this->likedPostTable->newSelect(false);
+        $query->select(1)->where(['post_id' => $postId, 'user_id' => $userId]);
+        $row = $query->execute()->fetch();
+
+        return !empty($row);
+    }
+
+    /**
+     * Get likes of a post
+     *
+     * @param string $postId
+     * @return int
+     */
+    public function getLikes(string $postId): int
+    {
+        $query = $this->likedPostTable->newSelect(false);
+        $query->select(['count' => $query->func()->count('*')])->where(['post_id' => $postId]);
+        $row = $query->execute()->fetch('assoc');
+
+        return array_key_exists('count', (array)$row) ? $row['count'] : 0;
     }
 
     /**
@@ -181,6 +240,25 @@ class PostRepository extends AppRepository
     }
 
     /**
+     * Like a post.
+     *
+     * @param string $postId
+     * @param string $userId
+     * @return bool
+     */
+    public function unlike(string $postId, string $userId): bool
+    {
+        $query = $this->likedPostTable->newSelect(false);
+        $query->select(['id'])->where(['post_id' => $postId, 'user_id'=>$userId]);
+        $row = $query->execute()->fetch('assoc');
+        if (empty($row)) {
+            return false;
+        }
+
+        return (bool)$this->likedPostTable->delete($row['id']);
+    }
+
+    /**
      * Remove a given like.
      *
      * @param string $postId
@@ -195,6 +273,22 @@ class PostRepository extends AppRepository
         if (empty($row)) {
             return false;
         }
+
         return (bool)$this->likedPostTable->delete($row['id']);
+    }
+
+    /**
+     * Get the likes count of a post
+     *
+     * @param string $postId
+     * @return string
+     */
+    private function getLikesForPost(string $postId)
+    {
+        $query = $this->likedPostTable->newSelect(false);
+        $query->select(['count' => $query->func()->count('*')])
+            ->where(['post_id' => $postId]);
+
+        return $query->execute()->fetch('assoc')['count'] ?: '0';
     }
 }

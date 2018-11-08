@@ -14,6 +14,7 @@ export interface Post {
   archived_at?: Moment;
   archived_by?: string;
   likes: string;
+  liked_by_user: boolean;
   user: User;
 }
 
@@ -31,7 +32,15 @@ export class PostService {
     return this.http.get<Post[]>(`/posts/new?offset=${offset}`, { withCredentials: true });
   }
 
-  public like(id: string) {
-    return this.http.put(`/posts/${id}/like`, {}, { withCredentials: true });
+  public async getPost(postId: string): Post {
+    return this.http.get<Post>(`/posts/${postId}`, { withCredentials: true }).toPromise();
+  }
+
+  public async like(id: string): number {
+    return await this.http.put(`/posts/${id}/like`, {}, { withCredentials: true }).toPromise();
+  }
+
+  public async unlike(id: string): number {
+    return await this.http.put(`/posts/${id}/unlike`, {}, { withCredentials: true }).toPromise();
   }
 }

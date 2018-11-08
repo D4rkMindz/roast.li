@@ -77,6 +77,54 @@ class PostValidation extends AppValidation
             return $validationResult;
         }
 
+        $hasAlreadyLiked = $this->postRepository->hasAlreadyLiked($postId, $userId);
+        if ($hasAlreadyLiked) {
+            $message = __('You already liked this post');
+            $validationResult->setError('like', $message);
+            $validationResult->setMessage($message);
+            return $validationResult;
+        }
+
+        return $validationResult;
+    }
+
+    /**
+     * Validate if a user can like a post.
+     *
+     * @param string $postId
+     * @param string $userId
+     * @return ValidationResult
+     */
+    public function validateUnlike(string $postId, string $userId): ValidationResult
+    {
+        $validationResult = new ValidationResult(__('Like not possible'));
+
+        $this->validateUser($userId, $validationResult);
+
+        $existsPost = $this->postRepository->existPost($postId);
+        if (!$existsPost) {
+            $message = __('Post does not exist');
+            $validationResult->setError('like', $message);
+            $validationResult->setMessage($message);
+            return $validationResult;
+        }
+
+        $isOwner = $this->postRepository->isPostOwner($postId, $userId);
+        if ($isOwner) {
+            $message = __('You can not like your own posts');
+            $validationResult->setError('like', $message);
+            $validationResult->setMessage($message);
+            return $validationResult;
+        }
+
+        $hasAlreadyLiked = $this->postRepository->hasAlreadyLiked($postId, $userId);
+        if (!$hasAlreadyLiked) {
+            $message = __('You have not already liked this post');
+            $validationResult->setError('like', $message);
+            $validationResult->setMessage($message);
+            return $validationResult;
+        }
+
         return $validationResult;
     }
 }
