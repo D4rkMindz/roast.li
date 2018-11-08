@@ -40,6 +40,7 @@
     "lodash": "^4.17.10",
     "material-design-icons-iconfont": "^3.0.3",
     "moment": "^2.22.2",
+    "ngx-infinite-scroll": "^6.0.0",
     "rxjs": "^6.3.1",
     "zone.js": "^0.8.26"
   },

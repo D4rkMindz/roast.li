@@ -52,7 +52,7 @@ class PostRepository extends AppRepository
         $query->select('*')
             ->orderDesc('created_at')
             ->offset($offset)
-            ->limit(20);
+            ->limit(5);
 
         $posts = $query->execute()
             ->fetchAll('assoc');
@@ -87,7 +87,7 @@ class PostRepository extends AppRepository
         ])
             ->group(['post_id'])
             ->offset($offset)
-            ->limit(20);
+            ->limit(5);
 
         $likes = $query->execute()
             ->fetchAll('assoc');

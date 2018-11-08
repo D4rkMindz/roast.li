@@ -53,7 +53,7 @@ class UserRepository extends AppRepository
      * @return string
      * @throws DomainException
      */
-    public function getPasswordByUsername(string $username): string
+    public function getPasswordByUsername(string $username): ?string
     {
         $where = ['username' => $username];
         if (is_email($username)) {
@@ -65,7 +65,7 @@ class UserRepository extends AppRepository
         if (!empty($row)) {
             return $row['password'];
         }
-        throw new DomainException(__('Username not found'));
+        return null;
     }
 
     /**
