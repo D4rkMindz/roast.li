@@ -1,4 +1,4 @@
-import { Component, EventEmitter, HostListener, Input, OnInit, Output } from '@angular/core';
+import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
 import { Post, PostService } from '@app/shared/post/post.service';
 import { AuthenticationService, extract } from '@app/core';
 import * as moment from 'moment';
@@ -37,7 +37,9 @@ export class PostStreamComponent implements OnInit {
   posts: Post[] = [];
   loadedLastItem = false;
   isLoading: boolean;
-  username: string = null;
+  notAuthenticatedError: string = extract('You must be logged in to like');
+  ownPostError: string = extract('You can not like your own posts');
+  info: string = extract('Like to share your pleasure');
   m: any;
 
   @Input()
@@ -45,13 +47,15 @@ export class PostStreamComponent implements OnInit {
   @Output()
   scroll = new EventEmitter<ScrollDirection>();
 
-  constructor(private postService: PostService, auth: AuthenticationService) {
-    const credentials = auth.credentials;
-    if (typeof credentials !== 'undefined' && credentials !== null && 'username' in credentials) {
-      this.username = credentials.username;
-    }
+  constructor(private postService: PostService, private auth: AuthenticationService) {
     this.m = moment;
   }
+
+  get username(): string {
+    const credentials = this.auth.credentials;
+    return credentials ? credentials.username : null;
+  }
+
 
   ngOnInit() {
     this.isLoading = true;
@@ -69,7 +73,13 @@ export class PostStreamComponent implements OnInit {
     this.scroll.emit(new ScrollDirection('upwards'));
   }
 
-  async like(post: Post) {}
+  async like(post: Post) {
+    if (post.liked_by_user) {
+      this.unlikePost(post);
+    } else {
+      this.likePost(post);
+    }
+  }
 
   private loadPosts() {
     switch (this.sort) {

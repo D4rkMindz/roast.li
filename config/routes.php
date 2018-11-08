@@ -4,6 +4,7 @@ $language = '{language:(?:de|en)}';
 $app->get('/', 'App\Controller\IndexController:indexAction')->setName('root');
 $app->get('/error', 'App\Controller\ErrorController:notFoundAction')->setName('notFound');
 $app->post('/api/user/auth', 'App\Controller\AuthenticationController:loginAction')->setName('login');
+$app->delete('/api/user/auth', 'App\Controller\AuthenticationController:logoutAction')->setName('logout');
 $app->get('/api/posts/hot', 'App\Controller\PostController:getHotPostsAction')->setName('hot');
 $app->get('/api/posts/new', 'App\Controller\PostController:getNewPostsAction')->setName('new');
 $app->get('/api/posts/{post_id}', 'App\Controller\PostController:getPostAction')->setName('getPost');

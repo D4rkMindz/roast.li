@@ -30,14 +30,17 @@
       </mat-card-content>
       <mat-card-actions>
         <div fxFlex></div>
-        <button mat-button
-                [disabled]="!(username !== null && post.user.username !== username)"
-                (click)="like(post)">
-          {{post.likes}}
-          <mat-icon color="{{post.liked_by_user ? 'warn' : ''}}">
-            {{post.liked_by_user ? 'favorite' : 'favorite_outline'}}
-          </mat-icon>
-        </button>
+        <div
+          matTooltip="{{username === null? notAuthenticatedError : post.user.username === username ? ownPostError: info}}">
+          <button mat-button
+                  [disabled]="!(username !== null && post.user.username !== username)"
+                  (click)="like(post)">
+            {{post.likes}}
+            <mat-icon color="{{username && post.liked_by_user ? 'warn' : ''}}">
+              {{username && post.liked_by_user ? 'favorite' : 'favorite_outline'}}
+            </mat-icon>
+          </button>
+        </div>
         <!--<button mat-button>SHARE</button>-->
       </mat-card-actions>
     </mat-card>

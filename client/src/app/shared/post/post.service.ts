@@ -22,7 +22,8 @@ export interface Post {
   providedIn: 'root'
 })
 export class PostService {
-  constructor(private http: HttpClient) {}
+  constructor(private http: HttpClient) {
+  }
 
   public getHotPosts(offset: number = 0): Observable<Post[]> {
     return this.http.get<Post[]>(`/posts/hot?offset=${offset}`, { withCredentials: true });
@@ -32,15 +33,17 @@ export class PostService {
     return this.http.get<Post[]>(`/posts/new?offset=${offset}`, { withCredentials: true });
   }
 
-  public async getPost(postId: string): Post {
+  public async getPost(postId: string): Promise<Post> {
     return this.http.get<Post>(`/posts/${postId}`, { withCredentials: true }).toPromise();
   }
 
-  public async like(id: string): number {
-    return await this.http.put(`/posts/${id}/like`, {}, { withCredentials: true }).toPromise();
+  public async like(id: string): Promise<number> {
+    const response: any = await this.http.put(`/posts/${id}/like`, {}, { withCredentials: true }).toPromise();
+    return response.likes;
   }
 
-  public async unlike(id: string): number {
-    return await this.http.put(`/posts/${id}/unlike`, {}, { withCredentials: true }).toPromise();
+  public async unlike(id: string): Promise<number> {
+    const response: any = await this.http.put(`/posts/${id}/unlike`, {}, { withCredentials: true }).toPromise();
+    return response.likes;
   }
 }

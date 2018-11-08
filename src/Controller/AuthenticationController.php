@@ -70,4 +70,19 @@ class AuthenticationController extends AppController
         }
         return $this->json($response, ['success' => false]);
     }
+
+    /**
+     * Logout action.
+     *
+     * @param Request $request
+     * @param Response $response
+     * @return ResponseInterface
+     */
+    public function logoutAction(Request $request, Response $response): ResponseInterface
+    {
+        if ($this->setLoggedOut()) {
+            return $this->json($response, ['success' => true]);
+        }
+        return $this->json($response, ['success' => false]);
+    }
 }

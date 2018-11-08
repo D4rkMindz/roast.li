@@ -127,7 +127,7 @@ class AppController
 
     protected function getUserId()
     {
-        return $this->session->get('user_id');
+        return $this->session->get('user_id') ?: '';
     }
 
     /**
@@ -142,11 +142,13 @@ class AppController
 
     /**
      * Set user logged out.
+     *
+     * @return bool
      */
-    protected function setLoggedOut()
+    protected function setLoggedOut(): bool
     {
-        $this->session->set('logged_in', false);
-        $this->session->set('user_id', null);
+        $this->session->clear();
+        return true;
     }
 
     /**

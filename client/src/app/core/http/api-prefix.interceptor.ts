@@ -32,8 +32,12 @@ export class ApiPrefixInterceptor implements HttpInterceptor {
       if (/login/.test(response.url)) {
         return;
       }
-      this.inj.get(AuthenticationService).logout();
-      this.inj.get(Router).navigate(['/login']);
+      const auth = this.inj.get(AuthenticationService);
+      if (auth.isAuthenticated()) {
+        auth.logout().then(() => {
+          this.inj.get(Router).navigate(['/']);
+        });
+      }
       return throwError(response);
     });
     return obs;

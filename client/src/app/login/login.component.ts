@@ -5,8 +5,6 @@ import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { environment } from '@env/environment';
 import { AuthenticationService, extract, I18nService, Logger } from '@app/core';
 
-const log = new Logger('Login');
-
 @Component({
   selector: 'app-login',
   templateUrl: './login.component.html',

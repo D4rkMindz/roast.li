@@ -48,7 +48,7 @@ class PostRepository extends AppRepository
      * @param string $currentUserId
      * @return array
      */
-    public function getPost(string $postId, string $currentUserId): array
+    public function getPost(string $postId, string $currentUserId): ?array
     {
         $query = $this->postTable->newSelect();
         $query->select('*')->where(['id' => $postId]);
@@ -101,8 +101,7 @@ class PostRepository extends AppRepository
     {
         $query = $this->likedPostTable->newSelect(false);
         $query->select([
-            'count' => $query->func()->count('post_id'),
-            'post_id' => 'id',
+            'post_id' => 'post_id',
         ])
             ->group(['post_id'])
             ->offset($offset)

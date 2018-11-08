@@ -28,7 +28,7 @@ export class HeaderComponent implements OnInit {
   }
 
   logout() {
-    this.authenticationService.logout().subscribe(() => this.router.navigate(['/'], { replaceUrl: true }));
+    this.authenticationService.logout().then(() => this.router.navigate(['/'], { replaceUrl: true }));
   }
 
   get currentLanguage(): string {
