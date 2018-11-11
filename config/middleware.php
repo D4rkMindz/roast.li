@@ -76,7 +76,7 @@ $app->add(function (Request $request, Response $response, $next) use ($container
         ->withHeader('Access-Control-Allow-Headers', 'X-Authenticated, X-App-Language, X-Token, Content-Type')
         ->withHeader('Access-Control-Expose-Headers', 'X-Authenticated')
         ->withHeader('Access-Control-Allow-Credentials', 'true')
-        ->withHeader('Access-Control-Allow-Methods', 'GET, POST, PUT, DELETE ');
+        ->withHeader('Access-Control-Allow-Methods', 'GET, POST, PUT, DELETE, OPTIONS');
     return $response;
 });
 
