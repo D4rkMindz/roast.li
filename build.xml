@@ -38,7 +38,7 @@
             <os family="windows"/>
         </condition>
         <input message="Migration name" addproperty="migrationName"/>
-        <exec executable="${basedir}/vendor/bin/phinx-migrations.bat" dir="${basedir}/config" osfamily="windows">
+        <exec executable="${basedir}/vendor/bin/phinx-migrations" dir="${basedir}/config">
             <arg line="generate --name ${migrationName} --overwrite"/>
         </exec>
     </target>
