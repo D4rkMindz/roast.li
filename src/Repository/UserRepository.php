@@ -47,6 +47,28 @@ class UserRepository extends AppRepository
     }
 
     /**
+     * Check if a user exists.
+     *
+     * @param string $username
+     * @return bool
+     */
+    public function existsUserByUsername(string $username)
+    {
+        return $this->userTable->exist('username', strtolower($username));
+    }
+
+    /**
+     * Check if a user exists.
+     *
+     * @param string $username
+     * @return bool
+     */
+    public function existsUserByEmail(string $email)
+    {
+        return $this->userTable->exist('email', strtolower($email));
+    }
+
+    /**
      * Get a password by username.
      *
      * @param string $username
@@ -55,6 +77,7 @@ class UserRepository extends AppRepository
      */
     public function getPasswordByUsername(string $username): ?string
     {
+        $username = strtolower($username);
         $where = ['username' => $username];
         if (is_email($username)) {
             $where = ['email' => $username];
@@ -77,6 +100,7 @@ class UserRepository extends AppRepository
      */
     public function getIdByUsername(string $username): string
     {
+        $username = strtolower($username);
         $where = ['username' => $username];
         if (is_email($username)) {
             $where = ['email' => $username];
@@ -88,5 +112,30 @@ class UserRepository extends AppRepository
             return $row['id'];
         }
         throw new DomainException(__('Username not found'));
+    }
+
+    /**
+     * Create a user
+     *
+     * @param string $username
+     * @param string $password
+     * @param string $email
+     * @param string $firstName
+     * @param string $lastName
+     * @return bool
+     */
+    public function createUser(string $username, string $password, string $email, string $firstName, string $lastName)
+    {
+        $row = [
+            'role_id' => 2, // User
+            'username' => strtolower($username),
+            'password' => password_hash($password, PASSWORD_DEFAULT),
+            'email' => strtolower($email),
+            'first_name' => $firstName,
+            'last_name' => $lastName,
+            'created_by' => 0,
+            'created_at' => date('Y-m-d H:i:s'),
+        ];
+        return $this->userTable->insert($row)->lastInsertId();
     }
 }

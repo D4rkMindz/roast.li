@@ -3,6 +3,9 @@ import { HttpEvent, HttpInterceptor, HttpHandler, HttpRequest, HttpResponse } fr
 import { Observable, Subscriber } from 'rxjs';
 
 import { HttpCacheService } from './http-cache.service';
+import { Logger } from '../logger.service';
+
+const Log = new Logger('CACHE');
 
 /**
  * Caches HTTP requests.
@@ -29,6 +32,7 @@ export class CacheInterceptor implements HttpInterceptor {
 
   intercept(request: HttpRequest<any>, next: HttpHandler): Observable<HttpEvent<any>> {
     if (request.method !== 'GET') {
+      Log.debug('Request is not get');
       return next.handle(request);
     }
 

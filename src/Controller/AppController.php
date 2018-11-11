@@ -108,7 +108,7 @@ class AppController
      */
     protected function json(Response $response, $data, int $status = 200): ResponseInterface
     {
-        return $response->withJson($data, $status);
+        return $response->withJson($data, 200);
     }
 
     /**

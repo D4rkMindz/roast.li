@@ -1,13 +1,13 @@
 import { Injectable } from '@angular/core';
 import { HttpEvent, HttpHandler, HttpInterceptor, HttpRequest } from '@angular/common/http';
-import { Observable } from 'rxjs';
+import { Observable, of } from 'rxjs';
 import { catchError } from 'rxjs/operators';
 
 import { environment } from '@env/environment';
 import { Logger } from '../logger.service';
 import { Router } from '@angular/router';
 
-const log = new Logger('ErrorHandlerInterceptor');
+const Log = new Logger('ERROR-HANDLER');
 
 /**
  * Adds a default error handler to all requests.
@@ -18,14 +18,14 @@ export class ErrorHandlerInterceptor implements HttpInterceptor {
   }
 
   intercept(request: HttpRequest<any>, next: HttpHandler): Observable<HttpEvent<any>> {
-    return next.handle(request).pipe(catchError(error => this.errorHandler(error)));
+    return next.handle(request);
   }
 
   // Customize the default error handler here if needed
   private errorHandler(response: HttpEvent<any>): Observable<HttpEvent<any>> {
     if (!environment.production) {
       // Do something with the error
-      log.error('Request error', response);
+      Log.error('Request error', response);
     }
     if (response['status'] === 403) {
       this.router.navigate(['/login']);

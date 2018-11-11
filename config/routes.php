@@ -3,6 +3,7 @@ $language = '{language:(?:de|en)}';
 
 $app->get('/', 'App\Controller\IndexController:indexAction')->setName('root');
 $app->get('/error', 'App\Controller\ErrorController:notFoundAction')->setName('notFound');
+$app->post('/api/user', 'App\Controller\AuthenticationController:registerAction')->setName('register');
 $app->post('/api/user/auth', 'App\Controller\AuthenticationController:loginAction')->setName('login');
 $app->delete('/api/user/auth', 'App\Controller\AuthenticationController:logoutAction')->setName('logout');
 $app->get('/api/posts/hot', 'App\Controller\PostController:getHotPostsAction')->setName('hot');

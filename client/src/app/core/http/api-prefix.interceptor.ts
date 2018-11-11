@@ -5,6 +5,9 @@ import { Observable, throwError } from 'rxjs';
 import { environment } from '@env/environment';
 import { Router } from '@angular/router';
 import { AuthenticationService } from '../authentication/authentication.service';
+import { Logger } from '../logger.service';
+
+const Log = new Logger('API-PREFIX');
 
 /**
  * Prefixes all requests with `environment.serverUrl`.
@@ -15,9 +18,12 @@ export class ApiPrefixInterceptor implements HttpInterceptor {
   }
 
   intercept(request: HttpRequest<any>, next: HttpHandler): Observable<HttpEvent<any>> {
+    Log.debug('Requesting ' + request.url);
     if (!/^(http|https):/i.test(request.url)) {
       request = request.clone({ url: environment.serverUrl + request.url, withCredentials: true });
+      Log.debug('Request cloned');
     }
+
     const obs = next.handle(request);
     obs.subscribe((response: HttpResponse<any>) => {
       if (!/nicipedia/.test(response['url'])) {
@@ -37,8 +43,9 @@ export class ApiPrefixInterceptor implements HttpInterceptor {
         auth.logout().then(() => {
           this.inj.get(Router).navigate(['/']);
         });
+        return;
       }
-      return throwError(response);
+      throwError(response);
     });
     return obs;
   }

@@ -2,6 +2,7 @@ import { Injectable } from '@angular/core';
 import { Observable, of } from 'rxjs';
 import { HttpClient } from '@angular/common/http';
 import { Router } from '@angular/router';
+import { HttpService } from '@app/shared/http/http.service';
 
 export interface Credentials {
   // Customize received credentials here
@@ -25,7 +26,7 @@ const credentialsKey = 'credentials';
 export class AuthenticationService {
   private _credentials: Credentials | null;
 
-  constructor(private http: HttpClient, private router: Router) {
+  constructor(private http: HttpService, private router: Router) {
     const savedCredentials = sessionStorage.getItem(credentialsKey) || localStorage.getItem(credentialsKey);
     if (savedCredentials) {
       this._credentials = JSON.parse(savedCredentials);

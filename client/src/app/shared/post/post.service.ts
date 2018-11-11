@@ -3,6 +3,7 @@ import { Moment } from 'moment';
 import { HttpClient } from '@angular/common/http';
 import { Observable } from 'rxjs';
 import { User } from '@app/shared/user/user.service';
+import { HttpService } from '@app/shared/http/http.service';
 
 export interface Post {
   id: string;
@@ -22,28 +23,28 @@ export interface Post {
   providedIn: 'root'
 })
 export class PostService {
-  constructor(private http: HttpClient) {
+  constructor(private http: HttpService) {
   }
 
   public getHotPosts(offset: number = 0): Observable<Post[]> {
-    return this.http.get<Post[]>(`/posts/hot?offset=${offset}`, { withCredentials: true });
+    return this.http.get<Post[]>(`/posts/hot?offset=${offset}`);
   }
 
   public getNewPosts(offset: number = 0): Observable<Post[]> {
-    return this.http.get<Post[]>(`/posts/new?offset=${offset}`, { withCredentials: true });
+    return this.http.get<Post[]>(`/posts/new?offset=${offset}`);
   }
 
   public async getPost(postId: string): Promise<Post> {
-    return this.http.get<Post>(`/posts/${postId}`, { withCredentials: true }).toPromise();
+    return this.http.get<Post>(`/posts/${postId}`).toPromise();
   }
 
   public async like(id: string): Promise<number> {
-    const response: any = await this.http.put(`/posts/${id}/like`, {}, { withCredentials: true }).toPromise();
+    const response: any = await this.http.put(`/posts/${id}/like`, {}).toPromise();
     return response.likes;
   }
 
   public async unlike(id: string): Promise<number> {
-    const response: any = await this.http.put(`/posts/${id}/unlike`, {}, { withCredentials: true }).toPromise();
+    const response: any = await this.http.put(`/posts/${id}/unlike`, {}).toPromise();
     return response.likes;
   }
 }
