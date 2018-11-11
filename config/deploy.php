@@ -34,7 +34,7 @@ system("chmod -R 775 ./htdocs/tmp/");
 echo "Updating permissions";
 system("chmod 775 ./htdocs/vendor/bin/phinx && chmod -R 775 ./htdocs/vendor/robmorgan/");
 echo "Migrating database";
-system("cd htdocs/config/ && ../vendor/bin/phinx migrate");
+system("cd htdocs/config/ && ../vendor/robmorgan/phinx/bin/phinx migrate");
 system("cd ..");
 echo "Deleting old Backups ...";
 system("php clean-up.php 31536000");

@@ -17,6 +17,7 @@ return array (
         'table_comment' => '',
         'table_collation' => 'utf8_general_ci',
         'character_set_name' => 'utf8',
+        'row_format' => 'Dynamic',
       ),
       'columns' => 
       array (
@@ -178,6 +179,7 @@ return array (
         'table_comment' => '',
         'table_collation' => 'utf8_general_ci',
         'character_set_name' => 'utf8',
+        'row_format' => 'Dynamic',
       ),
       'columns' => 
       array (
@@ -289,6 +291,7 @@ return array (
         'table_comment' => '',
         'table_collation' => 'utf8_general_ci',
         'character_set_name' => 'utf8',
+        'row_format' => 'Dynamic',
       ),
       'columns' => 
       array (
@@ -705,6 +708,7 @@ return array (
         'table_comment' => '',
         'table_collation' => 'utf8_general_ci',
         'character_set_name' => 'utf8',
+        'row_format' => 'Dynamic',
       ),
       'columns' => 
       array (
@@ -899,6 +903,7 @@ return array (
         'table_comment' => '',
         'table_collation' => 'utf8_general_ci',
         'character_set_name' => 'utf8',
+        'row_format' => 'Dynamic',
       ),
       'columns' => 
       array (
