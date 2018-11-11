@@ -3,7 +3,7 @@ import { ActivatedRoute, Router } from '@angular/router';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 
 import { environment } from '@env/environment';
-import { AuthenticationService, extract, I18nService, Logger } from '@app/core';
+import { AuthenticationService, extract, I18nService, Language, Logger } from '@app/core';
 import { SnackbarService } from '@app/shared/snackbar/snackbar.service';
 
 @Component({
@@ -51,8 +51,8 @@ export class LoginComponent implements OnInit {
     return this.i18nService.language;
   }
 
-  get languages(): string[] {
-    return this.i18nService.supportedLanguages;
+  get languages(): Language[] {
+    return environment.supportedLanguages;
   }
 
   private createForm() {

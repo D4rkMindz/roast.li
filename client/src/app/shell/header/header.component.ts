@@ -3,8 +3,9 @@ import { Component, Input, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import { MatSidenav } from '@angular/material';
 
-import { AuthenticationService, I18nService } from '@app/core';
+import { AuthenticationService, I18nService, Language } from '@app/core';
 import { SnackbarService } from '@app/shared/snackbar/snackbar.service';
+import { environment } from '@env/environment';
 
 @Component({
   selector: 'app-header',
@@ -40,8 +41,8 @@ export class HeaderComponent implements OnInit {
     return this.i18nService.language;
   }
 
-  get languages(): string[] {
-    return this.i18nService.supportedLanguages;
+  get languages(): Language[] {
+    return environment.supportedLanguages;
   }
 
   get username(): string {

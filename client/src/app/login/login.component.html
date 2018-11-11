@@ -4,12 +4,12 @@
     <div fxLayout="row" fxLayoutAlign="center center" fxLayoutGap="2rem">
       <h4 class="version">v{{version}}</h4>
       <div class="language-selector">
-        <button mat-raised-button color="primary" [matMenuTriggerFor]="languageMenu">
-          {{currentLanguage}}
+        <button mat-raised-button color="primary" [matMenuTriggerFor]="languageMenu" translate>
+          Language
         </button>
         <mat-menu #languageMenu="matMenu">
-          <button mat-menu-item *ngFor="let language of languages" (click)="setLanguage(language)">
-            {{language}}
+          <button mat-menu-item *ngFor="let language of languages" (click)="setLanguage(language.i18n)">
+            {{language.title}}
           </button>
         </mat-menu>
       </div>
