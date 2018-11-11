@@ -107,12 +107,12 @@ export class RegisterComponent implements OnInit {
 
   private createForm() {
     this.registrationForm = this.formBuilder.group({
-      username: ['bjoern', [Validators.required]],
-      firstname: ['Björn', [Validators.required]],
-      lastname: ['Pfoster', [Validators.required]],
-      password: ['bjoern', [Validators.required]],
-      passwordRetype: ['bjoern', [Validators.required]],
-      email: ['bjoern@pfoster.cc', [Validators.required, Validators.email]]
+      username: ['', [Validators.required]],
+      firstname: ['', [Validators.required]],
+      lastname: ['', [Validators.required]],
+      password: ['', [Validators.required]],
+      passwordRetype: ['', [Validators.required]],
+      email: ['', [Validators.required, Validators.email]]
     }, {
       validator: RegisterComponent.matchPasswordValidation
     });

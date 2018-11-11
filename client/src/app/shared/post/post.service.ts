@@ -38,6 +38,10 @@ export class PostService {
     return this.http.get<Post>(`/posts/${postId}`).toPromise();
   }
 
+  public createPost(text: string): Promise<any> {
+    return this.http.post(`/posts`, JSON.stringify({text: text})).toPromise();
+  }
+
   public async like(id: string): Promise<number> {
     const response: any = await this.http.put(`/posts/${id}/like`, {}).toPromise();
     return response.likes;
