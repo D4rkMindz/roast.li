@@ -8,9 +8,8 @@ describe('PostStreamComponent', () => {
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      declarations: [ PostStreamComponent ]
-    })
-    .compileComponents();
+      declarations: [PostStreamComponent]
+    }).compileComponents();
   }));
 
   beforeEach(() => {

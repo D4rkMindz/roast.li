@@ -6,9 +6,7 @@ import { LoginComponent } from './login.component';
 import { Shell } from '@app/shell/shell.service';
 
 const routes: Routes = [
-  Shell.childRoutes([
-    { path: 'login', component: LoginComponent, data: { title: extract('Login') } }
-  ])
+  Shell.childRoutes([{ path: 'login', component: LoginComponent, data: { title: extract('Login') } }])
 ];
 
 @NgModule({
@@ -16,5 +14,4 @@ const routes: Routes = [
   exports: [RouterModule],
   providers: []
 })
-export class LoginRoutingModule {
-}
+export class LoginRoutingModule {}

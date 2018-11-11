@@ -21,4 +21,4 @@ import { MaterialModule } from '@app/material.module';
     RegisterRoutingModule
   ]
 })
-export class RegisterModule { }
+export class RegisterModule {}

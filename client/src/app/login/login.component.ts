@@ -4,6 +4,7 @@ import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 
 import { environment } from '@env/environment';
 import { AuthenticationService, extract, I18nService, Logger } from '@app/core';
+import { SnackbarService } from '@app/shared/snackbar/snackbar.service';
 
 @Component({
   selector: 'app-login',
@@ -21,7 +22,8 @@ export class LoginComponent implements OnInit {
     private route: ActivatedRoute,
     private formBuilder: FormBuilder,
     private i18nService: I18nService,
-    private authenticationService: AuthenticationService
+    private authenticationService: AuthenticationService,
+    private snackbar: SnackbarService
   ) {
     this.createForm();
   }
@@ -34,6 +36,7 @@ export class LoginComponent implements OnInit {
     this.loginForm.markAsPristine();
     this.isLoading = false;
     if (loggedIn) {
+      this.snackbar.notification(extract(`Welcome ${this.loginForm.controls.username.value}`));
       this.route.queryParams.subscribe(params => this.router.navigate([params.redirect || '/'], { replaceUrl: true }));
       return;
     }

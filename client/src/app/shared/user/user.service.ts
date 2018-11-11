@@ -19,7 +19,15 @@ export class CompleteUser {
   private readonly _email: string;
   private readonly _thumbnail_url: string;
 
-  constructor(username: string, first_name: string, last_name: string, password: string, email: string, id?: string, thumbnailUrl?: string) {
+  constructor(
+    username: string,
+    first_name: string,
+    last_name: string,
+    password: string,
+    email: string,
+    id?: string,
+    thumbnailUrl?: string
+  ) {
     this._id = id;
     this._username = username;
     this._first_name = first_name;
@@ -79,19 +87,17 @@ export class CompleteUser {
   providedIn: 'root'
 })
 export class UserService {
-  constructor(private http: HttpService) {
-  }
+  constructor(private http: HttpService) {}
 
   public register(user: CompleteUser): Observable<any> {
     return new Observable(observer => {
       console.log('[REGISTER] registering user');
-      this.http.post('/user', user.toJSON())
-        .subscribe((res) => {
-          observer.next(res);
-          observer.complete();
-          console.log('[REGISTER] got response');
-          return res;
-        });
+      this.http.post('/user', user.toJSON()).subscribe(res => {
+        observer.next(res);
+        observer.complete();
+        console.log('[REGISTER] got response');
+        return res;
+      });
     });
   }
 }

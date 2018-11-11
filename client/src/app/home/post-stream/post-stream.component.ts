@@ -4,6 +4,7 @@ import { AuthenticationService, extract } from '@app/core';
 import * as moment from 'moment';
 import { finalize } from 'rxjs/operators';
 import { throwError } from 'rxjs';
+import { SnackbarService } from '@app/shared/snackbar/snackbar.service';
 
 export interface ScrollDirection {
   readonly up: string;
@@ -47,7 +48,11 @@ export class PostStreamComponent implements OnInit {
   @Output()
   scroll = new EventEmitter<ScrollDirection>();
 
-  constructor(private postService: PostService, private auth: AuthenticationService) {
+  constructor(
+    private postService: PostService,
+    private auth: AuthenticationService,
+    private snackbar: SnackbarService
+  ) {
     this.m = moment;
   }
 
@@ -55,7 +60,6 @@ export class PostStreamComponent implements OnInit {
     const credentials = this.auth.credentials;
     return credentials ? credentials.username : null;
   }
-
 
   ngOnInit() {
     this.isLoading = true;
@@ -73,11 +77,24 @@ export class PostStreamComponent implements OnInit {
     this.scroll.emit(new ScrollDirection('upwards'));
   }
 
+  reloadPosts() {
+    this.resetPosts();
+    this.loadPosts();
+  }
+
   async like(post: Post) {
     if (post.liked_by_user) {
       this.unlikePost(post);
     } else {
       this.likePost(post);
+    }
+  }
+
+  async delete(post: Post) {
+    const deleted = await this.postService.deletePost(post.id);
+    if (deleted) {
+      this.snackbar.notification('Post deleted');
+      this.reloadPosts();
     }
   }
 
@@ -141,6 +158,7 @@ export class PostStreamComponent implements OnInit {
 
     const index = this.posts.indexOf(post);
     this.posts[index] = updatedPost;
+    this.snackbar.notification(extract('Post liked'));
   }
 
   private async unlikePost(post: Post) {
@@ -149,5 +167,11 @@ export class PostStreamComponent implements OnInit {
 
     const index = this.posts.indexOf(post);
     this.posts[index] = updatedPost;
+    this.snackbar.notification(extract('Post unliked'));
+  }
+
+  private resetPosts() {
+    this.posts = [];
+    this.loadedLastItem = false;
   }
 }

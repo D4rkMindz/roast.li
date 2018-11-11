@@ -14,7 +14,7 @@
     </mat-tab>
   </mat-tab-group>
 </div>
-<div class="fab-container">
+<div class="fab-container" [fxShow]="username !== null">
   <button mat-fab color="primary" (click)="addPost()">
     <mat-icon aria-label="Add post">add</mat-icon>
   </button>

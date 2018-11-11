@@ -6,9 +6,7 @@ import { environment } from '@env/environment';
   providedIn: 'root'
 })
 export class HttpService {
-
-  constructor(private http: HttpClient) {
-  }
+  constructor(private http: HttpClient) {}
 
   get(url: string) {
     url = environment.serverUrl + url;

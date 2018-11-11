@@ -29,6 +29,15 @@
         </div>
       </mat-card-content>
       <mat-card-actions>
+        <div matTooltip="{{'Delete your crappy post' | translate}}">
+          <button mat-button
+                  [fxShow]="username !== null && post.user.username === username"
+                  (click)="delete(post)">
+            <mat-icon>
+              delete
+            </mat-icon>
+          </button>
+        </div>
         <div fxFlex></div>
         <div
           matTooltip="{{username === null? notAuthenticatedError : post.user.username === username ? ownPostError: info}}">

@@ -14,8 +14,7 @@ const Log = new Logger('ERROR-HANDLER');
  */
 @Injectable()
 export class ErrorHandlerInterceptor implements HttpInterceptor {
-  public constructor(private router: Router) {
-  }
+  public constructor(private router: Router) {}
 
   intercept(request: HttpRequest<any>, next: HttpHandler): Observable<HttpEvent<any>> {
     return next.handle(request);

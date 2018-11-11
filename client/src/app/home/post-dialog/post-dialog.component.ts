@@ -9,25 +9,26 @@ import { PostService } from '@app/shared/post/post.service';
   styleUrls: ['./post-dialog.component.scss']
 })
 export class PostDialogComponent implements OnInit {
-
   createPostForm: FormGroup;
 
   constructor(
     private formBuilder: FormBuilder,
     private postService: PostService,
-    private dialogRef: MatDialogRef<PostDialogComponent>,
+    private dialogRef: MatDialogRef<PostDialogComponent>
   ) {
     this.createForm();
   }
 
-  ngOnInit() {
-
-  }
+  ngOnInit() {}
 
   async save() {
     const text = this.createPostForm.controls.post.value;
     const response = await this.postService.createPost(text);
-    console.log(response);
+    if ('success' in response) {
+      this.dialogRef.close(response.success);
+    } else {
+      this.dialogRef.close(false);
+    }
   }
 
   close() {
@@ -36,7 +37,7 @@ export class PostDialogComponent implements OnInit {
 
   private createForm() {
     this.createPostForm = this.formBuilder.group({
-      post: ['', [Validators.required]],
+      post: ['', [Validators.required]]
     });
   }
 }

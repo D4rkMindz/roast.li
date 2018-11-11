@@ -14,8 +14,7 @@ const Log = new Logger('API-PREFIX');
  */
 @Injectable()
 export class ApiPrefixInterceptor implements HttpInterceptor {
-  public constructor(private inj: Injector) {
-  }
+  public constructor(private inj: Injector) {}
 
   intercept(request: HttpRequest<any>, next: HttpHandler): Observable<HttpEvent<any>> {
     Log.debug('Requesting ' + request.url);

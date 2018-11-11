@@ -39,12 +39,13 @@ export class AuthenticationService {
    * @return The user credentials.
    */
   async login(context: LoginContext): Promise<boolean> {
-    const response = await this.http.post('/user/auth', {
-      username: context.username,
-      password: context.password
-    }).toPromise();
+    const response = await this.http
+      .post('/user/auth', {
+        username: context.username,
+        password: context.password
+      })
+      .toPromise();
     if (response['success']) {
-
       // Replace by proper authentication call
       const data = {
         username: context.username,
