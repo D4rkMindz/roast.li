@@ -26,6 +26,6 @@ import { ReactiveFormsModule } from '@angular/forms';
   ],
   declarations: [HomeComponent, PostStreamComponent, PostDialogComponent],
   providers: [QuoteService],
-  entryComponents: [PostDialogComponent],
+  entryComponents: [PostDialogComponent]
 })
 export class HomeModule {}

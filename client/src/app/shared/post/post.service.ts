@@ -24,16 +24,16 @@ export interface Post {
 export class PostService {
   constructor(private http: HttpService) {}
 
-  public getHotPosts(offset: number = 0): Observable<Post[]> {
-    return this.http.get<Post[]>(`/posts/hot?offset=${offset}`);
+  public getHotPosts(offset: number = 0) {
+    return this.http.get(`/posts/hot?offset=${offset}`);
   }
 
-  public getNewPosts(offset: number = 0): Observable<Post[]> {
-    return this.http.get<Post[]>(`/posts/new?offset=${offset}`);
+  public getNewPosts(offset: number = 0) {
+    return this.http.get(`/posts/new?offset=${offset}`);
   }
 
-  public async getPost(postId: string): Promise<Post> {
-    return this.http.get<Post>(`/posts/${postId}`).toPromise();
+  public async getPost(postId: string) {
+    return this.http.get(`/posts/${postId}`).toPromise();
   }
 
   public createPost(text: string): Promise<any> {

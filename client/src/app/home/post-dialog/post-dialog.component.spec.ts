@@ -8,9 +8,8 @@ describe('PostDialogComponent', () => {
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      declarations: [ PostDialogComponent ]
-    })
-    .compileComponents();
+      declarations: [PostDialogComponent]
+    }).compileComponents();
   }));
 
   beforeEach(() => {

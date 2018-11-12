@@ -154,7 +154,7 @@ export class PostStreamComponent implements OnInit {
 
   private async likePost(post: Post) {
     await this.postService.like(post.id);
-    const updatedPost = await this.postService.getPost(post.id);
+    const updatedPost = <Post>await this.postService.getPost(post.id);
 
     const index = this.posts.indexOf(post);
     this.posts[index] = updatedPost;
@@ -163,7 +163,7 @@ export class PostStreamComponent implements OnInit {
 
   private async unlikePost(post: Post) {
     await this.postService.unlike(post.id);
-    const updatedPost = await this.postService.getPost(post.id);
+    const updatedPost = <Post>await this.postService.getPost(post.id);
 
     const index = this.posts.indexOf(post);
     this.posts[index] = updatedPost;
