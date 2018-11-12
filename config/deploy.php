@@ -29,10 +29,10 @@ if (!is_dir("./htdocs/tmp/cache")) {
     echo "Creating /cache directory";
     system("mkdir ./htdocs/tmp/cache");
 }
-echo "Updating directory permissions to 775\n";
-system("chmod -R 775 ./htdocs/tmp/");
-echo "Updating permissions";
-system("chmod 775 ./htdocs/vendor/bin/phinx && chmod -R 775 ./htdocs/vendor/robmorgan/");
+echo "NOT Updating permissions";
+//echo "Updating directory permissions to 775\n";
+//system("chmod -R 775 ./htdocs/tmp/");
+//system("chmod 775 ./htdocs/vendor/bin/phinx && chmod -R 775 ./htdocs/vendor/robmorgan/");
 echo "Migrating database";
 system("cd htdocs/config/ && ../vendor/robmorgan/phinx/bin/phinx migrate");
 system("cd ..");
