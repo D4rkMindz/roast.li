@@ -23,4 +23,6 @@ $env['twig']['assetCache'] ['minify'] = false;
 $env['twig']['assetCache'] ['cache_enabled'] = false;
 $env['twig']['autoReload'] = true;
 
+$env['cors']['client'] = 'https://nicipedia.sexy';
+
 return $env;

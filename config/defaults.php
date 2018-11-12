@@ -67,4 +67,8 @@ $config['logger'] = [
     'main' => 'app',
 ];
 
+$config['cors'] = [
+  'client' => 'https://nicipedia.sexy',
+];
+
 return $config;
