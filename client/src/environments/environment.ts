@@ -10,7 +10,8 @@ export const environment = {
   version: env.npm_package_version + '-dev',
   serverUrl: 'https://nicipedia.dev/api',
   defaultLanguage: 'en-US',
-  supportedLanguages: ['en-US', 'de-CH']
+  supportedLanguages: [{ i18n: 'de-CH', title: 'Deutsch' }, { i18n: 'en-US', title: 'English' }],
+  supportedLanguagesAsStringArray: ['de-CH', 'en-US']
 };
 
 /*

@@ -1,9 +1,10 @@
-import { Component, EventEmitter, HostListener, Input, OnInit, Output } from '@angular/core';
+import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
 import { Post, PostService } from '@app/shared/post/post.service';
 import { AuthenticationService, extract } from '@app/core';
 import * as moment from 'moment';
 import { finalize } from 'rxjs/operators';
 import { throwError } from 'rxjs';
+import { SnackbarService } from '@app/shared/snackbar/snackbar.service';
 
 export interface ScrollDirection {
   readonly up: string;
@@ -37,7 +38,9 @@ export class PostStreamComponent implements OnInit {
   posts: Post[] = [];
   loadedLastItem = false;
   isLoading: boolean;
-  username: string = null;
+  notAuthenticatedError: string = extract('You must be logged in to like');
+  ownPostError: string = extract('You can not like your own posts');
+  info: string = extract('Like to share your pleasure');
   m: any;
 
   @Input()
@@ -45,12 +48,17 @@ export class PostStreamComponent implements OnInit {
   @Output()
   scroll = new EventEmitter<ScrollDirection>();
 
-  constructor(private postService: PostService, auth: AuthenticationService) {
-    const credentials = auth.credentials;
-    if (typeof credentials !== 'undefined' && credentials !== null && 'username' in credentials) {
-      this.username = credentials.username;
-    }
+  constructor(
+    private postService: PostService,
+    private auth: AuthenticationService,
+    private snackbar: SnackbarService
+  ) {
     this.m = moment;
+  }
+
+  get username(): string {
+    const credentials = this.auth.credentials;
+    return credentials ? credentials.username : null;
   }
 
   ngOnInit() {
@@ -69,7 +77,26 @@ export class PostStreamComponent implements OnInit {
     this.scroll.emit(new ScrollDirection('upwards'));
   }
 
-  async like(post: Post) {}
+  reloadPosts() {
+    this.resetPosts();
+    this.loadPosts();
+  }
+
+  async like(post: Post) {
+    if (post.liked_by_user) {
+      this.unlikePost(post);
+    } else {
+      this.likePost(post);
+    }
+  }
+
+  async delete(post: Post) {
+    const deleted = await this.postService.deletePost(post.id);
+    if (deleted) {
+      this.snackbar.notification('Post deleted');
+      this.reloadPosts();
+    }
+  }
 
   private loadPosts() {
     switch (this.sort) {
@@ -131,6 +158,7 @@ export class PostStreamComponent implements OnInit {
 
     const index = this.posts.indexOf(post);
     this.posts[index] = updatedPost;
+    this.snackbar.notification(extract('Post liked'));
   }
 
   private async unlikePost(post: Post) {
@@ -139,5 +167,11 @@ export class PostStreamComponent implements OnInit {
 
     const index = this.posts.indexOf(post);
     this.posts[index] = updatedPost;
+    this.snackbar.notification(extract('Post unliked'));
+  }
+
+  private resetPosts() {
+    this.posts = [];
+    this.loadedLastItem = false;
   }
 }

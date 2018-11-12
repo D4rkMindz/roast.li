@@ -38,7 +38,7 @@
             <os family="windows"/>
         </condition>
         <input message="Migration name" addproperty="migrationName"/>
-        <exec executable="${basedir}/vendor/bin/phinx-migrations.bat" dir="${basedir}/config" osfamily="windows">
+        <exec executable="${basedir}/vendor/bin/phinx-migrations" dir="${basedir}/config">
             <arg line="generate --name ${migrationName} --overwrite"/>
         </exec>
     </target>
@@ -146,6 +146,7 @@
         <delete file="${build_dir}/master/config/clean-up.php"/>
         <delete file="${build_dir}/master/config/deploy.php"/>
         <delete dir="${build_dir}/master/docs"/>
+        <delete dir="${build_dir}/master/client"/>
         <delete dir="${build_dir}/master/vendor/phpstan"/>
         <delete dir="${build_dir}/master/vendor/monolog/monolog/doc"/>
         <delete dir="${build_dir}/master/vendor/monolog/monolog/tests"/>

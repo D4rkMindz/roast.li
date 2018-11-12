@@ -4,7 +4,7 @@ import { includes } from 'lodash';
 
 import { Logger } from './logger.service';
 import enUS from '../../translations/en-US.json';
-import frFR from '../../translations/fr-FR.json';
+import deCH from '../../translations/de-CH.json';
 
 const log = new Logger('I18nService');
 const languageKey = 'language';
@@ -19,6 +19,11 @@ export function extract(s: string) {
   return s;
 }
 
+export interface Language {
+  i18n: string;
+  title: string;
+}
+
 @Injectable()
 export class I18nService {
   defaultLanguage: string;
@@ -27,7 +32,7 @@ export class I18nService {
   constructor(private translateService: TranslateService) {
     // Embed languages to avoid extra HTTP requests
     translateService.setTranslation('en-US', enUS);
-    translateService.setTranslation('fr-FR', frFR);
+    translateService.setTranslation('de-CH', deCH);
   }
 
   /**

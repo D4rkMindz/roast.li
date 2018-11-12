@@ -5,6 +5,8 @@ import { Observable } from 'rxjs';
 import { ErrorHandlerInterceptor } from './error-handler.interceptor';
 import { CacheInterceptor } from './cache.interceptor';
 import { ApiPrefixInterceptor } from './api-prefix.interceptor';
+import { Logger } from '../logger.service';
+import * as moment from 'moment';
 
 // HttpClient is declared in a re-exported module, so we have to extend the original module to make it work properly
 // (see https://github.com/Microsoft/TypeScript/issues/13897)
@@ -32,6 +34,8 @@ declare module '@angular/common/http/src/client' {
     disableApiPrefix(): HttpClient;
   }
 }
+
+const Log = new Logger('HTTP');
 
 // From @angular/common/http/src/interceptor: allows to chain interceptors
 class HttpInterceptorHandler implements HttpHandler {
@@ -85,14 +89,14 @@ export class HttpService extends HttpClient {
     return this.removeInterceptor(ApiPrefixInterceptor);
   }
 
-  // Override the original method to wire interceptors when triggering the request.
-  request(method?: any, url?: any, options?: any): any {
-    const handler = this.interceptors.reduceRight(
-      (next, interceptor) => new HttpInterceptorHandler(next, interceptor),
-      this.httpHandler
-    );
-    return new HttpClient(handler).request(method, url, options);
-  }
+  // // Override the original method to wire interceptors when triggering the request.
+  // request(method?: any, url?: any, options?: any): any {
+  //   // const handler = this.interceptors.reduceRight(
+  //   //   (next, interceptor) => new HttpInterceptorHandler(next, interceptor),
+  //   //   this.httpHandler
+  //   // );
+  //   return super.request(method, url, options);
+  // }
 
   private removeInterceptor(interceptorType: Function): HttpService {
     return new HttpService(

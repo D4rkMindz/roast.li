@@ -1,6 +1,8 @@
 import { Injectable } from '@angular/core';
 import { Observable, of } from 'rxjs';
 import { HttpClient } from '@angular/common/http';
+import { Router } from '@angular/router';
+import { HttpService } from '@app/shared/http/http.service';
 
 export interface Credentials {
   // Customize received credentials here
@@ -24,7 +26,7 @@ const credentialsKey = 'credentials';
 export class AuthenticationService {
   private _credentials: Credentials | null;
 
-  constructor(private http: HttpClient) {
+  constructor(private http: HttpService, private router: Router) {
     const savedCredentials = sessionStorage.getItem(credentialsKey) || localStorage.getItem(credentialsKey);
     if (savedCredentials) {
       this._credentials = JSON.parse(savedCredentials);
@@ -37,12 +39,13 @@ export class AuthenticationService {
    * @return The user credentials.
    */
   async login(context: LoginContext): Promise<boolean> {
-    const response = await this.http.post('/user/auth', {
-      username: context.username,
-      password: context.password
-    }).toPromise();
+    const response = await this.http
+      .post('/user/auth', {
+        username: context.username,
+        password: context.password
+      })
+      .toPromise();
     if (response['success']) {
-
       // Replace by proper authentication call
       const data = {
         username: context.username,
@@ -58,10 +61,11 @@ export class AuthenticationService {
    * Logs out the user and clear credentials.
    * @return True if the user was logged out successfully.
    */
-  logout(): Observable<boolean> {
+  async logout(): Promise<boolean> {
     // Customize credentials invalidation here
     this.setCredentials();
-    return of(true);
+    const response: any = await this.http.delete('/user/auth').toPromise();
+    return response.success;
   }
 
   /**

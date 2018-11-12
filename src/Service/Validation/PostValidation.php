@@ -127,4 +127,26 @@ class PostValidation extends AppValidation
 
         return $validationResult;
     }
+
+    /**
+     * Validate deletion of a post.
+     *
+     * @param string $postId
+     * @param string $userId
+     * @return ValidationResult
+     */
+    public function validateDeletion(string $postId, string $userId): ValidationResult
+    {
+        $validationResult = new ValidationResult(__('You can not delete this post'));
+        $this->validateUser($userId, $validationResult);
+        if (!$this->postRepository->existPost($postId)) {
+            $validationResult->setError('delete', __('Post does not exist.'));
+        }
+
+        if (!$this->postRepository->isPostOwner($postId, $userId)) {
+            $validationResult->setError('delete', __('You can only delete your own posts.'));
+        }
+
+        return $validationResult;
+    }
 }

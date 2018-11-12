@@ -1,0 +1,29 @@
+<h2 mat-dialog-title>Create Post</h2>
+
+<mat-dialog-content>
+
+  <form [formGroup]="createPostForm" novalidate>
+    <mat-form-field style="width: 100%;">
+      <textarea matInput
+                rows="6"
+                placeholder="Post"
+                formControlName="post">
+      </textarea>
+    </mat-form-field>
+  </form>
+
+</mat-dialog-content>
+
+<mat-dialog-actions align="end">
+  <button mat-raised-button
+          color="danger"
+          (click)="close()">
+    CLOSE
+  </button>
+  <button mat-raised-button
+          color="primary"
+          (click)="save()"
+          [disabled]="createPostForm.invalid">
+    POST
+  </button>
+</mat-dialog-actions>

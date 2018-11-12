@@ -24,20 +24,32 @@
             {{m(post.created_at).format('MMM Do YYYY, HH:mm')}}
           </sub>
           <sub [fxShow]="post.modified_at !== null">
-            Edited - {{m(post.modified_at).format('MM Do YYYY, hh:mm')}}
+            Edited - {{m(post.modified_at).format('MM Do YYYY, HH:mm')}}
           </sub>
         </div>
       </mat-card-content>
       <mat-card-actions>
+        <div matTooltip="{{'Delete your crappy post' | translate}}">
+          <button mat-button
+                  [fxShow]="username !== null && post.user.username === username"
+                  (click)="delete(post)">
+            <mat-icon>
+              delete
+            </mat-icon>
+          </button>
+        </div>
         <div fxFlex></div>
-        <button mat-button
-                [disabled]="!(username !== null && post.user.username !== username)"
-                (click)="like(post)">
-          {{post.likes}}
-          <mat-icon color="{{post.liked_by_user ? 'warn' : ''}}">
-            {{post.liked_by_user ? 'favorite' : 'favorite_outline'}}
-          </mat-icon>
-        </button>
+        <div
+          matTooltip="{{username === null? notAuthenticatedError : post.user.username === username ? ownPostError: info}}">
+          <button mat-button
+                  [disabled]="!(username !== null && post.user.username !== username)"
+                  (click)="like(post)">
+            {{post.likes}}
+            <mat-icon color="{{username && post.liked_by_user ? 'warn' : ''}}">
+              {{username && post.liked_by_user ? 'favorite' : 'favorite_outline'}}
+            </mat-icon>
+          </button>
+        </div>
         <!--<button mat-button>SHARE</button>-->
       </mat-card-actions>
     </mat-card>

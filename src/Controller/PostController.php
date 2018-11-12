@@ -205,4 +205,33 @@ class PostController extends AppController
 
         return $this->json($response, $responseData, 500);
     }
+
+    public function deletePostAction(Request $request, Response $response, array $args): ResponseInterface
+    {
+        $userId = $this->getUserId();
+        $postId = $args['post_id'];
+
+        $validationResult = $this->postValidation->validateDeletion($postId, $userId);
+        if ($validationResult->fails()) {
+            $responseData['validation'] = $validationResult->toArray();
+            $responseData['success'] = false;
+
+            return $this->json($response, $responseData, 422);
+        }
+
+        $deleted = $this->postRepository->deletePost($postId, $userId);
+        if ($deleted) {
+            return $this->json($response, ['success' => true], 200);
+        }
+
+        $message = __('Deleting post failed!');
+        $valResut = new ValidationResult($message);
+        $valResut->setError('post', $message);
+        $responseData = [
+            'success' => false,
+            'validation' => $valResut->toArray(),
+        ];
+
+        return $this->json($response, $responseData, 500);
+    }
 }
