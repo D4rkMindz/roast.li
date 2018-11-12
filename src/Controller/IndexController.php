@@ -37,6 +37,6 @@ class IndexController extends AppController
      */
     public function indexAction(Request $request, Response $response): ResponseInterface
     {
-        return $this->render($response, $request, 'Home/home.index.twig', []);
+        return $this->redirect($response, 'https://nicipedia.sexy');
     }
 }
