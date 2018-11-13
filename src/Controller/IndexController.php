@@ -37,6 +37,6 @@ class IndexController extends AppController
      */
     public function indexAction(Request $request, Response $response): ResponseInterface
     {
-        return $this->redirect($response, 'https://nicipedia.sexy');
+        return $this->redirect($response, 'https://roast.li');
     }
 }

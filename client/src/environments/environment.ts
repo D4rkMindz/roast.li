@@ -8,7 +8,7 @@ import env from './.env';
 export const environment = {
   production: false,
   version: env.npm_package_version + '-dev',
-  serverUrl: 'https://RoastPedia.dev/api',
+  serverUrl: 'https://Roast.li.dev/api',
   defaultLanguage: 'en-US',
   supportedLanguages: [{ i18n: 'de-CH', title: 'Deutsch' }, { i18n: 'en-US', title: 'English' }],
   supportedLanguagesAsStringArray: ['de-CH', 'en-US']

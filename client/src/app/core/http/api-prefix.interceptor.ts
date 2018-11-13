@@ -25,7 +25,7 @@ export class ApiPrefixInterceptor implements HttpInterceptor {
 
     const obs = next.handle(request);
     obs.subscribe((response: HttpResponse<any>) => {
-      if (!/RoastPedia/.test(response['url'])) {
+      if (!/Roast.li/.test(response['url'])) {
         return;
       }
       if (!response || response.type === 0) {

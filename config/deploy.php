@@ -31,7 +31,7 @@ if (!is_dir("./api/tmp/cache")) {
 }
 //echo "NOT Updating permissions";
 echo "Updating directory permissions to 775\n";
-system("chmod -R 775 ./api");
+system("chmod -R 755 ./api");
 //system("chmod 775 ./api/vendor/bin/phinx && chmod -R 775 ./api/vendor/robmorgan/");
 echo "Migrating database";
 system("cd api/config/ && ../vendor/robmorgan/phinx/bin/phinx migrate");
