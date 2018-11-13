@@ -2,15 +2,10 @@
   "index": "/index.html",
   "assetGroups": [
     {
-      "name": "app",
+      "name": "Nicipedia",
       "installMode": "prefetch",
       "resources": {
-        "files": [
-          "/favicon.ico",
-          "/index.html",
-          "/*.css",
-          "/*.js"
-        ]
+        "files": ["/favicon.ico", "/index.html", "/*.css", "/*.js"]
       }
     },
     {
@@ -18,9 +13,16 @@
       "installMode": "lazy",
       "updateMode": "prefetch",
       "resources": {
-        "files": [
-          "/assets/**"
-        ]
+        "files": ["/assets/**"]
+      }
+    },
+    {
+      "name": "data",
+      "urls": ["https://api.nicipedia.sexy/**"],
+      "cacheConfig": {
+        "maxSize": 3,
+        "maxAge": "1d",
+        "strategy": "freshness"
       }
     }
   ]
