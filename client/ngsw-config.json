@@ -15,7 +15,9 @@
       "resources": {
         "files": ["/assets/**"]
       }
-    },
+    }
+  ],
+  "dataGroups": [
     {
       "name": "data",
       "urls": ["https://api.nicipedia.sexy/**"],
