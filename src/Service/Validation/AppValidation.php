@@ -59,7 +59,7 @@ abstract class AppValidation
      */
     protected function validateLengthMin($value, $fieldname, ValidationResult $validationResult, $length = 3)
     {
-        if (strlen(trim($value)) <= $length) {
+        if (strlen(trim($value)) < $length) {
             $validationResult->setError($fieldname, __(sprintf('Required minimum length is %s', $length)));
         }
     }
