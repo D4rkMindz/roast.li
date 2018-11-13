@@ -20,7 +20,7 @@
   "dataGroups": [
     {
       "name": "data",
-      "urls": ["https://api.RoastPedia.sexy/**"],
+      "urls": ["https://api.roastpedia.rip/**"],
       "cacheConfig": {
         "maxSize": 3,
         "maxAge": "1d",

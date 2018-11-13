@@ -12,7 +12,7 @@ const proxyConfig = [
   {
     context: '/api',
     pathRewrite: { '^/api': '' },
-    target: 'https://RoastPedia.dev:8443',
+    target: 'https://roastpedia.dev:8443',
     changeOrigin: true,
     secure: false
   }

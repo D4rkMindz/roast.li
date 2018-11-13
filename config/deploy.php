@@ -9,32 +9,32 @@ echo "Creating directory ./release/\n";
 system("mkdir ./release/");
 echo "Unzipping $argv[1]\n";
 system("unzip $argv[1] -d ./release/");
-if (is_dir("./htdocs/")){
-    echo "Renaming ./htdocs/ to ./htdocs_$time\n";
-    system("mv ./htdocs/ ./htdocs_$time");
+if (is_dir("./api/")){
+    echo "Renaming ./api/ to ./api_$time\n";
+    system("mv ./api/ ./api_$time");
 }
-echo "Renaming ./release/ to ./htdocs/\n";
-system("mv ./release/ ./htdocs/");
+echo "Renaming ./release/ to ./api/\n";
+system("mv ./release/ ./api/");
 echo "Removing zipfile $argv[1]\n";
 system("rm $argv[1] -rf");
-if (!is_dir("./htdocs/tmp")) {
+if (!is_dir("./api/tmp")) {
     echo "Creating /tmp directory";
-    system("mkdir ./htdocs/tmp");
+    system("mkdir ./api/tmp");
 }
-if (!is_dir("./htdocs/tmp/logs")) {
+if (!is_dir("./api/tmp/logs")) {
     echo "Creating /logs directory";
-    system("mkdir ./htdocs/tmp/logs");
+    system("mkdir ./api/tmp/logs");
 }
-if (!is_dir("./htdocs/tmp/cache")) {
+if (!is_dir("./api/tmp/cache")) {
     echo "Creating /cache directory";
-    system("mkdir ./htdocs/tmp/cache");
+    system("mkdir ./api/tmp/cache");
 }
 //echo "NOT Updating permissions";
 echo "Updating directory permissions to 775\n";
-system("chmod -R 775 ./htdocs");
-//system("chmod 775 ./htdocs/vendor/bin/phinx && chmod -R 775 ./htdocs/vendor/robmorgan/");
+system("chmod -R 775 ./api");
+//system("chmod 775 ./api/vendor/bin/phinx && chmod -R 775 ./api/vendor/robmorgan/");
 echo "Migrating database";
-system("cd htdocs/config/ && ../vendor/robmorgan/phinx/bin/phinx migrate");
+system("cd api/config/ && ../vendor/robmorgan/phinx/bin/phinx migrate");
 system("cd ..");
 echo "Deleting old Backups ...";
 system("php clean-up.php 31536000");
