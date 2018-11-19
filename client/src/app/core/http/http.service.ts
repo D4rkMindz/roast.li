@@ -6,7 +6,7 @@ import { ErrorHandlerInterceptor } from './error-handler.interceptor';
 import { CacheInterceptor } from './cache.interceptor';
 import { ApiPrefixInterceptor } from './api-prefix.interceptor';
 import { Logger } from '../logger.service';
-import * as moment from 'moment';
+import { environment } from '@env/environment';
 
 // HttpClient is declared in a re-exported module, so we have to extend the original module to make it work properly
 // (see https://github.com/Microsoft/TypeScript/issues/13897)
@@ -76,6 +76,34 @@ export class HttpService extends HttpClient {
     }
   }
 
+  get(url: string) {
+    url = environment.serverUrl + url;
+    return super.get(url, { withCredentials: true });
+  }
+
+  post(url: string, data: any) {
+    url = environment.serverUrl + url;
+    return super.post(url, data, { withCredentials: true });
+  }
+
+  put(url: string, data: any) {
+    url = environment.serverUrl + url;
+    return super.put(url, data, { withCredentials: true });
+  }
+
+  delete(url: string) {
+    url = environment.serverUrl + url;
+    return super.delete(url, { withCredentials: true });
+  }
+
+  request(method?: any, url?: any, options?: any): any {
+    const handler = this.interceptors.reduceRight(
+      (next, interceptor) => new HttpInterceptorHandler(next, interceptor),
+      this.httpHandler
+    );
+    return new HttpClient(handler).request(method, url, options);
+  }
+
   cache(forceUpdate?: boolean): HttpClient {
     const cacheInterceptor = this.injector.get(CacheInterceptor).configure({ update: forceUpdate });
     return this.addInterceptor(cacheInterceptor);
@@ -88,15 +116,6 @@ export class HttpService extends HttpClient {
   disableApiPrefix(): HttpClient {
     return this.removeInterceptor(ApiPrefixInterceptor);
   }
-
-  // // Override the original method to wire interceptors when triggering the request.
-  // request(method?: any, url?: any, options?: any): any {
-  //   // const handler = this.interceptors.reduceRight(
-  //   //   (next, interceptor) => new HttpInterceptorHandler(next, interceptor),
-  //   //   this.httpHandler
-  //   // );
-  //   return super.request(method, url, options);
-  // }
 
   private removeInterceptor(interceptorType: Function): HttpService {
     return new HttpService(

@@ -125,6 +125,11 @@ class AppController
         return $response->withRedirect($url, $status);
     }
 
+    /**
+     * Get user id.
+     *
+     * @return string
+     */
     protected function getUserId()
     {
         return $this->session->get('user_id') ?: '';

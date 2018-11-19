@@ -2,7 +2,7 @@ import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { map, share } from 'rxjs/operators';
 import { Observable } from 'rxjs';
-import { HttpService } from '@app/shared/http/http.service';
+import { HttpService } from '../../core/http/http.service';
 
 export interface User {
   id: string;

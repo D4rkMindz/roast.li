@@ -56,6 +56,29 @@ $app->add(function (Request $request, Response $response, $next) {
 });
 
 /**
+ * Authentication middleware
+ */
+$app->add(function (Request $request, Response $response, $next) use ($container) {
+    /** @var Session $session */
+    $session = $container->get(Session::class);
+    $loggedIn = $session->getSegment('app')->get('logged_in');
+    $allowedRoutes = $container->get('settings')->get('authentication')['allowed'];
+    $route = $request->getUri()->getPath();
+    $method = strtoupper($request->getMethod());
+    $allowed = false;
+    foreach ($allowedRoutes as $allowedRoute => $allowedMethods) {
+        if (strtolower($allowedRoute) === strtolower($route) && isset($allowedMethods[$method])) {
+            $allowed = true;
+            break;
+        }
+    }
+    if ($allowed|| $loggedIn) {
+        return $next($request, $response);
+    }
+    return $response->withStatus(401);
+});
+
+/**
  * Options middleware
  */
 $app->add(function (Request $request, Response $response, $next) {
@@ -87,9 +110,9 @@ $app->add(function (Request $request, Response $response, $next) use ($container
  *
  * @return Response
  */
-$app->add(function (Request $request, Response $response, $next) {
+$app->add(function (Request $request, Response $response, $next) use ($container) {
     /** @var Session $session */
-    $session = $this->get(Session::class);
+    $session = $container->get(Session::class);
     /** @var Response $response */
     $response = $next($request, $response);
     $response = $response->withHeader('X-Authenticated', $session->getSegment('app')->get('logged_in'));

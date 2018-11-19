@@ -68,7 +68,16 @@ $config['logger'] = [
 ];
 
 $config['cors'] = [
-  'client' => 'https://nicipedia.sexy',
+    'client' => 'http://localhost:4200',
+];
+
+$config['authentication'] = [
+    'allowed' => [
+        '/' => ['GET' => 1],
+        '/posts/hot' => ['GET' => 1],
+        '/posts/new' => ['GET' => 1],
+        '/user/auth' => ['POST' => 1],
+    ],
 ];
 
 return $config;

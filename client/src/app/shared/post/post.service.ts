@@ -2,7 +2,8 @@ import { Injectable } from '@angular/core';
 import { Moment } from 'moment';
 import { Observable } from 'rxjs';
 import { User } from '@app/shared/user/user.service';
-import { HttpService } from '@app/shared/http/http.service';
+import { HttpService } from '../../core/http/http.service';
+import { HttpClient } from '@angular/common/http';
 
 export interface Post {
   id: string;
@@ -22,7 +23,7 @@ export interface Post {
   providedIn: 'root'
 })
 export class PostService {
-  constructor(private http: HttpService) {}
+  constructor(private http: HttpClient) {}
 
   public getHotPosts(offset: number = 0) {
     return this.http.get(`/posts/hot?offset=${offset}`);

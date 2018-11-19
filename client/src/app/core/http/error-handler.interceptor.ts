@@ -17,7 +17,7 @@ export class ErrorHandlerInterceptor implements HttpInterceptor {
   public constructor(private router: Router) {}
 
   intercept(request: HttpRequest<any>, next: HttpHandler): Observable<HttpEvent<any>> {
-    return next.handle(request);
+    return next.handle(request).pipe(catchError(response => this.errorHandler(response)));
   }
 
   // Customize the default error handler here if needed
@@ -26,7 +26,7 @@ export class ErrorHandlerInterceptor implements HttpInterceptor {
       // Do something with the error
       Log.error('Request error', response);
     }
-    if (response['status'] === 403) {
+    if (response['status'] === 401) {
       this.router.navigate(['/login']);
     }
     throw response;

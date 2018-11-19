@@ -128,7 +128,7 @@ describe('I18nService', () => {
     });
   });
 
-  describe('get language', () => {
+  describe('apiGET language', () => {
     it('should return current language', () => {
       // Arrange
       i18nService.init(defaultLanguage, supportedLanguages);

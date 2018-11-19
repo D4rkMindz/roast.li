@@ -32,7 +32,7 @@ export class CacheInterceptor implements HttpInterceptor {
 
   intercept(request: HttpRequest<any>, next: HttpHandler): Observable<HttpEvent<any>> {
     if (request.method !== 'GET') {
-      Log.debug('Request is not get');
+      Log.debug('Request is not apiGET');
       return next.handle(request);
     }
 
