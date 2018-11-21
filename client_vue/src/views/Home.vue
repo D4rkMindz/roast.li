@@ -1,18 +1,37 @@
 <template>
-  <div class="home">
-    <img alt="Vue logo" src="../assets/logo.png">
-    <HelloWorld msg="Welcome to Your Vue.js + TypeScript App"/>
-  </div>
+    <div>
+        <v-tabs slot="extension"
+                v-model="tab"
+                centered
+                color="primary"
+                slider-color="secondary">
+            <v-tab :key="'hot'" :href="'#hot'">Hot</v-tab>
+            <v-tab :key="'new'" :href="'#new'">New</v-tab>
+        </v-tabs>
+
+        <v-tabs-items>
+            <v-tab-item :id="'hot'" :key="'hot'">
+                <v-card flat>
+                    <v-card-text><Hot /></v-card-text>
+                </v-card>
+            </v-tab-item>
+            <v-tab-item :id="'new'" :key="'new'">
+                <v-card flat>
+                    <v-card-text>New</v-card-text>
+                </v-card>
+            </v-tab-item>
+        </v-tabs-items>
+    </div>
 </template>
 
-<script lang="ts">
-import { Component, Vue } from "vue-property-decorator";
-import HelloWorld from "@/components/HelloWorld.vue"; // @ is an alias to /src
+<script>
+import HelloWorld from "../components/HelloWorld";
+import Hot from "../components/Hot";
 
-@Component({
+export default {
   components: {
-    HelloWorld
+    HelloWorld,
+    Hot
   }
-})
-export default class Home extends Vue {}
+};
 </script>

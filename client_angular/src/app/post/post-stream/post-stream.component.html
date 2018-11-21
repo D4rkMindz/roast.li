@@ -1,0 +1,66 @@
+<app-loader [isLoading]="isLoading" size="1.5"></app-loader>
+<div infinite-scroll
+     infiniteScrollContainer="#mat-sidenav-content"
+     [fromRoot]="true"
+     [scrollWindow]="false"
+     (scrolled)="onScroll()"
+     (scrolledUp)="onScrollUp()">
+  <div *ngFor="let post of posts" #postsContainer class="post">
+    <mat-card [hidden]="isLoading">
+      <mat-card-header>
+        <div mat-card-avatar>
+          <img width="100%"
+               style="object-fit: cover; -webkit-border-radius: 50%;-moz-border-radius: 50%;border-radius: 50%;"
+               src="{{post.user.thumbnail_url || 'https://ssl.gstatic.com/images/branding/product/1x/avatar_circle_blue_512dp.png'}}"
+               alt="">
+        </div>
+        <mat-card-title>{{post.user.username}}</mat-card-title>
+        <mat-card-subtitle>User</mat-card-subtitle>
+      </mat-card-header>
+      <mat-card-content fxLayout="column">
+        <p fxLayout="row" fxFlex="100%">{{post.content}}</p>
+        <div fxLayoutAlign="right" fxFlex="100%" fxLayout="row">
+          <sub [fxShow]="post.modified_at === null">
+            {{m(post.created_at).format('MMM Do YYYY, HH:mm')}}
+          </sub>
+          <sub [fxShow]="post.modified_at !== null">
+            Edited - {{m(post.modified_at).format('MM Do YYYY, HH:mm')}}
+          </sub>
+        </div>
+      </mat-card-content>
+      <mat-card-actions>
+        <div matTooltip="{{'Delete your crappy post' | translate}}">
+          <button mat-button
+                  [fxShow]="username !== null && post.user.username === username"
+                  (click)="delete(post)">
+            <mat-icon>
+              delete
+            </mat-icon>
+          </button>
+        </div>
+        <div fxFlex></div>
+        <div
+          matTooltip="{{username === null? notAuthenticatedError : post.user.username === username ? ownPostError: info}}">
+          <button mat-button
+                  [disabled]="!(username !== null && post.user.username !== username)"
+                  (click)="like(post)">
+            {{post.likes}}
+            <mat-icon color="{{username && post.liked_by_user ? 'warn' : ''}}">
+              {{username && post.liked_by_user ? 'favorite' : 'favorite_outline'}}
+            </mat-icon>
+          </button>
+        </div>
+        <!--<button mat-button>SHARE</button>-->
+      </mat-card-actions>
+    </mat-card>
+  </div>
+  <mat-card [fxShow]="!isLoading && loadedLastItem" class="post">
+    <mat-card-header>
+      <mat-card-title translate>You've reached the end</mat-card-title>
+    </mat-card-header>
+    <mat-card-content fxLayout="column">
+      <p fxLayout="row" fxFlex="100%" translate>Thank you, that you have been soooo interested in Roast.li. Really
+        appreciate it. Come back later or check out the new posts.</p>
+    </mat-card-content>
+  </mat-card>
+</div>

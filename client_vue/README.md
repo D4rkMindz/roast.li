@@ -1,4 +1,4 @@
-# client_vue
+# Roast.li
 
 ## Project setup
 
