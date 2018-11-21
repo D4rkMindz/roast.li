@@ -1,14 +1,9 @@
 <?php
-/**
- * Created by PhpStorm.
- * User: bjorn
- * Date: 31.10.18
- * Time: 22:56
- */
 
 namespace App\Repository;
 
 
+use App\Table\LikedPostTable;
 use App\Table\UserTable;
 use DomainException;
 use Interop\Container\Exception\ContainerException;
@@ -25,6 +20,11 @@ class UserRepository extends AppRepository
     private $userTable;
 
     /**
+     * @var LikedPostTable
+     */
+    private $likedPostTable;
+
+    /**
      * UserRepository constructor.
      *
      * @param Container $container
@@ -33,6 +33,7 @@ class UserRepository extends AppRepository
     public function __construct(Container $container)
     {
         $this->userTable = $container->get(UserTable::class);
+        $this->likedPostTable = $container->get(LikedPostTable::class);
     }
 
     /**
@@ -115,6 +116,62 @@ class UserRepository extends AppRepository
     }
 
     /**
+     * Get a single user.
+     *
+     * @param string $userId
+     * @return null
+     */
+    public function getUser(string $userId)
+    {
+        $query = $this->userTable->newSelect();
+        $query
+            ->select([
+                'user.username',
+                'user.email',
+                'user.first_name',
+                'user.last_name',
+                'user.thumbnail_url',
+                'user.created_at',
+                'user.created_by',
+                'user.modified_at',
+                'user.modified_by',
+                'user.archived_by',
+                'user.archived_at',
+            ])
+            ->leftJoin('role', ['role.id = user.role_id'])
+            ->where(['user.id' => $userId]);
+        $user = $query->execute()->fetch('assoc');
+        return $user ?: null;
+    }
+
+    /**
+     * Get all users.
+     *
+     * @return array
+     */
+    public function getAllUsers()
+    {
+        $query = $this->userTable->newSelect();
+        $query
+            ->select([
+                'user.username',
+                'user.email',
+                'user.first_name',
+                'user.last_name',
+                'user.thumbnail_url',
+                'user.created_at',
+                'user.created_by',
+                'user.modified_at',
+                'user.modified_by',
+                'user.archived_by',
+                'user.archived_at',
+            ])
+            ->leftJoin('role', ['role.id = user.role_id']);
+        $user = $query->execute()->fetchAll('assoc');
+        return $user ?: null;
+    }
+
+    /**
      * Create a user
      *
      * @param string $username
@@ -137,5 +194,75 @@ class UserRepository extends AppRepository
             'created_at' => date('Y-m-d H:i:s'),
         ];
         return $this->userTable->insert($row)->lastInsertId();
+    }
+
+    /**
+     * @param string $executorId
+     * @param string $userId
+     * @param null|string $username
+     * @param null|string $password
+     * @param null|string $email
+     * @param null|string $firstName
+     * @param null|string $lastName
+     * @return bool
+     */
+    public function updateUser(string $executorId, string $userId, ?string $username, ?string $password, ?string $email, ?string $firstName, ?string $lastName)
+    {
+        $row = [];
+        if (!empty($username)) {
+            $row['username'] = $username;
+        }
+
+        if (!empty($password)) {
+            $row['password'] = $password;
+        }
+
+        if (!empty($email)) {
+            $row['email'] = $email;
+        }
+
+        if (!empty($firstName)) {
+            $row['first_name'] = $firstName;
+        }
+
+        if (!empty($lastName)) {
+            $row['last_name'] = $lastName;
+        }
+
+        return (bool)$this->userTable->update($row, ['id' => $userId], true, $executorId);
+    }
+
+    /**
+     * Archive
+     *
+     * @param string $userId
+     * @param string $executorId
+     * @return bool
+     */
+    public function archiveUser(string $userId, string $executorId)
+    {
+        $query = $this->likedPostTable->newSelect(false);
+        $query->select(['id'])->where(['user_id' => $userId]);
+        $rows = $query->execute()->fetchAll('assoc');
+        foreach ($rows as $row) {
+            $this->likedPostTable->delete($row['id']);
+        }
+        return (bool)$this->userTable->archive($userId, $executorId);
+    }
+
+    /**
+     * Get user role
+     *
+     * @param string $userId
+     * @return null
+     */
+    public function getUserPermissionLevel(string $userId)
+    {
+        $query = $this->userTable->newSelect();
+        $query->select(['role.level'])
+            ->leftJoin('role', ['role.id = user.role_id'])
+            ->where(['user.id' => $userId]);
+        $row = $query->execute()->fetch('assoc');
+        return $row ? $row['level'] : null;
     }
 }

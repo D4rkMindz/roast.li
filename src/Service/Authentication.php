@@ -1,17 +1,10 @@
 <?php
-/**
- * Created by PhpStorm.
- * User: bjorn
- * Date: 31.10.18
- * Time: 23:16
- */
 
 namespace App\Service;
 
 
 use App\Exception\AuthenticationException;
 use App\Repository\UserRepository;
-use App\Type\AuthenticationExceptionType;
 use Slim\Container;
 
 class Authentication

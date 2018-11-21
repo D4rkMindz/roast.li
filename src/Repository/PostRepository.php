@@ -145,7 +145,15 @@ class PostRepository extends AppRepository
      */
     public function deletePost(string $postId, string $userId): bool
     {
-        return (bool)$this->postTable->archive($postId, $userId);
+        $deletedPost = (bool)$this->postTable->archive($postId, $userId);
+
+        $query = $this->likedPostTable->newSelect(false);
+        $query->select(['id'])->where(['post_id' => $postId]);
+        $rows = $query->execute()->fetchAll('assoc');
+        foreach ($rows as $row) {
+            $this->likedPostTable->delete($row['id']);
+        }
+        return $deletedPost;
     }
 
     /**

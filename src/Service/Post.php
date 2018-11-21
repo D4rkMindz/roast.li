@@ -1,17 +1,10 @@
 <?php
-/**
- * Created by PhpStorm.
- * User: bjorn
- * Date: 05.11.18
- * Time: 21:36
- */
 
 namespace App\Service;
 
 
 use App\Repository\PostRepository;
 use App\Repository\UserRepository;
-use App\Service\Validation\PostValidation;
 use Interop\Container\Exception\ContainerException;
 use Slim\Container;
 

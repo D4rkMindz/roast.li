@@ -4,6 +4,7 @@ namespace App\Service\Validation;
 
 
 use App\Repository\PostRepository;
+use App\Service\Type\RoleLevel;
 use App\Util\ValidationResult;
 use Interop\Container\Exception\ContainerException;
 use Slim\Container;
@@ -144,7 +145,9 @@ class PostValidation extends AppValidation
         }
 
         if (!$this->postRepository->isPostOwner($postId, $userId)) {
-            $validationResult->setError('delete', __('You can only delete your own posts.'));
+            if (!$this->hasPermissionLevel($userId, RoleLevel::ADMIN)) {
+                $validationResult->setError('delete', __('You can only delete your own posts.'));
+            }
         }
 
         return $validationResult;

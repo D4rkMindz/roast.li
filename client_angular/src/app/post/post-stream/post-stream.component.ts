@@ -1,8 +1,10 @@
 import { Component, EventEmitter, Input, OnInit, Output } from "@angular/core";
-import { AuthenticationService, extract, Post, PostService, SnackbarService } from "@app/core";
+import { AuthenticationService, extract, Logger, Post, PostService, SnackbarService } from "@app/core";
 import * as moment from "moment";
 import { finalize } from "rxjs/operators";
 import { ScrollDirection } from "../scroll-direction";
+
+const Log = new Logger("POST-STREAM-COMPONENT");
 
 @Component({
   selector: "post-stream",
@@ -74,6 +76,7 @@ export class PostStreamComponent implements OnInit {
   }
 
   private loadPosts() {
+    Log.debug("Loading posts");
     switch (this.sort) {
       case "hot":
         this.getHotPosts();

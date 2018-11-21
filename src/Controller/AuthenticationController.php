@@ -72,8 +72,9 @@ class AuthenticationController extends AppController
         $canLogin = $this->authentication->authenticate($username, $password);
         if ($canLogin) {
             $userId = $this->userRepository->getIdByUsername($username);
+            $level = $this->userRepository->getUserPermissionLevel($userId);
             $this->setLoggedIn($userId);
-            return $this->json($response, ['success' => true]);
+            return $this->json($response, ['success' => true, 'username' => $username, 'level' => $level]);
         }
         return $this->json($response, ['success' => false]);
     }
@@ -90,55 +91,6 @@ class AuthenticationController extends AppController
         if ($this->setLoggedOut()) {
             return $this->json($response, ['success' => true]);
         }
-        return $this->json($response, ['success' => false]);
-    }
-
-    /**
-     * Create a user.
-     *
-     * @param Request $request
-     * @param Response $response
-     * @return ResponseInterface
-     */
-    public function registerAction(Request $request, Response $response): ResponseInterface
-    {
-        $json = $request->getBody()->__toString();
-        $data = json_decode($json, true);
-        $username = (string)$data['username'];
-        $password = (string)$data['password'];
-        $email = (string)$data['email'];
-        $firstName = (string)$data['firstname'];
-        $lastName = (string)$data['lastname'];
-
-        $validationResult = $this->userValidation->validateRegister(
-            $username,
-            $password,
-            $email,
-            $firstName,
-            $lastName
-        );
-
-        if ($validationResult->fails()) {
-            $responseData = [
-                'success' => false,
-                'validation' => $validationResult->toArray(),
-            ];
-            return $this->json($response, $responseData, 422);
-        }
-
-        $userId = $this->userRepository->createUser(
-            $username,
-            $password,
-            $email,
-            $firstName,
-            $lastName
-        );
-
-        if ($userId) {
-            $this->setLoggedIn($userId);
-            return $this->json($response, ['success' => true]);
-        }
-
         return $this->json($response, ['success' => false]);
     }
 }

@@ -1,10 +1,4 @@
 <?php
-/**
- * Created by PhpStorm.
- * User: bjorn
- * Date: 05.11.18
- * Time: 22:04
- */
 
 namespace App\Controller;
 
@@ -180,7 +174,7 @@ class PostController extends AppController
         $userId = $this->getUserId();
         $json = $request->getBody()->__toString();
         $data = json_decode($json, true);
-        $text = $data['text'];
+        $text = htmlspecialchars($data['text']);
 
         $validationResult = $this->postValidation->validateCreate($text, $userId);
         if ($validationResult->fails()) {
@@ -206,6 +200,14 @@ class PostController extends AppController
         return $this->json($response, $responseData, 500);
     }
 
+    /**
+     * Delete a post.
+     *
+     * @param Request $request
+     * @param Response $response
+     * @param array $args
+     * @return ResponseInterface
+     */
     public function deletePostAction(Request $request, Response $response, array $args): ResponseInterface
     {
         $userId = $this->getUserId();

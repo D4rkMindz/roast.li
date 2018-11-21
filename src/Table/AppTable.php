@@ -63,7 +63,7 @@ abstract class AppTable implements TableInterface
      *
      * @return array $rows
      */
-    public function getAll($x): array
+    public function getAll(): array
     {
         $query = $this->newSelect();
         $query->select('*');
@@ -87,19 +87,24 @@ abstract class AppTable implements TableInterface
     /**
      * Update database.
      *
-     * @param string $where should be the id
      * @param array $row
      *
-     * @return StatementInterface
+     * @param array $where should be the id
+     * @param bool|null $forTableWithMetaInformation
+     * @param null|string $executorId
+     * @return bool
      */
-    public function update(array $row, string $where): StatementInterface
+    public function update(array $row, ?array $where = ['id' => '1'], ?bool $forTableWithMetaInformation = true, ?string $executorId = null): bool
     {
         $query = $this->connection->newQuery();
         $query->update($this->table)
             ->set($row)
-            ->where(['id' => $where]);
+            ->where($where);
+        if ($forTableWithMetaInformation && !empty($executorId)) {
+            $query->set(['modified_by' => $executorId, 'modified_at' => date('Y-m-d')]);
+        }
 
-        return $query->execute();
+        return (bool)$query->execute();
     }
 
     /**

@@ -1,10 +1,4 @@
 <?php
-/**
- * Created by PhpStorm.
- * User: bjorn
- * Date: 05.11.18
- * Time: 21:41
- */
 
 namespace App\Service\Validation;
 
@@ -12,7 +6,6 @@ namespace App\Service\Validation;
 use App\Repository\UserRepository;
 use App\Util\ValidationResult;
 use Interop\Container\Exception\ContainerException;
-use Monolog\Logger;
 use Slim\Container;
 
 /**
@@ -77,5 +70,32 @@ abstract class AppValidation
         if (strlen(trim($value)) > $length) {
             $validationResult->setError($fieldname, __(sprintf('Required maximum length is %s', $length)));
         }
+    }
+
+    /**
+     * Validate the users permission level.
+     *
+     * @param string $userId
+     * @param string $requiredPermissionLevel
+     * @param ValidationResult $validationResult
+     */
+    protected function validatePermissionLevel(string $userId, string $requiredPermissionLevel, ValidationResult $validationResult)
+    {
+        if ($this->hasPermissionLevel($userId, $requiredPermissionLevel)) {
+            $validationResult->setError('permission', __('You do not have the permission to execute this action'));
+        }
+    }
+
+    /**
+     * Check if the user has the right permission level.
+     *
+     * @param string $userId
+     * @param string $requiredPermissionLevel
+     * @return bool
+     */
+    protected function hasPermissionLevel(string $userId, string $requiredPermissionLevel)
+    {
+        $level = $this->userRepository->getUserPermissionLevel($userId);
+        return $level >= $requiredPermissionLevel;
     }
 }
