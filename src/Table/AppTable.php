@@ -6,6 +6,7 @@ use Cake\Database\Connection;
 use Cake\Database\Expression\QueryExpression;
 use Cake\Database\Query;
 use Cake\Database\StatementInterface;
+use DateTime;
 
 /**
  * Class AbstractTable.
@@ -33,11 +34,12 @@ abstract class AppTable implements TableInterface
      *
      * @param string $field
      * @param string $value
+     * @param bool $forTableWithMetaInformation
      * @return bool
      */
-    public function exist(string $field, string $value): bool
+    public function exist(string $field, string $value, bool $forTableWithMetaInformation = true): bool
     {
-        $query = $this->newSelect();
+        $query = $this->newSelect($forTableWithMetaInformation);
         $query->select(1)->where([$field => $value]);
         $row = $query->execute()->fetch();
         return !empty($row);
@@ -53,7 +55,9 @@ abstract class AppTable implements TableInterface
     {
         $query = $this->connection->newQuery()->from($this->table);
         if ($forTableWithMetaInformation) {
-            $query->where(['OR' => [['archived_at IS' => null], ['archived_at >=' => date('Y-m-d H:i:s')]]]);
+            $date = new DateTime();
+            $date->modify('+60 seconds');
+            $query->where(['OR' => [['archived_at IS' => null], ['archived_at >=' => $date->format('Y-m-d H:i:s')]]]);
         }
         return $query;
     }

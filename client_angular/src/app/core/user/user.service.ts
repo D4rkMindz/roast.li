@@ -12,7 +12,7 @@ export class UserService {
   public register(user: CompleteUser): Observable<any> {
     return new Observable(observer => {
       console.log("[REGISTER] registering user");
-      this.http.post("/user", user.toJSON()).subscribe(res => {
+      this.http.post("/users", user.toJSON()).subscribe(res => {
         observer.next(res);
         observer.complete();
         console.log("[REGISTER] got response");

@@ -1,10 +1,10 @@
 import { Injectable } from "@angular/core";
-import { LangChangeEvent, TranslateService } from "@ngx-translate/core";
+import { TranslateService, LangChangeEvent } from "@ngx-translate/core";
 import { includes } from "lodash";
 
 import { Logger } from "./logger.service";
 import enUS from "../../translations/en-US.json";
-import frFR from "../../translations/fr-FR.json";
+import deCH from "../../translations/de-CH.json";
 
 const log = new Logger("I18nService");
 const languageKey = "language";
@@ -19,14 +19,6 @@ export function extract(s: string) {
   return s;
 }
 
-/**
- * A language
- */
-export interface Language {
-  i18n: string;
-  title: string;
-}
-
 @Injectable()
 export class I18nService {
   defaultLanguage: string;
@@ -35,15 +27,23 @@ export class I18nService {
   constructor(private translateService: TranslateService) {
     // Embed languages to avoid extra HTTP requests
     translateService.setTranslation("en-US", enUS);
-    translateService.setTranslation("fr-FR", frFR);
+    translateService.setTranslation("de-CH", deCH);
   }
 
   /**
-   * Gets the current language.
-   * @return The current language code.
+   * Initializes i18n for the application.
+   * Loads language from local storage if present, or sets default language.
+   * @param defaultLanguage The default language to use.
+   * @param supportedLanguages The list of supported languages.
    */
-  get language(): string {
-    return this.translateService.currentLang;
+  init(defaultLanguage: string, supportedLanguages: string[]) {
+    this.defaultLanguage = defaultLanguage;
+    this.supportedLanguages = supportedLanguages;
+    this.language = "";
+
+    this.translateService.onLangChange.subscribe((event: LangChangeEvent) => {
+      localStorage.setItem(languageKey, event.lang);
+    });
   }
 
   /**
@@ -73,18 +73,10 @@ export class I18nService {
   }
 
   /**
-   * Initializes i18n for the application.
-   * Loads language from local storage if present, or sets default language.
-   * @param defaultLanguage The default language to use.
-   * @param supportedLanguages The list of supported languages.
+   * Gets the current language.
+   * @return The current language code.
    */
-  init(defaultLanguage: string, supportedLanguages: string[]) {
-    this.defaultLanguage = defaultLanguage;
-    this.supportedLanguages = supportedLanguages;
-    this.language = "";
-
-    this.translateService.onLangChange.subscribe((event: LangChangeEvent) => {
-      localStorage.setItem(languageKey, event.lang);
-    });
+  get language(): string {
+    return this.translateService.currentLang;
   }
 }

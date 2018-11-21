@@ -16,6 +16,8 @@ import { AppComponent } from "./app.component";
 import { AppRoutingModule } from "./app-routing.module";
 import { RegisterModule } from "@app/register/register.module";
 import { PostModule } from "@app/post/index";
+import { ServiceWorkerModule } from "@angular/service-worker";
+import { environment } from "../environments/environment";
 
 @NgModule({
   imports: [
@@ -33,7 +35,8 @@ import { PostModule } from "@app/post/index";
     LoginModule,
     RegisterModule,
     PostModule,
-    AppRoutingModule // must be imported as the last module as it contains the fallback route
+    AppRoutingModule,
+    ServiceWorkerModule.register("ngsw-worker.js", { enabled: environment.production }) // must be imported as the last module as it contains the fallback route
   ],
   declarations: [AppComponent],
   providers: [],

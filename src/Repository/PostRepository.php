@@ -164,7 +164,7 @@ class PostRepository extends AppRepository
      */
     public function existPost(string $postId): bool
     {
-        return $this->postTable->exist('id', $postId);
+        return $this->postTable->exist('id', (int)$postId);
     }
 
     /**
@@ -256,7 +256,7 @@ class PostRepository extends AppRepository
     public function unlike(string $postId, string $userId): bool
     {
         $query = $this->likedPostTable->newSelect(false);
-        $query->select(['id'])->where(['post_id' => $postId, 'user_id'=>$userId]);
+        $query->select(['id'])->where(['post_id' => $postId, 'user_id' => $userId]);
         $row = $query->execute()->fetch('assoc');
         if (empty($row)) {
             return false;
