@@ -1,5 +1,5 @@
 import { Title } from "@angular/platform-browser";
-import { Component, OnInit, Input } from "@angular/core";
+import { Component, Input, OnInit } from "@angular/core";
 import { Router } from "@angular/router";
 import { MatSidenav } from "@angular/material";
 
@@ -21,16 +21,6 @@ export class HeaderComponent implements OnInit {
     private i18nService: I18nService
   ) {}
 
-  ngOnInit() {}
-
-  setLanguage(language: string) {
-    this.i18nService.language = language;
-  }
-
-  logout() {
-    this.authenticationService.logout().subscribe(() => this.router.navigate(["/login"], { replaceUrl: true }));
-  }
-
   get currentLanguage(): string {
     return this.i18nService.language;
   }
@@ -46,5 +36,15 @@ export class HeaderComponent implements OnInit {
 
   get title(): string {
     return this.titleService.getTitle();
+  }
+
+  ngOnInit() {}
+
+  setLanguage(language: string) {
+    this.i18nService.language = language;
+  }
+
+  logout() {
+    this.authenticationService.logout().subscribe(() => this.router.navigate(["/login"], { replaceUrl: true }));
   }
 }

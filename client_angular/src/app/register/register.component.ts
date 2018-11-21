@@ -23,6 +23,26 @@ export class RegisterComponent implements OnInit {
   registrationForm: FormGroup;
   version = environment.version;
 
+  constructor(
+    private router: Router,
+    private route: ActivatedRoute,
+    private formBuilder: FormBuilder,
+    private i18nService: I18nService,
+    private authenticationService: AuthenticationService,
+    private userService: UserService,
+    private snackbar: SnackbarService
+  ) {
+    this.createForm();
+  }
+
+  get currentLanguage(): string {
+    return this.i18nService.language;
+  }
+
+  get languages(): string[] {
+    return this.i18nService.supportedLanguages;
+  }
+
   static matchPasswordValidation(ac: AbstractControl) {
     const password = ac.get("password").value;
     const confirmPassword = ac.get("passwordRetype").value;
@@ -37,18 +57,6 @@ export class RegisterComponent implements OnInit {
       console.log("true");
       return;
     }
-  }
-
-  constructor(
-    private router: Router,
-    private route: ActivatedRoute,
-    private formBuilder: FormBuilder,
-    private i18nService: I18nService,
-    private authenticationService: AuthenticationService,
-    private userService: UserService,
-    private snackbar: SnackbarService
-  ) {
-    this.createForm();
   }
 
   ngOnInit() {}
@@ -95,14 +103,6 @@ export class RegisterComponent implements OnInit {
 
   setLanguage(language: string) {
     this.i18nService.language = language;
-  }
-
-  get currentLanguage(): string {
-    return this.i18nService.language;
-  }
-
-  get languages(): string[] {
-    return this.i18nService.supportedLanguages;
   }
 
   private createForm() {

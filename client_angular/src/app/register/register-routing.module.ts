@@ -1,5 +1,5 @@
 import { NgModule } from "@angular/core";
-import { Routes, RouterModule } from "@angular/router";
+import { RouterModule, Routes } from "@angular/router";
 import { Shell } from "@app/shell/shell.service";
 import { extract } from "@app/core";
 import { RegisterComponent } from "@app/register/register.component";

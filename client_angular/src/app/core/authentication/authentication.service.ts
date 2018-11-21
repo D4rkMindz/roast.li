@@ -21,13 +21,21 @@ const credentialsKey = "credentials";
  */
 @Injectable()
 export class AuthenticationService {
-  private _credentials: Credentials | null;
-
   constructor() {
     const savedCredentials = sessionStorage.getItem(credentialsKey) || localStorage.getItem(credentialsKey);
     if (savedCredentials) {
       this._credentials = JSON.parse(savedCredentials);
     }
+  }
+
+  private _credentials: Credentials | null;
+
+  /**
+   * Gets the user credentials.
+   * @return The user credentials or null if the user is not authenticated.
+   */
+  get credentials(): Credentials | null {
+    return this._credentials;
   }
 
   /**
@@ -61,14 +69,6 @@ export class AuthenticationService {
    */
   isAuthenticated(): boolean {
     return !!this.credentials;
-  }
-
-  /**
-   * Gets the user credentials.
-   * @return The user credentials or null if the user is not authenticated.
-   */
-  get credentials(): Credentials | null {
-    return this._credentials;
   }
 
   /**

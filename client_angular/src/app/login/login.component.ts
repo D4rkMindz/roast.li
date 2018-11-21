@@ -3,8 +3,7 @@ import { ActivatedRoute, Router } from "@angular/router";
 import { FormBuilder, FormGroup, Validators } from "@angular/forms";
 
 import { environment } from "@env/environment";
-import { AuthenticationService, extract, I18nService, Language, Logger } from "@app/core";
-import { SnackbarService } from "@app/core";
+import { AuthenticationService, extract, I18nService, Language, Logger, SnackbarService } from "@app/core";
 
 const Log = new Logger("LOGIN");
 
@@ -30,6 +29,14 @@ export class LoginComponent implements OnInit {
     this.createForm();
   }
 
+  get currentLanguage(): string {
+    return this.i18nService.language;
+  }
+
+  get languages(): Language[] {
+    return environment.supportedLanguages;
+  }
+
   ngOnInit() {}
 
   async login() {
@@ -47,14 +54,6 @@ export class LoginComponent implements OnInit {
 
   setLanguage(language: string) {
     this.i18nService.language = language;
-  }
-
-  get currentLanguage(): string {
-    return this.i18nService.language;
-  }
-
-  get languages(): Language[] {
-    return environment.supportedLanguages;
   }
 
   private createForm() {

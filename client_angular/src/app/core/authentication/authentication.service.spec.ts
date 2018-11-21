@@ -1,4 +1,4 @@
-import { TestBed, inject, fakeAsync, tick } from "@angular/core/testing";
+import { fakeAsync, inject, TestBed, tick } from "@angular/core/testing";
 
 import { AuthenticationService, Credentials } from "./authentication.service";
 

@@ -1,4 +1,4 @@
-import { TestBed, inject } from "@angular/core/testing";
+import { TestBed } from "@angular/core/testing";
 
 import { AuthenticationGuard, AuthenticationService, MockAuthenticationService } from "@app/core";
 import { ShellComponent } from "./shell.component";
