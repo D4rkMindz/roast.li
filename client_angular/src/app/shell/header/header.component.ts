@@ -1,14 +1,14 @@
-import { Title } from "@angular/platform-browser";
-import { Component, Input, OnInit } from "@angular/core";
-import { Router } from "@angular/router";
-import { MatSidenav } from "@angular/material";
+import { Title } from '@angular/platform-browser';
+import { Component, Input, OnInit } from '@angular/core';
+import { Router } from '@angular/router';
+import { MatSidenav } from '@angular/material';
 
-import { AuthenticationService, I18nService } from "@app/core";
+import { AuthenticationService, I18nService } from '@app/core';
 
 @Component({
-  selector: "app-header",
-  templateUrl: "./header.component.html",
-  styleUrls: ["./header.component.scss"]
+  selector: 'app-header',
+  templateUrl: './header.component.html',
+  styleUrls: ['./header.component.scss']
 })
 export class HeaderComponent implements OnInit {
   @Input()
@@ -19,7 +19,8 @@ export class HeaderComponent implements OnInit {
     private titleService: Title,
     private authenticationService: AuthenticationService,
     private i18nService: I18nService
-  ) {}
+  ) {
+  }
 
   get currentLanguage(): string {
     return this.i18nService.language;
@@ -38,13 +39,14 @@ export class HeaderComponent implements OnInit {
     return this.titleService.getTitle();
   }
 
-  ngOnInit() {}
+  ngOnInit() {
+  }
 
   setLanguage(language: string) {
     this.i18nService.language = language;
   }
 
   logout() {
-    this.authenticationService.logout().subscribe(() => this.router.navigate(["/login"], { replaceUrl: true }));
+    this.authenticationService.logout().subscribe(() => this.router.navigate(['/login'], {replaceUrl: true}));
   }
 }

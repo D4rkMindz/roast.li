@@ -1,10 +1,10 @@
-import { fakeAsync, inject, TestBed, tick } from "@angular/core/testing";
+import { fakeAsync, inject, TestBed, tick } from '@angular/core/testing';
 
-import { AuthenticationService, Credentials } from "./authentication.service";
+import { AuthenticationService, Credentials } from './authentication.service';
 
-const credentialsKey = "credentials";
+const credentialsKey = 'credentials';
 
-describe("AuthenticationService", () => {
+describe('AuthenticationService', () => {
   let authenticationService: AuthenticationService;
 
   beforeEach(() => {
@@ -23,12 +23,12 @@ describe("AuthenticationService", () => {
     sessionStorage.removeItem(credentialsKey);
   });
 
-  describe("login", () => {
-    it("should return credentials", fakeAsync(() => {
+  describe('login', () => {
+    it('should return credentials', fakeAsync(() => {
       // Act
       const request = authenticationService.login({
-        username: "toto",
-        password: "123"
+        username: 'toto',
+        password: '123'
       });
       tick();
 
@@ -39,13 +39,13 @@ describe("AuthenticationService", () => {
       });
     }));
 
-    it("should authenticate user", fakeAsync(() => {
+    it('should authenticate user', fakeAsync(() => {
       expect(authenticationService.isAuthenticated()).toBe(false);
 
       // Act
       const request = authenticationService.login({
-        username: "toto",
-        password: "123"
+        username: 'toto',
+        password: '123'
       });
       tick();
 
@@ -59,11 +59,11 @@ describe("AuthenticationService", () => {
       });
     }));
 
-    it("should persist credentials for the session", fakeAsync(() => {
+    it('should persist credentials for the session', fakeAsync(() => {
       // Act
       const request = authenticationService.login({
-        username: "toto",
-        password: "123"
+        username: 'toto',
+        password: '123'
       });
       tick();
 
@@ -73,11 +73,11 @@ describe("AuthenticationService", () => {
       });
     }));
 
-    it("should persist credentials across sessions", fakeAsync(() => {
+    it('should persist credentials across sessions', fakeAsync(() => {
       // Act
       const request = authenticationService.login({
-        username: "toto",
-        password: "123",
+        username: 'toto',
+        password: '123',
         remember: true
       });
       tick();
@@ -89,12 +89,12 @@ describe("AuthenticationService", () => {
     }));
   });
 
-  describe("logout", () => {
-    it("should clear user authentication", fakeAsync(() => {
+  describe('logout', () => {
+    it('should clear user authentication', fakeAsync(() => {
       // Arrange
       const loginRequest = authenticationService.login({
-        username: "toto",
-        password: "123"
+        username: 'toto',
+        password: '123'
       });
       tick();
 
@@ -114,11 +114,11 @@ describe("AuthenticationService", () => {
       });
     }));
 
-    it("should clear persisted user authentication", fakeAsync(() => {
+    it('should clear persisted user authentication', fakeAsync(() => {
       // Arrange
       const loginRequest = authenticationService.login({
-        username: "toto",
-        password: "123",
+        username: 'toto',
+        password: '123',
         remember: true
       });
       tick();

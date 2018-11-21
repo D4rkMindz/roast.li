@@ -1,8 +1,8 @@
-import { async, ComponentFixture, TestBed } from "@angular/core/testing";
+import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 
-import { PostDialogComponent } from "./post-dialog.component";
+import { PostDialogComponent } from './post-dialog.component';
 
-describe("PostDialogComponent", () => {
+describe('PostDialogComponent', () => {
   let component: PostDialogComponent;
   let fixture: ComponentFixture<PostDialogComponent>;
 
@@ -18,7 +18,7 @@ describe("PostDialogComponent", () => {
     fixture.detectChanges();
   });
 
-  it("should create", () => {
+  it('should create', () => {
     expect(component).toBeTruthy();
   });
 });

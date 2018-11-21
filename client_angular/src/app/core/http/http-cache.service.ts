@@ -1,11 +1,11 @@
-import { Injectable } from "@angular/core";
-import { HttpResponse } from "@angular/common/http";
-import { each } from "lodash";
+import { Injectable } from '@angular/core';
+import { HttpResponse } from '@angular/common/http';
+import { each } from 'lodash';
 
-import { Logger } from "../logger.service";
+import { Logger } from '../logger.service';
 
-const log = new Logger("HttpCacheService");
-const cachePersistenceKey = "httpCache";
+const log = new Logger('HttpCacheService');
+const cachePersistenceKey = 'httpCache';
 
 export interface HttpCacheEntry {
   lastUpdated: Date;
@@ -97,9 +97,9 @@ export class HttpCacheService {
    * @param persistence How the cache should be persisted, it can be either local or session storage, or if no value is
    *   provided it will be only in-memory (default).
    */
-  setPersistence(persistence?: "local" | "session") {
+  setPersistence(persistence?: 'local' | 'session') {
     this.cleanCache();
-    this.storage = persistence === "local" || persistence === "session" ? window[persistence + "Storage"] : null;
+    this.storage = persistence === 'local' || persistence === 'session' ? window[persistence + 'Storage'] : null;
     this.loadCacheData();
   }
 

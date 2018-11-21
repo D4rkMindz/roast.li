@@ -1,14 +1,14 @@
-import { inject, TestBed } from "@angular/core/testing";
-import { HttpClientTestingModule, HttpTestingController } from "@angular/common/http/testing";
-import { HttpClient, HttpInterceptor } from "@angular/common/http";
+import { inject, TestBed } from '@angular/core/testing';
+import { HttpClientTestingModule, HttpTestingController } from '@angular/common/http/testing';
+import { HttpClient, HttpInterceptor } from '@angular/common/http';
 
-import { HttpService } from "./http.service";
-import { HttpCacheService } from "./http-cache.service";
-import { ErrorHandlerInterceptor } from "./error-handler.interceptor";
-import { CacheInterceptor } from "./cache.interceptor";
-import { ApiPrefixInterceptor } from "./api-prefix.interceptor";
+import { HttpService } from './http.service';
+import { HttpCacheService } from './http-cache.service';
+import { ErrorHandlerInterceptor } from './error-handler.interceptor';
+import { CacheInterceptor } from './cache.interceptor';
+import { ApiPrefixInterceptor } from './api-prefix.interceptor';
 
-describe("HttpService", () => {
+describe('HttpService', () => {
   let httpCacheService: HttpCacheService;
   let http: HttpClient;
   let httpMock: HttpTestingController;
@@ -43,17 +43,17 @@ describe("HttpService", () => {
     httpMock.verify();
   });
 
-  it("should use error handler, API prefix and no cache by default", () => {
+  it('should use error handler, API prefix and no cache by default', () => {
     // Arrange
     let interceptors: HttpInterceptor[];
     const realRequest = http.request;
-    spyOn(HttpService.prototype, "request").and.callFake(function(this: any) {
+    spyOn(HttpService.prototype, 'request').and.callFake(function (this: any) {
       interceptors = this.interceptors;
       return realRequest.apply(this, arguments);
     });
 
     // Act
-    const request = http.get("/toto");
+    const request = http.get('/toto');
 
     // Assert
     request.subscribe(() => {
@@ -65,17 +65,17 @@ describe("HttpService", () => {
     httpMock.expectOne({}).flush({});
   });
 
-  it("should use cache", () => {
+  it('should use cache', () => {
     // Arrange
     let interceptors: HttpInterceptor[];
     const realRequest = http.request;
-    spyOn(HttpService.prototype, "request").and.callFake(function(this: any) {
+    spyOn(HttpService.prototype, 'request').and.callFake(function (this: any) {
       interceptors = this.interceptors;
       return realRequest.apply(this, arguments);
     });
 
     // Act
-    const request = http.cache().get("/toto");
+    const request = http.cache().get('/toto');
 
     // Assert
     request.subscribe(() => {
@@ -86,17 +86,17 @@ describe("HttpService", () => {
     httpMock.expectOne({}).flush({});
   });
 
-  it("should skip error handler", () => {
+  it('should skip error handler', () => {
     // Arrange
     let interceptors: HttpInterceptor[];
     const realRequest = http.request;
-    spyOn(HttpService.prototype, "request").and.callFake(function(this: any) {
+    spyOn(HttpService.prototype, 'request').and.callFake(function (this: any) {
       interceptors = this.interceptors;
       return realRequest.apply(this, arguments);
     });
 
     // Act
-    const request = http.skipErrorHandler().get("/toto");
+    const request = http.skipErrorHandler().get('/toto');
 
     // Assert
     request.subscribe(() => {
@@ -107,17 +107,17 @@ describe("HttpService", () => {
     httpMock.expectOne({}).flush({});
   });
 
-  it("should not use API prefix", () => {
+  it('should not use API prefix', () => {
     // Arrange
     let interceptors: HttpInterceptor[];
     const realRequest = http.request;
-    spyOn(HttpService.prototype, "request").and.callFake(function(this: any) {
+    spyOn(HttpService.prototype, 'request').and.callFake(function (this: any) {
       interceptors = this.interceptors;
       return realRequest.apply(this, arguments);
     });
 
     // Act
-    const request = http.disableApiPrefix().get("/toto");
+    const request = http.disableApiPrefix().get('/toto');
 
     // Assert
     request.subscribe(() => {

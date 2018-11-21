@@ -1,6 +1,6 @@
-import { Component, OnInit } from "@angular/core";
-import { AbstractControl, FormBuilder, FormGroup, Validators } from "@angular/forms";
-import { ActivatedRoute, Router } from "@angular/router";
+import { Component, OnInit } from '@angular/core';
+import { AbstractControl, FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { ActivatedRoute, Router } from '@angular/router';
 import {
   AuthenticationService,
   CompleteUser,
@@ -9,13 +9,13 @@ import {
   LoginContext,
   SnackbarService,
   UserService
-} from "@app/core";
-import { environment } from "@env/environment";
+} from '@app/core';
+import { environment } from '@env/environment';
 
 @Component({
-  selector: "app-register",
-  templateUrl: "./register.component.html",
-  styleUrls: ["./register.component.scss"]
+  selector: 'app-register',
+  templateUrl: './register.component.html',
+  styleUrls: ['./register.component.scss']
 })
 export class RegisterComponent implements OnInit {
   error: string;
@@ -44,33 +44,34 @@ export class RegisterComponent implements OnInit {
   }
 
   static matchPasswordValidation(ac: AbstractControl) {
-    const password = ac.get("password").value;
-    const confirmPassword = ac.get("passwordRetype").value;
-    if (ac.get("passwordRetype").touched && !confirmPassword) {
-      ac.get("passwordRetype").setErrors({ matchPassword: false });
+    const password = ac.get('password').value;
+    const confirmPassword = ac.get('passwordRetype').value;
+    if (ac.get('passwordRetype').touched && !confirmPassword) {
+      ac.get('passwordRetype').setErrors({matchPassword: false});
       return;
     }
     if (password !== confirmPassword) {
-      console.log("false");
-      ac.get("passwordRetype").setErrors({ matchPassword: true });
+      console.log('false');
+      ac.get('passwordRetype').setErrors({matchPassword: true});
     } else {
-      console.log("true");
+      console.log('true');
       return;
     }
   }
 
-  ngOnInit() {}
+  ngOnInit() {
+  }
 
   async register() {
     if (this.registrationForm.invalid) {
       return;
     }
     this.isLoading = true;
-    const username = this.registrationForm.controls["username"].value;
-    const email = this.registrationForm.controls["email"].value;
-    const firstName = this.registrationForm.controls["firstname"].value;
-    const lastName = this.registrationForm.controls["lastname"].value;
-    const password = this.registrationForm.controls["password"].value;
+    const username = this.registrationForm.controls['username'].value;
+    const email = this.registrationForm.controls['email'].value;
+    const firstName = this.registrationForm.controls['firstname'].value;
+    const lastName = this.registrationForm.controls['lastname'].value;
+    const password = this.registrationForm.controls['password'].value;
     const user = new CompleteUser(username, firstName, lastName, password, email);
     this.userService.register(user).subscribe(async (response: any) => {
       this.isLoading = false;
@@ -84,17 +85,17 @@ export class RegisterComponent implements OnInit {
         if (loggedIn) {
           this.snackbar.notification(extract(`Welcome ${loginContext.username}. You registered successfully`));
           this.route.queryParams.subscribe(params =>
-            this.router.navigate([params.redirect || "/"], { replaceUrl: true })
+            this.router.navigate([params.redirect || '/'], {replaceUrl: true})
           );
           return;
         }
-        this.snackbar.error(extract("Registration complete, but automatic login failed. Please try to login"));
+        this.snackbar.error(extract('Registration complete, but automatic login failed. Please try to login'));
         return;
       }
 
       console.log(response);
-      for (const error of response["validation"]["errors"]) {
-        this.registrationForm.controls[error.field].setErrors({ custom: error.message });
+      for (const error of response['validation']['errors']) {
+        this.registrationForm.controls[error.field].setErrors({custom: error.message});
       }
 
       this.error = response.validation.message;
@@ -108,12 +109,12 @@ export class RegisterComponent implements OnInit {
   private createForm() {
     this.registrationForm = this.formBuilder.group(
       {
-        username: ["", [Validators.required]],
-        firstname: ["", [Validators.required]],
-        lastname: ["", [Validators.required]],
-        password: ["", [Validators.required]],
-        passwordRetype: ["", [Validators.required]],
-        email: ["", [Validators.required, Validators.email]]
+        username: ['', [Validators.required]],
+        firstname: ['', [Validators.required]],
+        lastname: ['', [Validators.required]],
+        password: ['', [Validators.required]],
+        passwordRetype: ['', [Validators.required]],
+        email: ['', [Validators.required, Validators.email]]
       },
       {
         validator: RegisterComponent.matchPasswordValidation

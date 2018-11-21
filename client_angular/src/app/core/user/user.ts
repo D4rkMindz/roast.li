@@ -68,10 +68,10 @@ export class CompleteUser {
       email: this.email
     };
     if (this.thumbnail_url) {
-      data["thumbnail_url"] = this.thumbnail_url;
+      data['thumbnail_url'] = this.thumbnail_url;
     }
     if (this.id) {
-      data["thumbnail_url"] = this.id;
+      data['thumbnail_url'] = this.id;
     }
     return JSON.stringify(data);
   }

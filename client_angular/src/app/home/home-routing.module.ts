@@ -1,14 +1,14 @@
-import { NgModule } from "@angular/core";
-import { RouterModule, Routes } from "@angular/router";
+import { NgModule } from '@angular/core';
+import { RouterModule, Routes } from '@angular/router';
 
-import { extract } from "@app/core";
-import { HomeComponent } from "./home.component";
-import { Shell } from "@app/shell/shell.service";
+import { extract } from '@app/core';
+import { HomeComponent } from './home.component';
+import { Shell } from '@app/shell/shell.service';
 
 const routes: Routes = [
   Shell.childRoutes([
-    { path: "", redirectTo: "/home", pathMatch: "full" },
-    { path: "home", component: HomeComponent, data: { title: extract("Home") } }
+    {path: '', redirectTo: '/home', pathMatch: 'full'},
+    {path: 'home', component: HomeComponent, data: {title: extract('Home')}}
   ])
 ];
 
@@ -17,4 +17,5 @@ const routes: Routes = [
   exports: [RouterModule],
   providers: []
 })
-export class HomeRoutingModule {}
+export class HomeRoutingModule {
+}

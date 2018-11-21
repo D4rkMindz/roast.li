@@ -1,19 +1,19 @@
-import { Component, OnInit } from "@angular/core";
-import { ActivatedRoute, NavigationEnd, Router } from "@angular/router";
-import { Title } from "@angular/platform-browser";
-import { TranslateService } from "@ngx-translate/core";
-import { merge } from "rxjs";
-import { filter, map, mergeMap } from "rxjs/operators";
+import { Component, OnInit } from '@angular/core';
+import { ActivatedRoute, NavigationEnd, Router } from '@angular/router';
+import { Title } from '@angular/platform-browser';
+import { TranslateService } from '@ngx-translate/core';
+import { merge } from 'rxjs';
+import { filter, map, mergeMap } from 'rxjs/operators';
 
-import { environment } from "@env/environment";
-import { I18nService, Logger } from "@app/core";
+import { environment } from '@env/environment';
+import { I18nService, Logger } from '@app/core';
 
-const log = new Logger("App");
+const log = new Logger('App');
 
 @Component({
-  selector: "app-root",
-  templateUrl: "./app.component.html",
-  styleUrls: ["./app.component.scss"]
+  selector: 'app-root',
+  templateUrl: './app.component.html',
+  styleUrls: ['./app.component.scss']
 })
 export class AppComponent implements OnInit {
   constructor(
@@ -22,7 +22,8 @@ export class AppComponent implements OnInit {
     private titleService: Title,
     private translateService: TranslateService,
     private i18nService: I18nService
-  ) {}
+  ) {
+  }
 
   ngOnInit() {
     // Setup logger
@@ -30,7 +31,7 @@ export class AppComponent implements OnInit {
       Logger.enableProductionMode();
     }
 
-    log.debug("init");
+    log.debug('init');
 
     // Setup translations
     this.i18nService.init(environment.defaultLanguage, environment.supportedLanguagesAsStringArray);
@@ -47,11 +48,11 @@ export class AppComponent implements OnInit {
           }
           return route;
         }),
-        filter(route => route.outlet === "primary"),
+        filter(route => route.outlet === 'primary'),
         mergeMap(route => route.data)
       )
       .subscribe(event => {
-        const title = event["title"];
+        const title = event['title'];
         if (title) {
           this.titleService.setTitle(this.translateService.instant(title));
         }

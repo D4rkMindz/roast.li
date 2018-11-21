@@ -1,23 +1,23 @@
-import { Component, EventEmitter, Input, OnInit, Output } from "@angular/core";
-import { AuthenticationService, extract, Logger, Post, PostService, SnackbarService } from "@app/core";
-import * as moment from "moment";
-import { finalize } from "rxjs/operators";
-import { ScrollDirection } from "../scroll-direction";
+import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
+import { AuthenticationService, extract, Logger, Post, PostService, SnackbarService } from '@app/core';
+import * as moment from 'moment';
+import { finalize } from 'rxjs/operators';
+import { ScrollDirection } from '../scroll-direction';
 
-const Log = new Logger("POST-STREAM");
+const Log = new Logger('POST-STREAM');
 
 @Component({
-  selector: "post-stream",
-  templateUrl: "./post-stream.component.html",
-  styleUrls: ["./post-stream.component.scss"]
+  selector: 'post-stream',
+  templateUrl: './post-stream.component.html',
+  styleUrls: ['./post-stream.component.scss']
 })
 export class PostStreamComponent implements OnInit {
   posts: Post[] = [];
   loadedLastItem = false;
   isLoading: boolean;
-  notAuthenticatedError: string = extract("You must be logged in to like");
-  ownPostError: string = extract("You can not like your own posts");
-  info: string = extract("Like to share your pleasure");
+  notAuthenticatedError: string = extract('You must be logged in to like');
+  ownPostError: string = extract('You can not like your own posts');
+  info: string = extract('Like to share your pleasure');
   m: any;
 
   @Input()
@@ -44,14 +44,14 @@ export class PostStreamComponent implements OnInit {
   }
 
   onScroll() {
-    Log.debug("Scroll down");
-    this.scroll.emit(new ScrollDirection("downwards"));
+    Log.debug('Scroll down');
+    this.scroll.emit(new ScrollDirection('downwards'));
     this.loadPosts();
   }
 
   onScrollUp() {
-    Log.debug("Scroll up");
-    this.scroll.emit(new ScrollDirection("upwards"));
+    Log.debug('Scroll up');
+    this.scroll.emit(new ScrollDirection('upwards'));
   }
 
   reloadPosts() {
@@ -70,24 +70,24 @@ export class PostStreamComponent implements OnInit {
   async delete(post: Post) {
     const deleted = await this.postService.deletePost(post.id);
     if (deleted) {
-      this.snackbar.notification("Post deleted");
+      this.snackbar.notification('Post deleted');
       this.reloadPosts();
     }
   }
 
   private loadPosts() {
-    Log.debug("Loading posts");
+    Log.debug('Loading posts');
     switch (this.sort) {
-      case "hot":
-        Log.debug("Loading hot posts");
+      case 'hot':
+        Log.debug('Loading hot posts');
         this.getHotPosts();
         break;
-      case "new":
-        Log.debug("Loading new posts");
+      case 'new':
+        Log.debug('Loading new posts');
         this.getNewPosts();
         break;
       default:
-        Log.debug("Loading hot posts");
+        Log.debug('Loading hot posts');
         this.getHotPosts();
         break;
     }
@@ -95,7 +95,7 @@ export class PostStreamComponent implements OnInit {
 
   private getHotPosts() {
     if (this.loadedLastItem) {
-      Log.debug("Loading posts not because theyre blocked");
+      Log.debug('Loading posts not because theyre blocked');
       return;
     }
     this.postService
@@ -116,7 +116,7 @@ export class PostStreamComponent implements OnInit {
 
   private getNewPosts() {
     if (this.loadedLastItem) {
-      Log.debug("Loading posts not because theyre blocked");
+      Log.debug('Loading posts not because theyre blocked');
       return;
     }
     this.postService
@@ -141,7 +141,7 @@ export class PostStreamComponent implements OnInit {
 
     const index = this.posts.indexOf(post);
     this.posts[index] = updatedPost;
-    this.snackbar.notification(extract("Post liked"));
+    this.snackbar.notification(extract('Post liked'));
   }
 
   private async unlikePost(post: Post) {
@@ -150,7 +150,7 @@ export class PostStreamComponent implements OnInit {
 
     const index = this.posts.indexOf(post);
     this.posts[index] = updatedPost;
-    this.snackbar.notification(extract("Post unliked"));
+    this.snackbar.notification(extract('Post unliked'));
   }
 
   private resetPosts() {

@@ -1,5 +1,5 @@
-import { Injectable } from "@angular/core";
-import { Observable, of } from "rxjs";
+import { Injectable } from '@angular/core';
+import { Observable, of } from 'rxjs';
 
 export interface Credentials {
   // Customize received credentials here
@@ -13,7 +13,7 @@ export interface LoginContext {
   remember?: boolean;
 }
 
-const credentialsKey = "credentials";
+const credentialsKey = 'credentials';
 
 /**
  * Provides a base for authentication workflow.
@@ -47,7 +47,7 @@ export class AuthenticationService {
     // Replace by proper authentication call
     const data = {
       username: context.username,
-      token: "123456"
+      token: '123456'
     };
     this.setCredentials(data, context.remember);
     return of(data);

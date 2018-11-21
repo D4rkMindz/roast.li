@@ -1,8 +1,8 @@
-import { Injectable } from "@angular/core";
-import { HttpEvent, HttpHandler, HttpInterceptor, HttpRequest, HttpResponse } from "@angular/common/http";
-import { Observable, Subscriber } from "rxjs";
+import { Injectable } from '@angular/core';
+import { HttpEvent, HttpHandler, HttpInterceptor, HttpRequest, HttpResponse } from '@angular/common/http';
+import { Observable, Subscriber } from 'rxjs';
 
-import { HttpCacheService } from "./http-cache.service";
+import { HttpCacheService } from './http-cache.service';
 
 /**
  * Caches HTTP requests.
@@ -12,7 +12,8 @@ import { HttpCacheService } from "./http-cache.service";
 export class CacheInterceptor implements HttpInterceptor {
   private forceUpdate = false;
 
-  constructor(private httpCacheService: HttpCacheService) {}
+  constructor(private httpCacheService: HttpCacheService) {
+  }
 
   /**
    * Configures interceptor options
@@ -28,7 +29,7 @@ export class CacheInterceptor implements HttpInterceptor {
   }
 
   intercept(request: HttpRequest<any>, next: HttpHandler): Observable<HttpEvent<any>> {
-    if (request.method !== "GET") {
+    if (request.method !== 'GET') {
       return next.handle(request);
     }
 

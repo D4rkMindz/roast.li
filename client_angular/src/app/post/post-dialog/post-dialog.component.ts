@@ -1,12 +1,12 @@
-import { Component, OnInit } from "@angular/core";
-import { FormBuilder, FormGroup, Validators } from "@angular/forms";
-import { MatDialogRef } from "@angular/material";
-import { PostService } from "@app/core";
+import { Component, OnInit } from '@angular/core';
+import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { MatDialogRef } from '@angular/material';
+import { PostService } from '@app/core';
 
 @Component({
-  selector: "app-post-dialog",
-  templateUrl: "./post-dialog.component.html",
-  styleUrls: ["./post-dialog.component.scss"]
+  selector: 'app-post-dialog',
+  templateUrl: './post-dialog.component.html',
+  styleUrls: ['./post-dialog.component.scss']
 })
 export class PostDialogComponent implements OnInit {
   createPostForm: FormGroup;
@@ -19,12 +19,13 @@ export class PostDialogComponent implements OnInit {
     this.createForm();
   }
 
-  ngOnInit() {}
+  ngOnInit() {
+  }
 
   async save() {
     const text = this.createPostForm.controls.post.value;
     const response = await this.postService.createPost(text);
-    if ("success" in response) {
+    if ('success' in response) {
       this.dialogRef.close(response.success);
     } else {
       this.dialogRef.close(false);
@@ -37,7 +38,7 @@ export class PostDialogComponent implements OnInit {
 
   private createForm() {
     this.createPostForm = this.formBuilder.group({
-      post: ["", [Validators.required]]
+      post: ['', [Validators.required]]
     });
   }
 }

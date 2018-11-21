@@ -1,13 +1,13 @@
-import { NgModule } from "@angular/core";
-import { CommonModule } from "@angular/common";
+import { NgModule } from '@angular/core';
+import { CommonModule } from '@angular/common';
 
-import { RegisterRoutingModule } from "./register-routing.module";
-import { RegisterComponent } from "./register.component";
-import { ReactiveFormsModule } from "@angular/forms";
-import { TranslateModule } from "@ngx-translate/core";
-import { SharedModule } from "@app/shared";
-import { FlexLayoutModule } from "@angular/flex-layout";
-import { MaterialModule } from "@app/material.module";
+import { RegisterRoutingModule } from './register-routing.module';
+import { RegisterComponent } from './register.component';
+import { ReactiveFormsModule } from '@angular/forms';
+import { TranslateModule } from '@ngx-translate/core';
+import { SharedModule } from '@app/shared';
+import { FlexLayoutModule } from '@angular/flex-layout';
+import { MaterialModule } from '@app/material.module';
 
 @NgModule({
   declarations: [RegisterComponent],
@@ -21,4 +21,5 @@ import { MaterialModule } from "@app/material.module";
     RegisterRoutingModule
   ]
 })
-export class RegisterModule {}
+export class RegisterModule {
+}

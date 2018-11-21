@@ -1,8 +1,8 @@
-import { async, ComponentFixture, TestBed } from "@angular/core/testing";
+import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 
-import { PostStreamComponent } from "./post-stream.component";
+import { PostStreamComponent } from './post-stream.component';
 
-describe("PostStreamComponent", () => {
+describe('PostStreamComponent', () => {
   let component: PostStreamComponent;
   let fixture: ComponentFixture<PostStreamComponent>;
 
@@ -18,7 +18,7 @@ describe("PostStreamComponent", () => {
     fixture.detectChanges();
   });
 
-  it("should create", () => {
+  it('should create', () => {
     expect(component).toBeTruthy();
   });
 });

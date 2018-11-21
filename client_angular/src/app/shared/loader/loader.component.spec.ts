@@ -1,11 +1,11 @@
-import { async, ComponentFixture, TestBed } from "@angular/core/testing";
-import { BrowserAnimationsModule } from "@angular/platform-browser/animations";
-import { FlexLayoutModule } from "@angular/flex-layout";
+import { async, ComponentFixture, TestBed } from '@angular/core/testing';
+import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
+import { FlexLayoutModule } from '@angular/flex-layout';
 
-import { MaterialModule } from "@app/material.module";
-import { LoaderComponent } from "./loader.component";
+import { MaterialModule } from '@app/material.module';
+import { LoaderComponent } from './loader.component';
 
-describe("LoaderComponent", () => {
+describe('LoaderComponent', () => {
   let component: LoaderComponent;
   let fixture: ComponentFixture<LoaderComponent>;
 
@@ -22,47 +22,47 @@ describe("LoaderComponent", () => {
     fixture.detectChanges();
   });
 
-  it("should not be visible by default", () => {
+  it('should not be visible by default', () => {
     // Arrange
     const element = fixture.nativeElement;
-    const div = element.querySelectorAll("div")[0];
+    const div = element.querySelectorAll('div')[0];
 
     // Assert
-    expect(div.getAttribute("hidden")).not.toBeNull();
+    expect(div.getAttribute('hidden')).not.toBeNull();
   });
 
-  it("should be visible when app is loading", () => {
+  it('should be visible when app is loading', () => {
     // Arrange
     const element = fixture.nativeElement;
-    const div = element.querySelectorAll("div")[0];
+    const div = element.querySelectorAll('div')[0];
 
     // Act
     fixture.componentInstance.isLoading = true;
     fixture.detectChanges();
 
     // Assert
-    expect(div.getAttribute("hidden")).toBeNull();
+    expect(div.getAttribute('hidden')).toBeNull();
   });
 
-  it("should not display a message by default", () => {
+  it('should not display a message by default', () => {
     // Arrange
     const element = fixture.nativeElement;
-    const span = element.querySelectorAll("span")[0];
+    const span = element.querySelectorAll('span')[0];
 
     // Assert
-    expect(span.innerText).toBe("");
+    expect(span.innerText).toBe('');
   });
 
-  it("should display specified message", () => {
+  it('should display specified message', () => {
     // Arrange
     const element = fixture.nativeElement;
-    const span = element.querySelectorAll("span")[0];
+    const span = element.querySelectorAll('span')[0];
 
     // Act
-    fixture.componentInstance.message = "testing";
+    fixture.componentInstance.message = 'testing';
     fixture.detectChanges();
 
     // Assert
-    expect(span.innerText).toBe("testing");
+    expect(span.innerText).toBe('testing');
   });
 });

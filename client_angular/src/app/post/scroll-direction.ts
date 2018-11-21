@@ -1,11 +1,11 @@
-import { throwError } from "rxjs";
+import { throwError } from 'rxjs';
 
 /**
  * The scroll direction
  */
 export class ScrollDirection {
-  readonly up: string = "upwards";
-  readonly down: string = "downwards";
+  readonly up: string = 'upwards';
+  readonly down: string = 'downwards';
   direction: string;
 
   public constructor(dir: string) {

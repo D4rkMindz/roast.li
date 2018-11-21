@@ -1,7 +1,7 @@
-import { Injectable } from "@angular/core";
-import { Moment } from "moment";
-import { User } from "../user/user";
-import { HttpClient } from "@angular/common/http";
+import { Injectable } from '@angular/core';
+import { Moment } from 'moment';
+import { User } from '../user/user';
+import { HttpClient } from '@angular/common/http';
 
 export interface Post {
   id: string;
@@ -18,10 +18,11 @@ export interface Post {
 }
 
 @Injectable({
-  providedIn: "root"
+  providedIn: 'root'
 })
 export class PostService {
-  constructor(private http: HttpClient) {}
+  constructor(private http: HttpClient) {
+  }
 
   public getHotPosts(offset: number = 0) {
     return this.http.get(`/posts/hot?offset=${offset}`);
@@ -36,12 +37,12 @@ export class PostService {
   }
 
   public createPost(text: string): Promise<any> {
-    return this.http.post(`/posts`, JSON.stringify({ text: text })).toPromise();
+    return this.http.post(`/posts`, JSON.stringify({text: text})).toPromise();
   }
 
   public async deletePost(postId: string): Promise<boolean> {
     const response: any = await this.http.delete(`/posts/${postId}`).toPromise();
-    if ("success" in response) {
+    if ('success' in response) {
       return response.success;
     }
     return false;
