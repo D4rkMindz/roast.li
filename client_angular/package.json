@@ -9,6 +9,7 @@
     "windows": "npm run env -s && ng serve --aot --proxy-config proxy.conf.js --configuration=windows",
     "unix": "npm run env -s && ng serve --aot --proxy-config proxy.conf.js",
     "lint": "ng lint && stylelint \"src/**/*.scss\" --syntax scss && htmlhint \"src\" --config .htmlhintrc",
+    "fix": "ng lint --fix && stylelint \"src/**/*.scss\" --syntax scss --fix && htmlhint \"src\" --config .htmlhintrc --fix",
     "test": "npm run env -s && ng test",
     "test:ci": "npm run env -s && npm run lint -s && ng test --code-coverage --watch=false",
     "e2e": "npm run env -s && ng e2e",
