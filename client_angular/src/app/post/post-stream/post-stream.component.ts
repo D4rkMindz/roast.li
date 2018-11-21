@@ -4,7 +4,7 @@ import * as moment from "moment";
 import { finalize } from "rxjs/operators";
 import { ScrollDirection } from "../scroll-direction";
 
-const Log = new Logger("POST-STREAM-COMPONENT");
+const Log = new Logger("POST-STREAM");
 
 @Component({
   selector: "post-stream",
@@ -44,13 +44,13 @@ export class PostStreamComponent implements OnInit {
   }
 
   onScroll() {
-    console.log("[POSTSTREAM] Scroll down");
+    Log.debug("Scroll down");
     this.scroll.emit(new ScrollDirection("downwards"));
     this.loadPosts();
   }
 
   onScrollUp() {
-    console.log("[POSTSTREAM] Scroll up");
+    Log.debug("Scroll up");
     this.scroll.emit(new ScrollDirection("upwards"));
   }
 
@@ -79,12 +79,15 @@ export class PostStreamComponent implements OnInit {
     Log.debug("Loading posts");
     switch (this.sort) {
       case "hot":
+        Log.debug("Loading hot posts");
         this.getHotPosts();
         break;
       case "new":
+        Log.debug("Loading new posts");
         this.getNewPosts();
         break;
       default:
+        Log.debug("Loading hot posts");
         this.getHotPosts();
         break;
     }
@@ -92,6 +95,7 @@ export class PostStreamComponent implements OnInit {
 
   private getHotPosts() {
     if (this.loadedLastItem) {
+      Log.debug("Loading posts not because theyre blocked");
       return;
     }
     this.postService
@@ -102,7 +106,7 @@ export class PostStreamComponent implements OnInit {
         })
       )
       .subscribe((posts: Post[]) => {
-        console.log(`Loaded ${posts.length} hot posts`);
+        Log.debug(`Loaded ${posts.length} hot posts`);
         if (posts.length < 1) {
           this.loadedLastItem = true;
         }
@@ -112,6 +116,7 @@ export class PostStreamComponent implements OnInit {
 
   private getNewPosts() {
     if (this.loadedLastItem) {
+      Log.debug("Loading posts not because theyre blocked");
       return;
     }
     this.postService
@@ -122,7 +127,7 @@ export class PostStreamComponent implements OnInit {
         })
       )
       .subscribe((posts: Post[]) => {
-        console.log(`Loaded ${posts.length} new posts`);
+        Log.debug(`Loaded ${posts.length} new posts`);
         if (posts.length < 1) {
           this.loadedLastItem = true;
         }
