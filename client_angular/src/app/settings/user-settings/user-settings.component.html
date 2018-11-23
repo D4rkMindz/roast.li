@@ -12,19 +12,27 @@
     </mat-card-header>
     <mat-card-content>
       <p color="warning" [fxShow]="user === null" translate>
-        There was an error loading your user data. Please <a (click)="reload()">reload</a> the page.
-        If the problem persists <a href="mailto:bjoern.pfoster@somewhere.com">contact the developer</a>
+        There was an error loading your user data. Please <a (click)="reload()" translate>reload</a> the page.
+        If the problem persists <a href="mailto:bjoern.pfoster@somewhere.com" translate>contact the developer</a>
       </p>
       <div *ngIf="user">
         <mat-divider></mat-divider>
-        <ngx-avatar [src]="user.thumbnail_url" [name]="user.username" style="margin: 2em;"></ngx-avatar>
+        <div fxLayout="row">
+          <div fxLayout="column">
+            <ngx-avatar [src]="user.thumbnail_url" [name]="user.username" style="margin: 2em;"></ngx-avatar>
+          </div>
+          <div fxLayout="column">
+            <h4 translate>Your Profile Image</h4>
+            <p translate>You will soon be able to edit your profile picture</p>
+          </div>
+        </div>
         <mat-divider></mat-divider>
         <h3 translate>Change Password</h3>
         <form (ngSubmit)="resetPassword()"
               [formGroup]="passwordForm"
               novalidate
               fxLayout="column">
-          <div class="login-error" [hidden]="!error || isLoading" translate>
+          <div class="login-error" [hidden]="!error || isLoading">
             {{error}}
           </div>
           <br/>
