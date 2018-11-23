@@ -1,5 +1,5 @@
-import { Injectable } from '@angular/core';
-import { HttpClient } from '@angular/common/http';
+import {Injectable} from '@angular/core';
+import {HttpClient} from '@angular/common/http';
 
 export interface Credentials {
   // Customize received credentials here
@@ -26,7 +26,9 @@ export class AuthenticationService {
   private _credentials: Credentials | null;
 
   constructor(private http: HttpClient) {
-    const savedCredentials = sessionStorage.getItem(credentialsKey) || localStorage.getItem(credentialsKey);
+    const savedCredentials =
+      sessionStorage.getItem(credentialsKey) ||
+      localStorage.getItem(credentialsKey);
     if (savedCredentials) {
       this._credentials = JSON.parse(savedCredentials);
     }
@@ -41,7 +43,7 @@ export class AuthenticationService {
     const response: any = await this.http
       .post('/users/auth', {
         username: context.username,
-        password: context.password
+        password: context.password,
       })
       .toPromise();
     if (response['success']) {
@@ -50,7 +52,7 @@ export class AuthenticationService {
         username: response.username,
         id: response.id,
         level: response.level,
-        token: 'faketoken'
+        token: 'faketoken',
       };
       this.setCredentials(data, context.remember);
       return true;

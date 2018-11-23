@@ -39,13 +39,17 @@ export enum LogLevel {
   Error,
   Warning,
   Info,
-  Debug
+  Debug,
 }
 
 /**
  * Log output handler function.
  */
-export type LogOutput = (source: string, level: LogLevel, ...objects: any[]) => void;
+export type LogOutput = (
+  source: string,
+  level: LogLevel,
+  ...objects: any[]
+) => void;
 
 export class Logger {
   /**
@@ -59,8 +63,7 @@ export class Logger {
    */
   static outputs: LogOutput[] = [];
 
-  constructor(private source?: string) {
-  }
+  constructor(private source?: string) {}
 
   /**
    * Enables production mode.
@@ -104,9 +107,13 @@ export class Logger {
 
   private log(func: Function, level: LogLevel, objects: any[]) {
     if (level <= Logger.level) {
-      const log = this.source ? ['[' + this.source + ']'].concat(objects) : objects;
+      const log = this.source
+        ? ['[' + this.source + ']'].concat(objects)
+        : objects;
       func.apply(console, log);
-      Logger.outputs.forEach(output => output.apply(output, [this.source, level].concat(objects)));
+      Logger.outputs.forEach(output =>
+        output.apply(output, [this.source, level].concat(objects)),
+      );
     }
   }
 }

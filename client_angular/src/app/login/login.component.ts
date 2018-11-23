@@ -1,16 +1,23 @@
-import { Component, OnInit } from '@angular/core';
-import { ActivatedRoute, Router } from '@angular/router';
-import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import {Component, OnInit} from '@angular/core';
+import {ActivatedRoute, Router} from '@angular/router';
+import {FormBuilder, FormGroup, Validators} from '@angular/forms';
 
-import { environment } from '@env/environment';
-import { AuthenticationService, extract, I18nService, Language, Logger, SnackbarService } from '@app/core';
+import {environment} from '@env/environment';
+import {
+  AuthenticationService,
+  extract,
+  I18nService,
+  Language,
+  Logger,
+  SnackbarService,
+} from '@app/core';
 
 const Log = new Logger('LOGIN');
 
 @Component({
   selector: 'app-login',
   templateUrl: './login.component.html',
-  styleUrls: ['./login.component.scss']
+  styleUrls: ['./login.component.scss'],
 })
 export class LoginComponent implements OnInit {
   version: string = environment.version;
@@ -24,7 +31,7 @@ export class LoginComponent implements OnInit {
     private formBuilder: FormBuilder,
     private i18nService: I18nService,
     private authenticationService: AuthenticationService,
-    private snackbar: SnackbarService
+    private snackbar: SnackbarService,
   ) {
     this.createForm();
   }
@@ -37,17 +44,22 @@ export class LoginComponent implements OnInit {
     return environment.supportedLanguages;
   }
 
-  ngOnInit() {
-  }
+  ngOnInit() {}
 
   async login() {
     this.isLoading = true;
-    const loggedIn = await this.authenticationService.login(this.loginForm.value);
+    const loggedIn = await this.authenticationService.login(
+      this.loginForm.value,
+    );
     this.loginForm.markAsPristine();
     this.isLoading = false;
     if (loggedIn) {
-      this.snackbar.notification(extract(`Welcome ${this.loginForm.controls.username.value}`));
-      this.route.queryParams.subscribe(params => this.router.navigate([params.redirect || '/'], {replaceUrl: true}));
+      this.snackbar.notification(
+        extract(`Welcome ${this.loginForm.controls.username.value}`),
+      );
+      this.route.queryParams.subscribe(params =>
+        this.router.navigate([params.redirect || '/'], {replaceUrl: true}),
+      );
       return;
     }
     this.error = extract('Username or password invalid');
@@ -61,7 +73,7 @@ export class LoginComponent implements OnInit {
     this.loginForm = this.formBuilder.group({
       username: ['', Validators.required],
       password: ['', Validators.required],
-      remember: true
+      remember: true,
     });
   }
 }

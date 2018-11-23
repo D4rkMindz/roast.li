@@ -3,7 +3,7 @@
  * See docs/coding-guide/e2e-tests.md for more info.
  */
 
-import { browser, element, by } from "protractor";
+import {browser, element, by} from 'protractor';
 
 export class AppPage {
   usernameField = element(by.css('input[formControlName="username"]'));
@@ -13,20 +13,20 @@ export class AppPage {
   constructor() {
     // Forces default language
     this.navigateTo();
-    browser.executeScript(() => localStorage.setItem("language", "en-US"));
+    browser.executeScript(() => localStorage.setItem('language', 'en-US'));
   }
 
   navigateTo() {
-    return browser.get("/");
+    return browser.get('/');
   }
 
   login() {
-    this.usernameField.sendKeys("test");
-    this.passwordField.sendKeys("123");
+    this.usernameField.sendKeys('test');
+    this.passwordField.sendKeys('123');
     this.loginButton.click();
   }
 
   getParagraphText() {
-    return element(by.css("app-root mat-card-title")).getText();
+    return element(by.css('app-root mat-card-title')).getText();
   }
 }

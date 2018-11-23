@@ -1,6 +1,6 @@
-import { async, ComponentFixture, TestBed } from '@angular/core/testing';
+import {async, ComponentFixture, TestBed} from '@angular/core/testing';
 
-import { PostStreamComponent } from './post-stream.component';
+import {PostStreamComponent} from './post-stream.component';
 
 describe('PostStreamComponent', () => {
   let component: PostStreamComponent;
@@ -8,7 +8,7 @@ describe('PostStreamComponent', () => {
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      declarations: [PostStreamComponent]
+      declarations: [PostStreamComponent],
     }).compileComponents();
   }));
 

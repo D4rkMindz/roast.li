@@ -1,7 +1,7 @@
-import { Injectable } from '@angular/core';
-import { Moment } from 'moment';
-import { User } from '../user/user';
-import { HttpClient } from '@angular/common/http';
+import {Injectable} from '@angular/core';
+import {Moment} from 'moment';
+import {User} from '../user/user';
+import {HttpClient} from '@angular/common/http';
 
 export interface Post {
   id: string;
@@ -18,11 +18,10 @@ export interface Post {
 }
 
 @Injectable({
-  providedIn: 'root'
+  providedIn: 'root',
 })
 export class PostService {
-  constructor(private http: HttpClient) {
-  }
+  constructor(private http: HttpClient) {}
 
   public getHotPosts(offset: number = 0) {
     return this.http.get(`/posts/hot?offset=${offset}`);
@@ -41,7 +40,9 @@ export class PostService {
   }
 
   public async deletePost(postId: string): Promise<boolean> {
-    const response: any = await this.http.delete(`/posts/${postId}`).toPromise();
+    const response: any = await this.http
+      .delete(`/posts/${postId}`)
+      .toPromise();
     if ('success' in response) {
       return response.success;
     }
@@ -49,12 +50,16 @@ export class PostService {
   }
 
   public async like(id: string): Promise<number> {
-    const response: any = await this.http.put(`/posts/${id}/like`, {}).toPromise();
+    const response: any = await this.http
+      .put(`/posts/${id}/like`, {})
+      .toPromise();
     return response.likes;
   }
 
   public async unlike(id: string): Promise<number> {
-    const response: any = await this.http.put(`/posts/${id}/unlike`, {}).toPromise();
+    const response: any = await this.http
+      .put(`/posts/${id}/unlike`, {})
+      .toPromise();
     return response.likes;
   }
 }

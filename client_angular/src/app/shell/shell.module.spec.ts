@@ -1,4 +1,4 @@
-import { ShellModule } from './shell.module';
+import {ShellModule} from './shell.module';
 
 describe('ShellModule', () => {
   let shellModule: ShellModule;

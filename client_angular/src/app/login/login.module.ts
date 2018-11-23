@@ -1,13 +1,13 @@
-import { NgModule } from '@angular/core';
-import { CommonModule } from '@angular/common';
-import { ReactiveFormsModule } from '@angular/forms';
-import { TranslateModule } from '@ngx-translate/core';
-import { FlexLayoutModule } from '@angular/flex-layout';
+import {NgModule} from '@angular/core';
+import {CommonModule} from '@angular/common';
+import {ReactiveFormsModule} from '@angular/forms';
+import {TranslateModule} from '@ngx-translate/core';
+import {FlexLayoutModule} from '@angular/flex-layout';
 
-import { SharedModule } from '@app/shared';
-import { MaterialModule } from '@app/material.module';
-import { LoginRoutingModule } from './login-routing.module';
-import { LoginComponent } from './login.component';
+import {SharedModule} from '@app/shared';
+import {MaterialModule} from '@app/material.module';
+import {LoginRoutingModule} from './login-routing.module';
+import {LoginComponent} from './login.component';
 
 @NgModule({
   imports: [
@@ -17,9 +17,8 @@ import { LoginComponent } from './login.component';
     SharedModule,
     FlexLayoutModule,
     MaterialModule,
-    LoginRoutingModule
+    LoginRoutingModule,
   ],
-  declarations: [LoginComponent]
+  declarations: [LoginComponent],
 })
-export class LoginModule {
-}
+export class LoginModule {}

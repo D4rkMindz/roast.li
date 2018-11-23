@@ -1,6 +1,11 @@
-import { Component, OnInit } from '@angular/core';
-import { AbstractControl, FormBuilder, FormGroup, Validators } from '@angular/forms';
-import { ActivatedRoute, Router } from '@angular/router';
+import {Component, OnInit} from '@angular/core';
+import {
+  AbstractControl,
+  FormBuilder,
+  FormGroup,
+  Validators,
+} from '@angular/forms';
+import {ActivatedRoute, Router} from '@angular/router';
 import {
   AuthenticationService,
   CompleteUser,
@@ -8,17 +13,16 @@ import {
   I18nService,
   LoginContext,
   SnackbarService,
-  UserService
+  UserService,
 } from '@app/core';
-import { environment } from '@env/environment';
+import {environment} from '@env/environment';
 
 @Component({
   selector: 'app-register',
   templateUrl: './register.component.html',
-  styleUrls: ['./register.component.scss']
+  styleUrls: ['./register.component.scss'],
 })
 export class RegisterComponent implements OnInit {
-
   get currentLanguage(): string {
     return this.i18nService.language;
   }
@@ -55,13 +59,12 @@ export class RegisterComponent implements OnInit {
     private i18nService: I18nService,
     private authenticationService: AuthenticationService,
     private userService: UserService,
-    private snackbar: SnackbarService
+    private snackbar: SnackbarService,
   ) {
     this.createForm();
   }
 
-  ngOnInit() {
-  }
+  ngOnInit() {}
 
   async register() {
     if (this.registrationForm.invalid) {
@@ -73,30 +76,46 @@ export class RegisterComponent implements OnInit {
     const firstName = this.registrationForm.controls['firstname'].value;
     const lastName = this.registrationForm.controls['lastname'].value;
     const password = this.registrationForm.controls['password'].value;
-    const user = new CompleteUser(username, firstName, lastName, password, email);
+    const user = new CompleteUser(
+      username,
+      firstName,
+      lastName,
+      password,
+      email,
+    );
     this.userService.register(user).subscribe(async (response: any) => {
       this.isLoading = false;
       if (response.success) {
         const loginContext: LoginContext = {
           username: user.username,
-          password: user.password
+          password: user.password,
         };
         const loggedIn = await this.authenticationService.login(loginContext);
         this.registrationForm.markAsPristine();
         if (loggedIn) {
-          this.snackbar.notification(extract(`Welcome ${loginContext.username}. You registered successfully`));
+          this.snackbar.notification(
+            extract(
+              `Welcome ${loginContext.username}. You registered successfully`,
+            ),
+          );
           this.route.queryParams.subscribe(params =>
-            this.router.navigate([params.redirect || '/'], {replaceUrl: true})
+            this.router.navigate([params.redirect || '/'], {replaceUrl: true}),
           );
           return;
         }
-        this.snackbar.error(extract('Registration complete, but automatic login failed. Please try to login'));
+        this.snackbar.error(
+          extract(
+            'Registration complete, but automatic login failed. Please try to login',
+          ),
+        );
         return;
       }
 
       console.log(response);
       for (const error of response['validation']['errors']) {
-        this.registrationForm.controls[error.field].setErrors({custom: error.message});
+        this.registrationForm.controls[error.field].setErrors({
+          custom: error.message,
+        });
       }
 
       this.error = response.validation.message;
@@ -115,11 +134,11 @@ export class RegisterComponent implements OnInit {
         lastname: ['', [Validators.required]],
         password: ['', [Validators.required]],
         passwordRetype: ['', [Validators.required]],
-        email: ['', [Validators.required, Validators.email]]
+        email: ['', [Validators.required, Validators.email]],
       },
       {
-        validator: RegisterComponent.matchPasswordValidation
-      }
+        validator: RegisterComponent.matchPasswordValidation,
+      },
     );
   }
 }

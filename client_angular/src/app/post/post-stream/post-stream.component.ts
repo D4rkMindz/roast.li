@@ -1,15 +1,22 @@
-import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
-import { AuthenticationService, extract, Logger, Post, PostService, SnackbarService } from '@app/core';
+import {Component, EventEmitter, Input, OnInit, Output} from '@angular/core';
+import {
+  AuthenticationService,
+  extract,
+  Logger,
+  Post,
+  PostService,
+  SnackbarService,
+} from '@app/core';
 import * as moment from 'moment';
-import { finalize } from 'rxjs/operators';
-import { ScrollDirection } from '../scroll-direction';
+import {finalize} from 'rxjs/operators';
+import {ScrollDirection} from '../scroll-direction';
 
 const Log = new Logger('POST-STREAM');
 
 @Component({
   selector: 'post-stream',
   templateUrl: './post-stream.component.html',
-  styleUrls: ['./post-stream.component.scss']
+  styleUrls: ['./post-stream.component.scss'],
 })
 export class PostStreamComponent implements OnInit {
   posts: Post[] = [];
@@ -28,7 +35,7 @@ export class PostStreamComponent implements OnInit {
   constructor(
     private postService: PostService,
     private auth: AuthenticationService,
-    private snackbar: SnackbarService
+    private snackbar: SnackbarService,
   ) {
     this.m = moment;
   }
@@ -103,7 +110,7 @@ export class PostStreamComponent implements OnInit {
       .pipe(
         finalize(() => {
           this.isLoading = false;
-        })
+        }),
       )
       .subscribe((posts: Post[]) => {
         Log.debug(`Loaded ${posts.length} hot posts`);
@@ -124,7 +131,7 @@ export class PostStreamComponent implements OnInit {
       .pipe(
         finalize(() => {
           this.isLoading = false;
-        })
+        }),
       )
       .subscribe((posts: Post[]) => {
         Log.debug(`Loaded ${posts.length} new posts`);

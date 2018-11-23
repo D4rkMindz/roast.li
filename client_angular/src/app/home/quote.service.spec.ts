@@ -1,8 +1,11 @@
-import { async, inject, TestBed } from '@angular/core/testing';
-import { HttpClientTestingModule, HttpTestingController } from '@angular/common/http/testing';
+import {async, inject, TestBed} from '@angular/core/testing';
+import {
+  HttpClientTestingModule,
+  HttpTestingController,
+} from '@angular/common/http/testing';
 
-import { CoreModule, HttpCacheService } from '@app/core';
-import { QuoteService } from './quote.service';
+import {CoreModule, HttpCacheService} from '@app/core';
+import {QuoteService} from './quote.service';
 
 describe('QuoteService', () => {
   let quoteService: QuoteService;
@@ -11,18 +14,22 @@ describe('QuoteService', () => {
   beforeEach(async(() => {
     TestBed.configureTestingModule({
       imports: [CoreModule, HttpClientTestingModule],
-      providers: [HttpCacheService, QuoteService]
+      providers: [HttpCacheService, QuoteService],
     });
   }));
 
   beforeEach(inject(
     [HttpCacheService, QuoteService, HttpTestingController],
-    (htttpCacheService: HttpCacheService, _quoteService: QuoteService, _httpMock: HttpTestingController) => {
+    (
+      htttpCacheService: HttpCacheService,
+      _quoteService: QuoteService,
+      _httpMock: HttpTestingController,
+    ) => {
       quoteService = _quoteService;
       httpMock = _httpMock;
 
       htttpCacheService.cleanCache();
-    }
+    },
   ));
 
   afterEach(() => {
@@ -35,7 +42,9 @@ describe('QuoteService', () => {
       const mockQuote = {value: 'a random quote'};
 
       // Act
-      const randomQuoteSubscription = quoteService.getRandomQuote({category: 'toto'});
+      const randomQuoteSubscription = quoteService.getRandomQuote({
+        category: 'toto',
+      });
 
       // Assert
       randomQuoteSubscription.subscribe((quote: string) => {
@@ -46,7 +55,9 @@ describe('QuoteService', () => {
 
     it('should return a string in case of error', () => {
       // Act
-      const randomQuoteSubscription = quoteService.getRandomQuote({category: 'toto'});
+      const randomQuoteSubscription = quoteService.getRandomQuote({
+        category: 'toto',
+      });
 
       // Assert
       randomQuoteSubscription.subscribe((quote: string) => {
@@ -55,7 +66,7 @@ describe('QuoteService', () => {
       });
       httpMock.expectOne({}).flush(null, {
         status: 500,
-        statusText: 'error'
+        statusText: 'error',
       });
     });
   });

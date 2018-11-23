@@ -1,18 +1,19 @@
-import { NgModule } from '@angular/core';
-import { RouterModule, Routes } from '@angular/router';
+import {NgModule} from '@angular/core';
+import {RouterModule, Routes} from '@angular/router';
 
-import { extract } from '@app/core';
-import { Shell } from '@app/shell/shell.service';
-import { AboutComponent } from './about.component';
+import {extract} from '@app/core';
+import {Shell} from '@app/shell/shell.service';
+import {AboutComponent} from './about.component';
 
 const routes: Routes = [
-  Shell.childRoutes([{path: 'about', component: AboutComponent, data: {title: extract('About')}}])
+  Shell.childRoutes([
+    {path: 'about', component: AboutComponent, data: {title: extract('About')}},
+  ]),
 ];
 
 @NgModule({
   imports: [RouterModule.forChild(routes)],
   exports: [RouterModule],
-  providers: []
+  providers: [],
 })
-export class AboutRoutingModule {
-}
+export class AboutRoutingModule {}

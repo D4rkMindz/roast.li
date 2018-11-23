@@ -6,6 +6,9 @@ export const environment = {
   version: env.npm_package_version,
   serverUrl: 'https://api.roast.li',
   defaultLanguage: 'en-US',
-  supportedLanguages: [{i18n: 'de-CH', title: 'Deutsch'}, {i18n: 'en-US', title: 'English'}],
-  supportedLanguagesAsStringArray: ['de-CH', 'en-US']
+  supportedLanguages: [
+    {i18n: 'de-CH', title: 'Deutsch'},
+    {i18n: 'en-US', title: 'English'},
+  ],
+  supportedLanguagesAsStringArray: ['de-CH', 'en-US'],
 };

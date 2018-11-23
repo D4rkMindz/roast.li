@@ -1,9 +1,16 @@
-import { inject, TestBed } from '@angular/core/testing';
-import { HttpClientTestingModule, HttpTestingController } from '@angular/common/http/testing';
-import { HTTP_INTERCEPTORS, HttpClient, HttpResponse } from '@angular/common/http';
+import {inject, TestBed} from '@angular/core/testing';
+import {
+  HttpClientTestingModule,
+  HttpTestingController,
+} from '@angular/common/http/testing';
+import {
+  HTTP_INTERCEPTORS,
+  HttpClient,
+  HttpResponse,
+} from '@angular/common/http';
 
-import { CacheInterceptor } from './cache.interceptor';
-import { HttpCacheService } from './http-cache.service';
+import {CacheInterceptor} from './cache.interceptor';
+import {HttpCacheService} from './http-cache.service';
 
 describe('CacheInterceptor', () => {
   let interceptorOptions: Object | null = {};
@@ -13,7 +20,9 @@ describe('CacheInterceptor', () => {
   let httpMock: HttpTestingController;
 
   function createInterceptor(_httpCacheService: HttpCacheService) {
-    cacheInterceptor = new CacheInterceptor(_httpCacheService).configure(interceptorOptions);
+    cacheInterceptor = new CacheInterceptor(_httpCacheService).configure(
+      interceptorOptions,
+    );
     return cacheInterceptor;
   }
 
@@ -26,9 +35,9 @@ describe('CacheInterceptor', () => {
           provide: HTTP_INTERCEPTORS,
           useFactory: createInterceptor,
           deps: [HttpCacheService],
-          multi: true
-        }
-      ]
+          multi: true,
+        },
+      ],
     });
   });
 
@@ -44,11 +53,15 @@ describe('CacheInterceptor', () => {
 
     beforeEach(inject(
       [HttpClient, HttpTestingController, HttpCacheService],
-      (_http: HttpClient, _httpMock: HttpTestingController, _httpCacheService: HttpCacheService) => {
+      (
+        _http: HttpClient,
+        _httpMock: HttpTestingController,
+        _httpCacheService: HttpCacheService,
+      ) => {
         http = _http;
         httpMock = _httpMock;
         httpCacheService = _httpCacheService;
-      }
+      },
     ));
 
     it('should cache the request', () => {
@@ -65,7 +78,10 @@ describe('CacheInterceptor', () => {
 
     it('should respond from the cache', () => {
       // Arrange
-      httpCacheService.setCacheData('/toto', new HttpResponse({body: 'cachedData'}));
+      httpCacheService.setCacheData(
+        '/toto',
+        new HttpResponse({body: 'cachedData'}),
+      );
 
       // Act
       http.get('/toto').subscribe(response => {
@@ -79,17 +95,16 @@ describe('CacheInterceptor', () => {
     it('should not cache the request in case of error', () => {
       // Act
       http.get('/toto').subscribe(
-        () => {
-        },
+        () => {},
         () => {
           // Assert
           expect(httpCacheService.getCacheData('/toto')).toBeNull();
-        }
+        },
       );
 
       httpMock.expectOne({}).flush(null, {
         status: 404,
-        statusText: 'error'
+        statusText: 'error',
       });
     });
   });
@@ -101,11 +116,15 @@ describe('CacheInterceptor', () => {
 
     beforeEach(inject(
       [HttpClient, HttpTestingController, HttpCacheService],
-      (_http: HttpClient, _httpMock: HttpTestingController, _httpCacheService: HttpCacheService) => {
+      (
+        _http: HttpClient,
+        _httpMock: HttpTestingController,
+        _httpCacheService: HttpCacheService,
+      ) => {
         http = _http;
         httpMock = _httpMock;
         httpCacheService = _httpCacheService;
-      }
+      },
     ));
 
     afterEach(() => {
@@ -115,7 +134,10 @@ describe('CacheInterceptor', () => {
 
     it('should force cache update', () => {
       // Arrange
-      httpCacheService.setCacheData('/toto', new HttpResponse({body: 'oldCachedData'}));
+      httpCacheService.setCacheData(
+        '/toto',
+        new HttpResponse({body: 'oldCachedData'}),
+      );
       cacheInterceptor.configure({update: true});
 
       // Act

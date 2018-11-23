@@ -1,17 +1,19 @@
-import { Component, OnInit } from '@angular/core';
-import { AuthenticationService, CompleteUser, UserService } from '@app/core';
+import {Component, OnInit} from '@angular/core';
+import {AuthenticationService, CompleteUser, UserService} from '@app/core';
 
 @Component({
   selector: 'app-user-settings',
   templateUrl: './user-settings.component.html',
-  styleUrls: ['./user-settings.component.scss']
+  styleUrls: ['./user-settings.component.scss'],
 })
 export class UserSettingsComponent implements OnInit {
   user: CompleteUser = null;
   isLoading = false;
 
-  constructor(private userService: UserService, private auth: AuthenticationService) {
-  }
+  constructor(
+    private userService: UserService,
+    private auth: AuthenticationService,
+  ) {}
 
   async ngOnInit() {
     this.isLoading = true;

@@ -1,9 +1,12 @@
-import { inject, TestBed } from '@angular/core/testing';
-import { HttpClientTestingModule, HttpTestingController } from '@angular/common/http/testing';
-import { HTTP_INTERCEPTORS, HttpClient } from '@angular/common/http';
+import {inject, TestBed} from '@angular/core/testing';
+import {
+  HttpClientTestingModule,
+  HttpTestingController,
+} from '@angular/common/http/testing';
+import {HTTP_INTERCEPTORS, HttpClient} from '@angular/common/http';
 
-import { environment } from '@env/environment';
-import { ApiPrefixInterceptor } from './api-prefix.interceptor';
+import {environment} from '@env/environment';
+import {ApiPrefixInterceptor} from './api-prefix.interceptor';
 
 describe('ApiPrefixInterceptor', () => {
   let http: HttpClient;
@@ -16,16 +19,19 @@ describe('ApiPrefixInterceptor', () => {
         {
           provide: HTTP_INTERCEPTORS,
           useClass: ApiPrefixInterceptor,
-          multi: true
-        }
-      ]
+          multi: true,
+        },
+      ],
     });
   });
 
-  beforeEach(inject([HttpClient, HttpTestingController], (_http: HttpClient, _httpMock: HttpTestingController) => {
-    http = _http;
-    httpMock = _httpMock;
-  }));
+  beforeEach(inject(
+    [HttpClient, HttpTestingController],
+    (_http: HttpClient, _httpMock: HttpTestingController) => {
+      http = _http;
+      httpMock = _httpMock;
+    },
+  ));
 
   afterEach(() => {
     httpMock.verify();

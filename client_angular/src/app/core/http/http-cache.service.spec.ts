@@ -1,7 +1,7 @@
-import { inject, TestBed } from '@angular/core/testing';
-import { HttpResponse } from '@angular/common/http';
+import {inject, TestBed} from '@angular/core/testing';
+import {HttpResponse} from '@angular/common/http';
 
-import { HttpCacheEntry, HttpCacheService } from './http-cache.service';
+import {HttpCacheEntry, HttpCacheService} from './http-cache.service';
 
 const cachePersistenceKey = 'httpCache';
 
@@ -11,7 +11,7 @@ describe('HttpCacheService', () => {
 
   beforeEach(() => {
     TestBed.configureTestingModule({
-      providers: [HttpCacheService]
+      providers: [HttpCacheService],
     });
 
     // Start fresh
@@ -19,11 +19,14 @@ describe('HttpCacheService', () => {
     window.localStorage.removeItem(cachePersistenceKey);
   });
 
-  beforeEach(inject([HttpCacheService], (_httpCacheService: HttpCacheService) => {
-    httpCacheService = _httpCacheService;
+  beforeEach(inject(
+    [HttpCacheService],
+    (_httpCacheService: HttpCacheService) => {
+      httpCacheService = _httpCacheService;
 
-    response = new HttpResponse({body: 'data'});
-  }));
+      response = new HttpResponse({body: 'data'});
+    },
+  ));
 
   afterEach(() => {
     httpCacheService.cleanCache();
@@ -57,8 +60,14 @@ describe('HttpCacheService', () => {
       httpCacheService.setCacheData('/hoho', response);
 
       // Assert
-      expect((<HttpCacheEntry>httpCacheService.getHttpCacheEntry('/popo')).lastUpdated).toBe(date);
-      expect((<HttpCacheEntry>httpCacheService.getHttpCacheEntry('/hoho')).lastUpdated).not.toBe(date);
+      expect(
+        (<HttpCacheEntry>httpCacheService.getHttpCacheEntry('/popo'))
+          .lastUpdated,
+      ).toBe(date);
+      expect(
+        (<HttpCacheEntry>httpCacheService.getHttpCacheEntry('/hoho'))
+          .lastUpdated,
+      ).not.toBe(date);
     });
   });
 
@@ -153,7 +162,11 @@ describe('HttpCacheService', () => {
 
       // Clean cache
       const date = new Date();
-      httpCacheService.setCacheData('/lolo', response, new Date(date.getTime() + 10));
+      httpCacheService.setCacheData(
+        '/lolo',
+        response,
+        new Date(date.getTime() + 10),
+      );
       httpCacheService.cleanCache(date);
 
       // Assert

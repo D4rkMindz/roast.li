@@ -1,9 +1,9 @@
-import { inject, TestBed } from '@angular/core/testing';
-import { Router, RouterStateSnapshot } from '@angular/router';
+import {inject, TestBed} from '@angular/core/testing';
+import {Router, RouterStateSnapshot} from '@angular/router';
 
-import { AuthenticationService } from './authentication.service';
-import { MockAuthenticationService } from './authentication.service.mock';
-import { AuthenticationGuard } from './authentication.guard';
+import {AuthenticationService} from './authentication.service';
+import {MockAuthenticationService} from './authentication.service.mock';
+import {AuthenticationGuard} from './authentication.guard';
 
 describe('AuthenticationGuard', () => {
   let authenticationGuard: AuthenticationGuard;
@@ -13,25 +13,31 @@ describe('AuthenticationGuard', () => {
 
   beforeEach(() => {
     mockRouter = {
-      navigate: jasmine.createSpy('navigate')
+      navigate: jasmine.createSpy('navigate'),
     };
-    mockSnapshot = jasmine.createSpyObj<RouterStateSnapshot>('RouterStateSnapshot', ['toString']);
+    mockSnapshot = jasmine.createSpyObj<RouterStateSnapshot>(
+      'RouterStateSnapshot',
+      ['toString'],
+    );
 
     TestBed.configureTestingModule({
       providers: [
         AuthenticationGuard,
         {provide: AuthenticationService, useClass: MockAuthenticationService},
-        {provide: Router, useValue: mockRouter}
-      ]
+        {provide: Router, useValue: mockRouter},
+      ],
     });
   });
 
   beforeEach(inject(
     [AuthenticationGuard, AuthenticationService],
-    (_authenticationGuard: AuthenticationGuard, _authenticationService: MockAuthenticationService) => {
+    (
+      _authenticationGuard: AuthenticationGuard,
+      _authenticationService: MockAuthenticationService,
+    ) => {
       authenticationGuard = _authenticationGuard;
       authenticationService = _authenticationService;
-    }
+    },
   ));
 
   it('should have a canActivate method', () => {
@@ -52,7 +58,7 @@ describe('AuthenticationGuard', () => {
     // Assert
     expect(mockRouter.navigate).toHaveBeenCalledWith(['/login'], {
       queryParams: {redirect: undefined},
-      replaceUrl: true
+      replaceUrl: true,
     });
     expect(result).toBe(false);
   });
@@ -65,7 +71,7 @@ describe('AuthenticationGuard', () => {
     authenticationGuard.canActivate(null, mockSnapshot);
     expect(mockRouter.navigate).toHaveBeenCalledWith(['/login'], {
       queryParams: {redirect: mockRouter.url},
-      replaceUrl: true
+      replaceUrl: true,
     });
   });
 });

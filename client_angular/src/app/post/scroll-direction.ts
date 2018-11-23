@@ -1,4 +1,4 @@
-import { throwError } from 'rxjs';
+import {throwError} from 'rxjs';
 
 /**
  * The scroll direction

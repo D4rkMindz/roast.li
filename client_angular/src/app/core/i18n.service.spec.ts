@@ -1,8 +1,8 @@
-import { inject, TestBed } from '@angular/core/testing';
-import { LangChangeEvent, TranslateService } from '@ngx-translate/core';
-import { Subject } from 'rxjs';
+import {inject, TestBed} from '@angular/core/testing';
+import {LangChangeEvent, TranslateService} from '@ngx-translate/core';
+import {Subject} from 'rxjs';
 
-import { extract, I18nService } from './i18n.service';
+import {extract, I18nService} from './i18n.service';
 
 const defaultLanguage = 'en-US';
 const supportedLanguages = ['eo', 'en-US', 'fr-FR'];
@@ -15,7 +15,7 @@ class MockTranslateService {
     this.currentLang = language;
     this.onLangChange.next({
       lang: this.currentLang,
-      translations: {}
+      translations: {},
     });
   }
 
@@ -23,8 +23,7 @@ class MockTranslateService {
     return 'en-US';
   }
 
-  setTranslation(lang: string, translations: Object, shouldMerge?: boolean) {
-  }
+  setTranslation(lang: string, translations: Object, shouldMerge?: boolean) {}
 }
 
 describe('I18nService', () => {
@@ -34,7 +33,10 @@ describe('I18nService', () => {
 
   beforeEach(() => {
     TestBed.configureTestingModule({
-      providers: [I18nService, {provide: TranslateService, useClass: MockTranslateService}]
+      providers: [
+        I18nService,
+        {provide: TranslateService, useClass: MockTranslateService},
+      ],
     });
   });
 
@@ -50,7 +52,7 @@ describe('I18nService', () => {
         onLangChangeSpy(event.lang);
       });
       spyOn(translateService, 'use').and.callThrough();
-    }
+    },
   ));
 
   afterEach(() => {
