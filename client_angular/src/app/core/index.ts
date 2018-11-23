@@ -14,3 +14,4 @@ export * from './post/post.service';
 export * from './user/user.service';
 export * from './user/user';
 export * from './snackbar/snackbar.service';
+export * from './role/role';

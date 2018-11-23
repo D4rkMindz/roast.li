@@ -1,7 +1,7 @@
 <div class="container"
+     fxFlex="60%"
      fxLayout="column"
      fxLayoutAlign="center"
-     fxFlex="60%"
      fxFlexOffset="20%"
      fxFlex.lt-sm="100%"
      fxFlexOffset.lt-sm="0">
@@ -15,9 +15,86 @@
         There was an error loading your user data. Please <a (click)="reload()">reload</a> the page.
         If the problem persists <a href="mailto:bjoern.pfoster@somewhere.com">contact the developer</a>
       </p>
-      <div [fxShow]="user !== null">
+      <div *ngIf="user">
         <mat-divider></mat-divider>
-        <ngx-avatar [githubId]="'d4rkmindz'" name="Björn Pfoster"></ngx-avatar>
+        <ngx-avatar [src]="user.thumbnail_url" [name]="user.username" style="margin: 2em;"></ngx-avatar>
+        <mat-divider></mat-divider>
+        <h3 translate>Change Password</h3>
+        <form (ngSubmit)="resetPassword()"
+              [formGroup]="passwordForm"
+              novalidate
+              fxLayout="column">
+          <div class="login-error" [hidden]="!error || isLoading" translate>
+            {{error}}
+          </div>
+          <br/>
+          <div fxLayout="row"
+               fxLayout.lt-md="column"
+               fxLayoutGap="2em"
+               fxLayoutGap.lt-md="0">
+            <mat-form-field fxFlex="25%" fxFlex.md="33%" fxFlex.lt-md="100%">
+              <input type="password"
+                     matInput
+                     formControlName="passwordOld"
+                     autocomplete="current-password"
+                     [placeholder]="'Former Password' | translate"
+                     required/>
+              <mat-error *ngIf="passwordForm.controls.passwordOld.dirty &&
+              passwordForm.controls.passwordOld.hasError('required')" translate>
+                Please type your former password
+              </mat-error>
+              <mat-error *ngIf="passwordForm.controls.passwordOld.dirty &&
+              passwordForm.controls.passwordOld.hasError('message')">
+                {{passwordForm.controls.passwordOld.getError('message')}}
+              </mat-error>
+            </mat-form-field>
+            <mat-form-field fxFlex="25%" fxFlex.md="33%" fxFlex.lt-md="100%">
+              <input type="password"
+                     matInput
+                     formControlName="password"
+                     autocomplete="password"
+                     [placeholder]="'New Password' | translate"
+                     required/>
+              <mat-error *ngIf="passwordForm.controls.password.dirty &&
+              passwordForm.controls.password.hasError('required')" translate>
+                Password is required
+              </mat-error>
+              <mat-error *ngIf="passwordForm.controls.password.dirty &&
+              passwordForm.controls.password.hasError('message')">
+                {{passwordForm.controls.password.getError('message')}}
+              </mat-error>
+            </mat-form-field>
+            <mat-form-field fxFlex="25%" fxFlex.md="33%" fxFlex.lt-md="100%">
+              <input type="password"
+                     matInput
+                     formControlName="passwordRetype"
+                     autocomplete="password"
+                     [placeholder]="'New Password' | translate"
+                     required/>
+              <mat-error *ngIf="passwordForm.controls.passwordRetype.dirty &&
+              passwordForm.controls.passwordRetype.hasError('required')" translate>
+                Password is required
+              </mat-error>
+              <mat-error *ngIf="passwordForm.controls.passwordRetype.dirty &&
+              passwordForm.controls.passwordRetype.getError('matchPassword')">
+                <span translate>Password doesn't match</span>
+              </mat-error>
+              <mat-error *ngIf="passwordForm.controls.passwordRetype.dirty &&
+              passwordForm.controls.passwordRetype.hasError('message')">
+                {{passwordForm.controls.passwordRetype.getError('message')}}
+              </mat-error>
+            </mat-form-field>
+            <div fxFlex="25%" fxFlex.lt-md="100%">
+              <button mat-raised-button
+                      color="primary"
+                      [disabled]="passwordForm.invalid || isLoadingPassword"
+                      translate>
+                <app-loader class="inline-loader" [isLoading]="isLoadingPassword"></app-loader>
+                Reset Passsword
+              </button>
+            </div>
+          </div>
+        </form>
       </div>
     </mat-card-content>
   </mat-card>

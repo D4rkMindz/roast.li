@@ -1,4 +1,5 @@
 import * as moment from 'moment';
+import {Role} from '@app/core';
 
 export interface User {
   id: string;
@@ -20,6 +21,7 @@ export class CompleteUser {
   private readonly _modified_by?: string;
   private readonly _archived_at?: moment.Moment;
   private readonly _archived_by?: string;
+  private readonly _role?: Role;
 
   constructor(
     username: string,
@@ -35,6 +37,7 @@ export class CompleteUser {
     archived_at?: moment.Moment,
     archived_by?: string,
     id?: string,
+    role?: Role,
   ) {
     this._id = id;
     this._username = username;
@@ -49,6 +52,7 @@ export class CompleteUser {
     this._modified_by = modified_by;
     this._archived_at = archived_at;
     this._archived_by = archived_by;
+    this._role = role;
   }
 
   get id(): string {
@@ -103,6 +107,10 @@ export class CompleteUser {
     return this._archived_by;
   }
 
+  get role(): Role {
+    return this._role;
+  }
+
   public toJSON() {
     const data = {
       username: this.username,
@@ -134,6 +142,9 @@ export class CompleteUser {
     }
     if (this.archived_by) {
       data['archived_by'] = this.archived_by;
+    }
+    if (this._role) {
+      data['role'] = this.role.toJSON();
     }
     return JSON.stringify(data);
   }

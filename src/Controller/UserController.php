@@ -2,8 +2,8 @@
 
 namespace App\Controller;
 
-
 use App\Repository\UserRepository;
+use App\Type\RoleLevel;
 use App\Service\Validation\UserValidation;
 use App\Util\ValidationResult;
 use Interop\Container\Exception\ContainerException;
@@ -29,6 +29,7 @@ class UserController extends AppController
 
     /**
      * UserController constructor.
+     *
      * @param Container $container
      * @throws ContainerException
      */
@@ -69,6 +70,7 @@ class UserController extends AppController
                 'success' => false,
                 'validation' => $validationResult->toArray(),
             ];
+
             return $this->json($response, $responseData, 422);
         }
 
@@ -82,6 +84,7 @@ class UserController extends AppController
 
         if ($userId) {
             $this->setLoggedIn($userId);
+
             return $this->json($response, ['success' => true]);
         }
 
@@ -105,6 +108,7 @@ class UserController extends AppController
                 'success' => false,
                 'validation' => $validationResult->toArray(),
             ];
+
             return $this->json($response, $responseData, 422);
         }
 
@@ -117,6 +121,7 @@ class UserController extends AppController
                 'success' => false,
                 'validation' => $validationResult->toArray(),
             ];
+
             return $this->json($response, $responseData, 404);
         }
 
@@ -124,6 +129,7 @@ class UserController extends AppController
             'success' => true,
             'user' => $user,
         ];
+
         return $this->json($response, $responseData);
     }
 
@@ -145,6 +151,7 @@ class UserController extends AppController
                 'success' => false,
                 'validation' => $validationResult->toArray(),
             ];
+
             return $this->json($response, $responseData, 404);
         }
 
@@ -152,8 +159,72 @@ class UserController extends AppController
             'success' => true,
             'users' => $users,
         ];
-        return $this->json($response, $responseData);
 
+        return $this->json($response, $responseData);
+    }
+
+    /**
+     * Update a user.
+     *
+     * @param Request $request
+     * @param Response $response
+     * @param array $args
+     * @return ResponseInterface
+     */
+    public function updateUserAction(Request $request, Response $response, array $args): ResponseInterface
+    {
+        $userId = $args['user_id'];
+        $executorId = $this->getUserId();
+        $json = $request->getBody()->__toString();
+        $data = json_decode($json, true);
+        $username = array_value('username', $data);
+        $oldPassword = array_value('old_password', $data);
+        $password = array_value('password', $data);
+        $email = array_value('email', $data);
+        $firstName = array_value('first_name', $data);
+        $lastName = array_value('last_name', $data);
+        $rolePosition = array_value('role_position', $data);
+
+        $validationResult = $this->userValidation->validateUpdate(
+            $executorId,
+            $userId,
+            $username,
+            $oldPassword,
+            $password,
+            $email,
+            $firstName,
+            $lastName,
+            $rolePosition
+        );
+
+        if ($validationResult->fails()) {
+            $responseData = [
+                'success' => false,
+                'validation' => $validationResult->toArray(),
+            ];
+
+            return $this->json($response, $responseData, 422);
+        }
+
+        $updated = $this->userRepository->updateUser(
+            $executorId,
+            $userId,
+            $username,
+            $password,
+            $email,
+            $firstName,
+            $lastName
+        );
+
+        if (!empty($rolePosition)) {
+
+        }
+
+        if ($updated) {
+            return $this->json($response, ['success' => true]);
+        }
+
+        return $this->json($response, ['success' => false]);
     }
 
     /**
@@ -173,6 +244,7 @@ class UserController extends AppController
                 'success' => false,
                 'validation' => $validationResult->toArray(),
             ];
+
             return $this->json($response, $responseData, 422);
         }
 

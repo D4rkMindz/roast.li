@@ -2,6 +2,7 @@
 
 
 use App\Repository\PostRepository;
+use App\Repository\RoleRepository;
 use App\Repository\UserRepository;
 use Slim\Container;
 
@@ -21,4 +22,12 @@ $container[UserRepository::class] = function (Container $container) {
  */
 $container[PostRepository::class] = function (Container $container) {
     return new PostRepository($container);
+};
+
+/**
+ * @param Container $container
+ * @return RoleRepository
+ */
+$container[RoleRepository::class] = function (Container $container) {
+    return new RoleRepository($container);
 };

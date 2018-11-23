@@ -3,12 +3,13 @@
 namespace App\Service\Validation;
 
 use App\Repository\UserRepository;
-use App\Service\Type\RoleLevel;
+use App\Type\RoleLevel;
 use App\Util\ValidationResult;
 use Slim\Container;
 
 /**
  * Class UserValidation
+ *
  * @package App\Service\Validation
  */
 class UserValidation extends AppValidation
@@ -20,6 +21,7 @@ class UserValidation extends AppValidation
 
     /**
      * UserValidation constructor.
+     *
      * @param Container $container
      * @throws \Interop\Container\Exception\ContainerException
      */
@@ -39,6 +41,7 @@ class UserValidation extends AppValidation
     {
         $validationResult = new ValidationResult(__('User does not exist'));
         $this->validateUser($userId, $validationResult);
+
         return $validationResult;
     }
 
@@ -48,6 +51,7 @@ class UserValidation extends AppValidation
      * @param string $executorId
      * @param string $userId
      * @param null|string $username
+     * @param string|null $oldPassword
      * @param null|string $password
      * @param null|string $email
      * @param null|string $firstName
@@ -55,8 +59,17 @@ class UserValidation extends AppValidation
      * @param null|string $roleId
      * @return ValidationResult
      */
-    public function validateUpdate(string $executorId, string $userId, ?string $username, ?string $password, ?string $email, ?string $firstName, ?string $lastName, ?string $roleId)
-    {
+    public function validateUpdate(
+        string $executorId,
+        string $userId,
+        ?string $username,
+        ?string $oldPassword,
+        ?string $password,
+        ?string $email,
+        ?string $firstName,
+        ?string $lastName,
+        ?string $roleId
+    ) {
         $validationResult = new ValidationResult(__('Please check your data'));
         $this->validateUser($userId, $validationResult);
 
@@ -65,6 +78,7 @@ class UserValidation extends AppValidation
         }
 
         if (!empty($password)) {
+            $this->validateOldPassword($userId, $oldPassword, $validationResult);
             $this->validatePassword($password, $validationResult);
         }
 
@@ -77,7 +91,7 @@ class UserValidation extends AppValidation
         }
 
         if (!empty($lastName)) {
-            $this->validatelastname($lastName, $validationResult);
+            $this->validateLastname($lastName, $validationResult);
         }
 
         if (!empty($roleId) && !$this->hasPermissionLevel($executorId, RoleLevel::SUPER_ADMIN)) {
@@ -97,8 +111,13 @@ class UserValidation extends AppValidation
      * @param string $lastName
      * @return ValidationResult
      */
-    public function validateRegister(string $username, string $password, string $email, string $firstName, string $lastName): ValidationResult
-    {
+    public function validateRegister(
+        string $username,
+        string $password,
+        string $email,
+        string $firstName,
+        string $lastName
+    ): ValidationResult {
         $validationResult = new ValidationResult(__('Your registration is not correct'));
         $this->validateUsername($username, $validationResult);
         $this->validatePassword($password, $validationResult);
@@ -149,6 +168,22 @@ class UserValidation extends AppValidation
     }
 
     /**
+     * Validate the old password
+     *
+     * @param string $userId
+     * @param string $oldPassword
+     * @param ValidationResult $validationResult
+     * @return void
+     */
+    private function validateOldPassword(string $userId, string $oldPassword, ValidationResult $validationResult)
+    {
+        $correctPassword = $this->userRepository->checkPassword($userId, $oldPassword);
+        if (!$correctPassword) {
+            $validationResult->setError('passwordOld', __('Does not match the old password'));
+        }
+    }
+
+    /**
      * Validate password
      *
      * @param string $password
@@ -159,7 +194,8 @@ class UserValidation extends AppValidation
         $this->validateLengthMax($password, 'password', $validationResult);
         $this->validateLengthMin($password, 'password', $validationResult, 6);
         if (!preg_match('/[A-Za-z]/', $password)) {
-            $validationResult->setError('password', __('Password must contain at least one uppercase and one lowercase letter'));
+            $validationResult->setError('password',
+                __('Password must contain at least one uppercase and one lowercase letter'));
         }
     }
 

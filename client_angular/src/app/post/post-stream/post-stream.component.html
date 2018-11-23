@@ -9,12 +9,12 @@
     <mat-card [hidden]="isLoading">
       <mat-card-header>
         <div mat-card-avatar>
-          <img width="100%"
-               style="object-fit: cover; -webkit-border-radius: 50%;-moz-border-radius: 50%;border-radius: 50%;"
-               src="{{post.user.thumbnail_url || 'https://ssl.gstatic.com/images/branding/product/1x/avatar_circle_blue_512dp.png'}}"
-               alt="">
+
+          <ngx-avatar [src]="post.user.thumbnail_url"
+                      [name]="post.user.username">
+          </ngx-avatar>
         </div>
-        <mat-card-title>{{post.user.username}}</mat-card-title>
+        <mat-card-title style="margin-left: 1em;">{{post.user.username}}</mat-card-title>
         <mat-card-subtitle>User</mat-card-subtitle>
       </mat-card-header>
       <mat-card-content fxLayout="column">

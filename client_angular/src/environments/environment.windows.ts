@@ -8,7 +8,7 @@ import env from './.env';
 export const environment = {
   production: false,
   version: env.npm_package_version + '-dev',
-  serverUrl: 'http://localhost/modul-151_projekt/api',
+  serverUrl: 'http://localhost/roast.li',
   defaultLanguage: 'en-US',
   supportedLanguages: [
     {i18n: 'de-CH', title: 'Deutsch'},

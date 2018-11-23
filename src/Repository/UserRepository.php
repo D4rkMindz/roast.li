@@ -2,8 +2,8 @@
 
 namespace App\Repository;
 
-
 use App\Table\LikedPostTable;
+use App\Table\RoleTable;
 use App\Table\UserTable;
 use DomainException;
 use Interop\Container\Exception\ContainerException;
@@ -25,6 +25,11 @@ class UserRepository extends AppRepository
     private $likedPostTable;
 
     /**
+     * @var RoleTable
+     */
+    private $roleTable;
+
+    /**
      * UserRepository constructor.
      *
      * @param Container $container
@@ -34,6 +39,8 @@ class UserRepository extends AppRepository
     {
         $this->userTable = $container->get(UserTable::class);
         $this->likedPostTable = $container->get(LikedPostTable::class);
+        $this->roleTable = $container->get(RoleTable::class);
+
     }
 
     /**
@@ -89,6 +96,7 @@ class UserRepository extends AppRepository
         if (!empty($row)) {
             return $row['password'];
         }
+
         return null;
     }
 
@@ -138,11 +146,24 @@ class UserRepository extends AppRepository
                 'user.modified_by',
                 'user.archived_by',
                 'user.archived_at',
+                'role_name' => 'role.name',
+                'role_position' => 'role.position',
             ])
             ->leftJoin('role', ['role.id = user.role_id'])
             ->where(['user.id' => $userId]);
         $user = $query->execute()->fetch('assoc');
-        return $user ?: null;
+
+        if (!empty($user)) {
+            $user['role'] = [
+                'name' => $user['role_name'],
+                'position' => $user['role_position'],
+            ];
+            unset($user['role_name'], $user['role_position']);
+
+            return $user;
+        }
+
+        return null;
     }
 
     /**
@@ -166,10 +187,25 @@ class UserRepository extends AppRepository
                 'user.modified_by',
                 'user.archived_by',
                 'user.archived_at',
+                'role_name' => 'role.name',
+                'role_position' => 'role.position',
             ])
             ->leftJoin('role', ['role.id = user.role_id']);
-        $user = $query->execute()->fetchAll('assoc');
-        return $user ?: null;
+        $users = $query->execute()->fetchAll('assoc');
+
+        if (!empty($users)) {
+            foreach ($users as $key => $user) {
+                $users[$key]['role'] = [
+                    'name' => $user['role_name'],
+                    'position' => $user['role_position'],
+                ];
+                unset($users[$key]['role_name'], $users[$key]['role_position']);
+            }
+
+            return $users;
+        }
+
+        return null;
     }
 
     /**
@@ -194,6 +230,7 @@ class UserRepository extends AppRepository
             'created_by' => 0,
             'created_at' => date('Y-m-d H:i:s'),
         ];
+
         return $this->userTable->insert($row)->lastInsertId();
     }
 
@@ -207,15 +244,22 @@ class UserRepository extends AppRepository
      * @param null|string $lastName
      * @return bool
      */
-    public function updateUser(string $executorId, string $userId, ?string $username, ?string $password, ?string $email, ?string $firstName, ?string $lastName)
-    {
+    public function updateUser(
+        string $executorId,
+        string $userId,
+        ?string $username,
+        ?string $password,
+        ?string $email,
+        ?string $firstName,
+        ?string $lastName
+    ) {
         $row = [];
         if (!empty($username)) {
             $row['username'] = $username;
         }
 
         if (!empty($password)) {
-            $row['password'] = $password;
+            $row['password'] = password_hash($password, PASSWORD_DEFAULT);
         }
 
         if (!empty($email)) {
@@ -234,6 +278,27 @@ class UserRepository extends AppRepository
     }
 
     /**
+     * Update the role of a user.
+     *
+     * @param $userId
+     * @param $rolePosition
+     * @return bool
+     */
+    public function updateRole($userId, $rolePosition)
+    {
+        $query = $this->roleTable->newSelect(false);
+        $query->select('id')->where(['position' => $rolePosition]);
+        $row = $query->execute()->fetch('assoc');
+        $roleId = array_value('id', $row);
+        // Just to be sure, but this is validated before
+        if (empty($row)) {
+            $roleId = 8; // ROLE_ANONYMOUS
+        }
+
+        return (bool)$this->userTable->update(['role_id' => $roleId], ['id' => $userId]);
+    }
+
+    /**
      * Archive
      *
      * @param string $userId
@@ -248,6 +313,7 @@ class UserRepository extends AppRepository
         foreach ($rows as $row) {
             $this->likedPostTable->delete($row['id']);
         }
+
         return (bool)$this->userTable->archive($userId, $executorId);
     }
 
@@ -264,6 +330,25 @@ class UserRepository extends AppRepository
             ->leftJoin('role', ['role.id = user.role_id'])
             ->where(['user.id' => $userId]);
         $row = $query->execute()->fetch('assoc');
+
         return $row ? $row['level'] : null;
+    }
+
+    /**
+     * Check a users password.
+     *
+     * @param string $userId
+     * @param string $password
+     * @return bool
+     */
+    public function checkPassword(string $userId, string $password): bool
+    {
+        $query = $this->userTable->newSelect();
+        $query->select('password')->where(['id' => $userId]);
+        $row = $query->execute()->fetch('assoc');
+        if (!empty($row)) {
+            return password_verify($password, $row['password']);
+        }
+        return false;
     }
 }

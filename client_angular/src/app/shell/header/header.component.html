@@ -35,7 +35,8 @@
       </mat-list-item>
       <mat-divider></mat-divider>
     </mat-list>
-    <button mat-menu-item  [fxShow]="username !== null" (click)="logout()" translate>Logout</button>
-    <button mat-menu-item  [fxShow]="username === null" routerLink="/login" translate>Login</button>
+    <button mat-menu-item fxHide.lt-md routerLink="/settings" routerLinkActive="active" translate>Settings</button>
+    <button mat-menu-item [fxShow]="username !== null" (click)="logout()" translate>Logout</button>
+    <button mat-menu-item [fxShow]="username === null" routerLink="/login" translate>Login</button>
   </mat-menu>
 </mat-toolbar>

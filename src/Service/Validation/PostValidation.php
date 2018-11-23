@@ -4,7 +4,7 @@ namespace App\Service\Validation;
 
 
 use App\Repository\PostRepository;
-use App\Service\Type\RoleLevel;
+use App\Type\RoleLevel;
 use App\Util\ValidationResult;
 use Interop\Container\Exception\ContainerException;
 use Slim\Container;

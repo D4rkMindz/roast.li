@@ -6,11 +6,11 @@ SET @OLD_SQL_MODE=@@SQL_MODE, SQL_MODE='ONLY_FULL_GROUP_BY,STRICT_TRANS_TABLES,N
 
 
 -- -----------------------------------------------------
--- Table `d4rkmindz_nicipedia`.`post`
+-- Table `modul-151_projekt`.`post`
 -- -----------------------------------------------------
-DROP TABLE IF EXISTS `d4rkmindz_nicipedia`.`post` ;
+DROP TABLE IF EXISTS `modul-151_projekt`.`post` ;
 
-CREATE TABLE IF NOT EXISTS `d4rkmindz_nicipedia`.`post` (
+CREATE TABLE IF NOT EXISTS `modul-151_projekt`.`post` (
   `id` INT(11) NOT NULL AUTO_INCREMENT,
   `content` VARCHAR(1000) NOT NULL,
   `created_at` DATETIME NOT NULL,
@@ -26,11 +26,11 @@ DEFAULT CHARACTER SET = utf8;
 
 
 -- -----------------------------------------------------
--- Table `d4rkmindz_nicipedia`.`role`
+-- Table `modul-151_projekt`.`role`
 -- -----------------------------------------------------
-DROP TABLE IF EXISTS `d4rkmindz_nicipedia`.`role` ;
+DROP TABLE IF EXISTS `modul-151_projekt`.`role` ;
 
-CREATE TABLE IF NOT EXISTS `d4rkmindz_nicipedia`.`role` (
+CREATE TABLE IF NOT EXISTS `modul-151_projekt`.`role` (
   `id` INT(11) NOT NULL AUTO_INCREMENT,
   `name` VARCHAR(80) NOT NULL,
   `position` VARCHAR(80) NOT NULL,
@@ -41,11 +41,11 @@ DEFAULT CHARACTER SET = utf8;
 
 
 -- -----------------------------------------------------
--- Table `d4rkmindz_nicipedia`.`user`
+-- Table `modul-151_projekt`.`user`
 -- -----------------------------------------------------
-DROP TABLE IF EXISTS `d4rkmindz_nicipedia`.`user` ;
+DROP TABLE IF EXISTS `modul-151_projekt`.`user` ;
 
-CREATE TABLE IF NOT EXISTS `d4rkmindz_nicipedia`.`user` (
+CREATE TABLE IF NOT EXISTS `modul-151_projekt`.`user` (
   `id` INT(11) NOT NULL AUTO_INCREMENT,
   `role_id` INT(11) NOT NULL,
   `username` VARCHAR(80) NOT NULL,
@@ -67,11 +67,11 @@ DEFAULT CHARACTER SET = utf8;
 
 
 -- -----------------------------------------------------
--- Table `d4rkmindz_nicipedia`.`liked_post`
+-- Table `modul-151_projekt`.`liked_post`
 -- -----------------------------------------------------
-DROP TABLE IF EXISTS `d4rkmindz_nicipedia`.`liked_post` ;
+DROP TABLE IF EXISTS `modul-151_projekt`.`liked_post` ;
 
-CREATE TABLE IF NOT EXISTS `d4rkmindz_nicipedia`.`liked_post` (
+CREATE TABLE IF NOT EXISTS `modul-151_projekt`.`liked_post` (
   `id` INT(11) NOT NULL AUTO_INCREMENT,
   `user_id` INT(11) NOT NULL,
   `post_id` INT(11) NOT NULL,
