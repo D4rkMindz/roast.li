@@ -6,7 +6,7 @@
     <span class="title">{{title}}</span>
   </div>
   <div fxHide.lt-md>
-    <a class="brand" href="https://github.com/ngx-rocket" translate>APP_NAME</a>
+    <a class="brand" href="/" translate>APP_NAME</a>
     <button mat-button routerLink="/home" routerLinkActive="active">
       <mat-icon>home</mat-icon>
       <span translate>Home</span>
@@ -35,7 +35,7 @@
       </mat-list-item>
       <mat-divider></mat-divider>
     </mat-list>
-    <button mat-menu-item fxHide.lt-md routerLink="/settings" routerLinkActive="active" translate>Settings</button>
+    <button mat-menu-item [fxShow]="username !== null" fxHide.lt-md routerLink="/settings" routerLinkActive="active" translate>Settings</button>
     <button mat-menu-item [fxShow]="username !== null" (click)="logout()" translate>Logout</button>
     <button mat-menu-item [fxShow]="username === null" routerLink="/login" translate>Login</button>
   </mat-menu>
