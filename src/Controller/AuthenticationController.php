@@ -74,7 +74,7 @@ class AuthenticationController extends AppController
             $userId = $this->userRepository->getIdByUsername($username);
             $level = $this->userRepository->getUserPermissionLevel($userId);
             $this->setLoggedIn($userId);
-            return $this->json($response, ['success' => true, 'username' => $username, 'level' => $level]);
+            return $this->json($response, ['success' => true, 'username' => $username, 'id' => $userId,'level' => $level]);
         }
         return $this->json($response, ['success' => false]);
     }

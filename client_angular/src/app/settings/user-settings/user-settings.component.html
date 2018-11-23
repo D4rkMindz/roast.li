@@ -1,3 +1,24 @@
-<p>
-  user-settings works!
-</p>
+<div class="container"
+     fxLayout="column"
+     fxLayoutAlign="center"
+     fxFlex="60%"
+     fxFlexOffset="20%"
+     fxFlex.lt-sm="100%"
+     fxFlexOffset.lt-sm="0">
+  <app-loader align="center" [isLoading]="isLoading" size="1.5"></app-loader>
+  <mat-card [fxShow]="!isLoading">
+    <mat-card-header>
+      <h3 translate>Account Settings</h3>
+    </mat-card-header>
+    <mat-card-content>
+      <p color="warning" [fxShow]="user === null" translate>
+        There was an error loading your user data. Please <a (click)="reload()">reload</a> the page.
+        If the problem persists <a href="mailto:bjoern.pfoster@somewhere.com">contact the developer</a>
+      </p>
+      <div [fxShow]="user !== null">
+        <mat-divider></mat-divider>
+        <ngx-avatar [githubId]="'d4rkmindz'" name="Björn Pfoster"></ngx-avatar>
+      </div>
+    </mat-card-content>
+  </mat-card>
+</div>

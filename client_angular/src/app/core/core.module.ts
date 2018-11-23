@@ -19,6 +19,7 @@ import { InfiniteScrollModule } from 'ngx-infinite-scroll';
 import { FlexLayoutModule } from '@angular/flex-layout';
 import { MaterialModule } from '@app/material.module';
 import { ReactiveFormsModule } from '@angular/forms';
+import { AvatarModule } from 'ngx-avatar';
 
 @NgModule({
   imports: [
@@ -29,7 +30,8 @@ import { ReactiveFormsModule } from '@angular/forms';
     MaterialModule,
     InfiniteScrollModule,
     ReactiveFormsModule,
-    RouterModule
+    AvatarModule,
+    RouterModule,
   ],
   providers: [
     AuthenticationService,
@@ -51,7 +53,7 @@ import { ReactiveFormsModule } from '@angular/forms';
       useClass: RouteReusableStrategy
     }
   ],
-  exports: [FlexLayoutModule, InfiniteScrollModule, MaterialModule, ReactiveFormsModule, TranslateModule]
+  exports: [FlexLayoutModule, AvatarModule, InfiniteScrollModule, MaterialModule, ReactiveFormsModule, TranslateModule]
 })
 export class CoreModule {
   constructor(

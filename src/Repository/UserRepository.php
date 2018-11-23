@@ -126,6 +126,7 @@ class UserRepository extends AppRepository
         $query = $this->userTable->newSelect();
         $query
             ->select([
+                'user.id',
                 'user.username',
                 'user.email',
                 'user.first_name',

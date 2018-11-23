@@ -3,7 +3,9 @@ import { Component, Input, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import { MatSidenav } from '@angular/material';
 
-import { AuthenticationService, I18nService } from '@app/core';
+import { AuthenticationService, I18nService, Logger } from '@app/core';
+
+const Log = new Logger('HEADER');
 
 @Component({
   selector: 'app-header',
@@ -47,6 +49,7 @@ export class HeaderComponent implements OnInit {
   }
 
   logout() {
-    this.authenticationService.logout().subscribe(() => this.router.navigate(['/login'], {replaceUrl: true}));
+    Log.debug('logging out...');
+    this.authenticationService.logout().then(() => this.router.navigate(['/login'], {replaceUrl: true}));
   }
 }

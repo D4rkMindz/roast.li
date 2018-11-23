@@ -18,22 +18,6 @@ import { environment } from '@env/environment';
   styleUrls: ['./register.component.scss']
 })
 export class RegisterComponent implements OnInit {
-  error: string;
-  isLoading = false;
-  registrationForm: FormGroup;
-  version = environment.version;
-
-  constructor(
-    private router: Router,
-    private route: ActivatedRoute,
-    private formBuilder: FormBuilder,
-    private i18nService: I18nService,
-    private authenticationService: AuthenticationService,
-    private userService: UserService,
-    private snackbar: SnackbarService
-  ) {
-    this.createForm();
-  }
 
   get currentLanguage(): string {
     return this.i18nService.language;
@@ -42,6 +26,11 @@ export class RegisterComponent implements OnInit {
   get languages(): string[] {
     return this.i18nService.supportedLanguages;
   }
+
+  error: string;
+  isLoading = false;
+  registrationForm: FormGroup;
+  version = environment.version;
 
   static matchPasswordValidation(ac: AbstractControl) {
     const password = ac.get('password').value;
@@ -57,6 +46,18 @@ export class RegisterComponent implements OnInit {
       console.log('true');
       return;
     }
+  }
+
+  constructor(
+    private router: Router,
+    private route: ActivatedRoute,
+    private formBuilder: FormBuilder,
+    private i18nService: I18nService,
+    private authenticationService: AuthenticationService,
+    private userService: UserService,
+    private snackbar: SnackbarService
+  ) {
+    this.createForm();
   }
 
   ngOnInit() {

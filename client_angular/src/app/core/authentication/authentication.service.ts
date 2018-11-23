@@ -1,9 +1,11 @@
 import { Injectable } from '@angular/core';
-import { Observable, of } from 'rxjs';
+import { HttpClient } from '@angular/common/http';
 
 export interface Credentials {
   // Customize received credentials here
   username: string;
+  id?: string;
+  level?: number;
   token: string;
 }
 
@@ -21,21 +23,13 @@ const credentialsKey = 'credentials';
  */
 @Injectable()
 export class AuthenticationService {
-  constructor() {
+  private _credentials: Credentials | null;
+
+  constructor(private http: HttpClient) {
     const savedCredentials = sessionStorage.getItem(credentialsKey) || localStorage.getItem(credentialsKey);
     if (savedCredentials) {
       this._credentials = JSON.parse(savedCredentials);
     }
-  }
-
-  private _credentials: Credentials | null;
-
-  /**
-   * Gets the user credentials.
-   * @return The user credentials or null if the user is not authenticated.
-   */
-  get credentials(): Credentials | null {
-    return this._credentials;
   }
 
   /**
@@ -43,24 +37,36 @@ export class AuthenticationService {
    * @param context The login parameters.
    * @return The user credentials.
    */
-  login(context: LoginContext): Observable<Credentials> {
-    // Replace by proper authentication call
-    const data = {
-      username: context.username,
-      token: '123456'
-    };
-    this.setCredentials(data, context.remember);
-    return of(data);
+  async login(context: LoginContext): Promise<boolean> {
+    const response: any = await this.http
+      .post('/users/auth', {
+        username: context.username,
+        password: context.password
+      })
+      .toPromise();
+    if (response['success']) {
+      // Replace by proper authentication call
+      const data = {
+        username: response.username,
+        id: response.id,
+        level: response.level,
+        token: 'faketoken'
+      };
+      this.setCredentials(data, context.remember);
+      return true;
+    }
+    return false;
   }
 
   /**
    * Logs out the user and clear credentials.
    * @return True if the user was logged out successfully.
    */
-  logout(): Observable<boolean> {
+  async logout(): Promise<boolean> {
     // Customize credentials invalidation here
     this.setCredentials();
-    return of(true);
+    const response: any = await this.http.delete('/users/auth').toPromise();
+    return response.success;
   }
 
   /**
@@ -69,6 +75,14 @@ export class AuthenticationService {
    */
   isAuthenticated(): boolean {
     return !!this.credentials;
+  }
+
+  /**
+   * Gets the user credentials.
+   * @return The user credentials or null if the user is not authenticated.
+   */
+  get credentials(): Credentials | null {
+    return this._credentials;
   }
 
   /**

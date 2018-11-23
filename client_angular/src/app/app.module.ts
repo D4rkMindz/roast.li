@@ -8,16 +8,17 @@ import { MaterialModule } from './material.module';
 
 import { CoreModule } from '@app/core';
 import { SharedModule } from '@app/shared';
-import { HomeModule } from '@app/home/index';
-import { ShellModule } from '@app/shell/index';
-import { AboutModule } from '@app/about/index';
-import { LoginModule } from '@app/login/index';
+import { HomeModule } from '@app/home';
+import { ShellModule } from '@app/shell';
+import { AboutModule } from '@app/about';
+import { LoginModule } from '@app/login';
 import { AppComponent } from './app.component';
 import { AppRoutingModule } from './app-routing.module';
 import { RegisterModule } from '@app/register/register.module';
-import { PostModule } from '@app/post/index';
+import { PostModule } from '@app/post';
 import { ServiceWorkerModule } from '@angular/service-worker';
-import { environment } from '../environments/environment';
+import { environment } from '@env/environment';
+import { SettingsModule } from '@app/settings/settings.module';
 
 @NgModule({
   imports: [
@@ -35,8 +36,9 @@ import { environment } from '../environments/environment';
     LoginModule,
     RegisterModule,
     PostModule,
-    AppRoutingModule,
-    ServiceWorkerModule.register('ngsw-worker.js', {enabled: environment.production}) // must be imported as the last module as it contains the fallback route
+    SettingsModule,
+    ServiceWorkerModule.register('ngsw-worker.js', {enabled: environment.production}),
+    AppRoutingModule // must be imported as the last module as it contains the fallback route,
   ],
   declarations: [AppComponent],
   providers: [],

@@ -19,6 +19,14 @@ export function extract(s: string) {
   return s;
 }
 
+/**
+ * interface class
+ */
+export interface Language {
+  i18n: string;
+  title: string;
+}
+
 @Injectable()
 export class I18nService {
   defaultLanguage: string;
