@@ -222,9 +222,9 @@ class UserRepository extends AppRepository
     {
         $row = [
             'role_id' => 2, // User
-            'username' => strtolower($username),
+            'username' => $username,
             'password' => password_hash($password, PASSWORD_DEFAULT),
-            'email' => strtolower($email),
+            'email' => $email,
             'first_name' => $firstName,
             'last_name' => $lastName,
             'created_by' => 0,

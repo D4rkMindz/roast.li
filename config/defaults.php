@@ -77,6 +77,7 @@ $config['authentication'] = [
         '/posts/hot' => ['GET' => 1],
         '/posts/new' => ['GET' => 1],
         '/users/auth' => ['POST' => 1],
+        '/users' => ['POST' => 1],
     ],
 ];
 
