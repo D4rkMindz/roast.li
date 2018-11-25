@@ -102,7 +102,9 @@ class PostRepository extends AppRepository
         $query = $this->likedPostTable->newSelect(false);
         $query->select([
             'post_id' => 'post_id',
+            'like_count' => $query->func()->count('*')
         ])
+            ->orderDesc('like_count')
             ->group(['post_id'])
             ->offset($offset)
             ->limit(5);
