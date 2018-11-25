@@ -1,6 +1,6 @@
 {
   "name": "Roastli",
-  "version": "1.2.0",
+  "version": "1.2.1",
   "private": true,
   "scripts": {
     "ng": "ng",
@@ -45,6 +45,7 @@
     "moment": "^2.22.2",
     "ngx-avatar": "^3.2.0",
     "ngx-infinite-scroll": "^6.0.0",
+    "ngx-linkifyjs": "^1.2.0",
     "rxjs": "^6.3.1",
     "zone.js": "^0.8.26"
   },

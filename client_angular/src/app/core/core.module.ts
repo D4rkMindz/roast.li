@@ -20,6 +20,7 @@ import {FlexLayoutModule} from '@angular/flex-layout';
 import {MaterialModule} from '@app/material.module';
 import {ReactiveFormsModule} from '@angular/forms';
 import {AvatarModule} from 'ngx-avatar';
+import { NgxLinkifyjsModule } from 'ngx-linkifyjs';
 
 @NgModule({
   imports: [
@@ -32,6 +33,7 @@ import {AvatarModule} from 'ngx-avatar';
     ReactiveFormsModule,
     AvatarModule,
     RouterModule,
+    NgxLinkifyjsModule,
   ],
   providers: [
     AuthenticationService,
@@ -60,6 +62,7 @@ import {AvatarModule} from 'ngx-avatar';
     MaterialModule,
     ReactiveFormsModule,
     TranslateModule,
+    NgxLinkifyjsModule,
   ],
 })
 export class CoreModule {

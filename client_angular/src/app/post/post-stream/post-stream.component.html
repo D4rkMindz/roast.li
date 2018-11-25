@@ -18,7 +18,7 @@
         <mat-card-subtitle>User</mat-card-subtitle>
       </mat-card-header>
       <mat-card-content fxLayout="column">
-        <p fxLayout="row" fxFlex="100%">{{post.content}}</p>
+        <p fxLayout="row" fxFlex="100%" [innerHTML]="post.content | linkify"></p>
         <div fxLayoutAlign="right" fxFlex="100%" fxLayout="row">
           <sub [fxShow]="post.modified_at === null">
             {{m(post.created_at).format('MMM Do YYYY, HH:mm')}}
