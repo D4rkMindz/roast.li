@@ -24,7 +24,7 @@ export class SnackbarService {
     });
   }
 
-  public important(message: string, action?: string = 'OK') {
+  public important(message: string, action: string = 'OK') {
     return this.snackbar.open(message, action, {
       duration: 6000,
       verticalPosition: 'bottom',
