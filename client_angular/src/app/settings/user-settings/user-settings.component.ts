@@ -1,6 +1,8 @@
 import {Component, OnInit, ViewChild} from '@angular/core';
-import {AuthenticationService, CompleteUser, extract, SnackbarService, UserService} from '@app/core';
+import { AuthenticationService, CompleteUser, extract, Logger, SnackbarService, UserService } from '@app/core';
 import {AbstractControl, FormBuilder, FormGroup, FormGroupDirective, Validators} from '@angular/forms';
+
+const Log = new Logger('USER-SETTINGS');
 
 @Component({
   selector: 'app-user-settings',
@@ -23,10 +25,10 @@ export class UserSettingsComponent implements OnInit {
       return;
     }
     if (password !== confirmPassword) {
-      console.log('false');
+      Log.debug('false');
       ac.get('passwordRetype').setErrors({matchPassword: true});
     } else {
-      console.log('true');
+      Log.debug('true');
       return;
     }
   }

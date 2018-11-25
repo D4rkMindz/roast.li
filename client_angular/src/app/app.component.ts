@@ -6,7 +6,7 @@ import {merge} from 'rxjs';
 import {filter, map, mergeMap} from 'rxjs/operators';
 
 import {environment} from '@env/environment';
-import {I18nService, Logger} from '@app/core';
+import { I18nService, Logger, UpdateService } from '@app/core';
 
 const log = new Logger('App');
 
@@ -22,6 +22,7 @@ export class AppComponent implements OnInit {
     private titleService: Title,
     private translateService: TranslateService,
     private i18nService: I18nService,
+    private updateService: UpdateService,
   ) {}
 
   ngOnInit() {
@@ -31,6 +32,7 @@ export class AppComponent implements OnInit {
     }
 
     log.debug('init');
+    this.updateService.checkForUpdate();
 
     // Setup translations
     this.i18nService.init(

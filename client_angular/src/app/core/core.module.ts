@@ -12,8 +12,8 @@ import {HttpCacheService} from './http/http-cache.service';
 import {ApiPrefixInterceptor} from './http/api-prefix.interceptor';
 import {ErrorHandlerInterceptor} from './http/error-handler.interceptor';
 import {CacheInterceptor} from './http/cache.interceptor';
-import {UserService} from '@app/core/user/user.service';
-import {PostService} from '@app/core/post/post.service';
+import {UserService} from './user/user.service';
+import {PostService} from './post/post.service';
 import {SnackbarService} from '@app/core/snackbar/snackbar.service';
 import {InfiniteScrollModule} from 'ngx-infinite-scroll';
 import {FlexLayoutModule} from '@angular/flex-layout';
@@ -21,6 +21,7 @@ import {MaterialModule} from '@app/material.module';
 import {ReactiveFormsModule} from '@angular/forms';
 import {AvatarModule} from 'ngx-avatar';
 import { NgxLinkifyjsModule } from 'ngx-linkifyjs';
+import { UpdateService } from './serviceworker/update.service';
 
 @NgModule({
   imports: [
@@ -44,6 +45,7 @@ import { NgxLinkifyjsModule } from 'ngx-linkifyjs';
     ErrorHandlerInterceptor,
     CacheInterceptor,
     UserService,
+    UpdateService,
     PostService,
     SnackbarService,
     {

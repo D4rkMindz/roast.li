@@ -1,11 +1,13 @@
 import {Component, OnInit, QueryList, ViewChildren} from '@angular/core';
 import {MatDialog} from '@angular/material';
-import {AuthenticationService, extract, SnackbarService} from '@app/core';
+import { AuthenticationService, extract, Logger, SnackbarService } from '@app/core';
 import {
   PostDialogComponent,
   PostStreamComponent,
   ScrollDirection,
 } from '@app/post/index';
+
+const Log = new Logger('HOME');
 
 @Component({
   selector: 'app-home',
@@ -37,10 +39,10 @@ export class HomeComponent implements OnInit {
 
   onScroll(scrollDirection: ScrollDirection) {
     if (scrollDirection.direction === scrollDirection.up) {
-      console.log('[HOME]' + scrollDirection.up);
+     Log.debug(scrollDirection.up);
     }
     if (scrollDirection.direction === scrollDirection.down) {
-      console.log('[HOME]' + scrollDirection.down);
+      Log.debug(scrollDirection.down);
     }
   }
 

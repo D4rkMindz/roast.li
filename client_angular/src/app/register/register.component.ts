@@ -10,12 +10,14 @@ import {
   AuthenticationService,
   CompleteUser,
   extract,
-  I18nService,
+  I18nService, Logger,
   LoginContext,
   SnackbarService,
   UserService,
 } from '@app/core';
 import {environment} from '@env/environment';
+
+const Log = new Logger('REGISTER');
 
 @Component({
   selector: 'app-register',
@@ -44,10 +46,10 @@ export class RegisterComponent implements OnInit {
       return;
     }
     if (password !== confirmPassword) {
-      console.log('false');
+      Log.debug('false');
       ac.get('passwordRetype').setErrors({matchPassword: true});
     } else {
-      console.log('true');
+      Log.debug('true');
       return;
     }
   }
@@ -111,7 +113,7 @@ export class RegisterComponent implements OnInit {
         return;
       }
 
-      console.log(response);
+      Log.debug(response);
       for (const error of response['validation']['errors']) {
         this.registrationForm.controls[error.field].setErrors({
           custom: error.message,

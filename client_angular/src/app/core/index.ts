@@ -15,3 +15,4 @@ export * from './user/user.service';
 export * from './user/user';
 export * from './snackbar/snackbar.service';
 export * from './role/role';
+export * from './serviceworker/update.service';
