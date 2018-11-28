@@ -157,22 +157,10 @@ class AppController
     }
 
     /**
-     * Set a flash message
-     *
-     * @param string $message
+     * Regenerate the session id.
      */
-    protected function setFlash(string $message)
+    protected function regenerateSessionId()
     {
-        $this->session->setFlash('main', $message);
-    }
-
-    /**
-     * Get a flash message
-     *
-     * @return mixed
-     */
-    protected function getFlash()
-    {
-        return $this->session->getFlash('main');
+        $this->sessionHandler->regenerateId();
     }
 }

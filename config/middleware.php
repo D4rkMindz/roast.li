@@ -1,6 +1,5 @@
 <?php
 
-use Aura\Session\Segment;
 use Aura\Session\Session;
 use Slim\Exception\NotFoundException;
 use Slim\Http\Request;
@@ -72,7 +71,7 @@ $app->add(function (Request $request, Response $response, $next) use ($container
             break;
         }
     }
-    if ($allowed|| $loggedIn) {
+    if ($allowed || $loggedIn) {
         return $next($request, $response);
     }
     return $response->withStatus(401);

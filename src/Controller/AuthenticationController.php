@@ -69,6 +69,7 @@ class AuthenticationController extends AppController
     {
         $username = $request->getParsedBodyParam('username');
         $password = $request->getParsedBodyParam('password');
+
         $canLogin = $this->authentication->authenticate($username, $password);
         if ($canLogin) {
             $userId = $this->userRepository->getIdByUsername($username);

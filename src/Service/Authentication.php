@@ -29,9 +29,8 @@ class Authentication
      * @param string $username
      * @param string $password
      * @return bool
-     * @throws AuthenticationException
      */
-    public function authenticate(string $username, string $password): ?string
+    public function authenticate(string $username, string $password): bool
     {
         $hash = $this->userRepository->getPasswordByUsername($username);
         if (password_verify($password, $hash)) {

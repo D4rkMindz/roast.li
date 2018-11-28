@@ -216,11 +216,9 @@ class UserController extends AppController
             $lastName
         );
 
-        if (!empty($rolePosition)) {
-
-        }
-
         if ($updated) {
+            $this->regenerateSessionId();
+
             return $this->json($response, ['success' => true]);
         }
 
@@ -250,6 +248,8 @@ class UserController extends AppController
 
         $deleted = $this->userRepository->archiveUser($userId, $this->getUserId());
         if ($deleted) {
+            $this->regenerateSessionId();
+
             return $this->json($response, ['success' => true]);
         }
 

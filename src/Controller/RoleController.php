@@ -3,6 +3,7 @@
 namespace App\Controller;
 
 use App\Repository\RoleRepository;
+use Interop\Container\Exception\ContainerException;
 use Psr\Http\Message\ResponseInterface;
 use Slim\Container;
 use Slim\Http\Request;
@@ -22,6 +23,7 @@ class RoleController extends AppController
      * RoleController constructor.
      *
      * @param Container $container
+     * @throws ContainerException
      */
     public function __construct(Container $container)
     {

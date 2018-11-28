@@ -1,7 +1,6 @@
 <?php
 
 use App\Service\Authentication;
-use App\Table\UserModel;
 use Aura\Session\Session;
 use Aura\Session\SessionFactory;
 use Cake\Database\Connection;
@@ -15,6 +14,7 @@ use Slim\Http\Environment;
 use Slim\Http\Request;
 use Slim\Http\Response;
 use Slim\Views\Twig;
+use Slim\Views\TwigExtension;
 use Symfony\Component\Translation\Loader\MoFileLoader;
 use Symfony\Component\Translation\MessageSelector;
 use Symfony\Component\Translation\Translator;
@@ -48,7 +48,7 @@ $container[Twig::class] = function (Container $container): Twig {
     $twig = new Twig($twigSettings['viewPath'],
         ['cache' => $twigSettings['cachePath'], 'auto_reload' => $twigSettings['autoReload']]);
     $twig->addExtension(new TwigTranslationExtension());
-    $twig->addExtension(new \Slim\Views\TwigExtension($container->get('router'), $basePath));
+    $twig->addExtension(new TwigExtension($container->get('router'), $basePath));
     $twig->addExtension(new TwigAssetsExtension($twig->getEnvironment(), $twigSettings['assetCache']));
 
     return $twig;

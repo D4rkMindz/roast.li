@@ -177,7 +177,7 @@ class PostRepository extends AppRepository
      */
     public function getPostOwner(string $userId)
     {
-        $userQuery = $this->userTable->newSelect();
+        $userQuery = $this->userTable->newSelect(false);
         $userQuery->select(['username', 'thumbnail_url', 'id'])->where(['id' => $userId]);
 
         return $userQuery->execute()->fetch('assoc') ?: null;
