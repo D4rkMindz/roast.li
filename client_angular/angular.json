@@ -73,7 +73,7 @@
               "browserTarget": "roast-li:build:production"
             },
             "windows": {
-              "browserTarget": "roast-li:build:windows",
+              "browserTarget": "roast-li:build:windows"
             }
           }
         },

@@ -19,6 +19,7 @@ import {PostModule} from '@app/post';
 import {ServiceWorkerModule} from '@angular/service-worker';
 import {environment} from '@env/environment';
 import {SettingsModule} from '@app/settings/settings.module';
+import {AlertComponent} from "@app/core/alert/alert.component";
 
 @NgModule({
   imports: [
@@ -44,6 +45,7 @@ import {SettingsModule} from '@app/settings/settings.module';
   ],
   declarations: [AppComponent],
   providers: [],
+  entryComponents: [AlertComponent],
   bootstrap: [AppComponent],
   exports: [MaterialModule],
 })

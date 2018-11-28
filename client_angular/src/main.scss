@@ -22,3 +22,7 @@
 
 // Theme customization
 @import 'theme/theme';
+
+.mat-dialog-container {
+  padding: 0 !important;
+}

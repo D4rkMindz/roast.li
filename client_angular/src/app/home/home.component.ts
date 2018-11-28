@@ -57,7 +57,7 @@ export class HomeComponent implements OnInit {
           postStream.reloadPosts();
         });
       } else {
-        this.snackbar.error('Post not created :(');
+        this.snackbar.error(extract('Post not created :('));
       }
     });
   }

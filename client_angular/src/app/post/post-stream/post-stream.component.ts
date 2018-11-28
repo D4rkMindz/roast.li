@@ -77,7 +77,7 @@ export class PostStreamComponent implements OnInit {
   async delete(post: Post) {
     const deleted = await this.postService.deletePost(post.id);
     if (deleted) {
-      this.snackbar.notification('Post deleted');
+      this.snackbar.notification(extract('Post deleted'));
       this.reloadPosts();
     }
   }

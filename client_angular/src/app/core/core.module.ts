@@ -20,8 +20,10 @@ import {FlexLayoutModule} from '@angular/flex-layout';
 import {MaterialModule} from '@app/material.module';
 import {ReactiveFormsModule} from '@angular/forms';
 import {AvatarModule} from 'ngx-avatar';
-import { NgxLinkifyjsModule } from 'ngx-linkifyjs';
-import { UpdateService } from './serviceworker/update.service';
+import {NgxLinkifyjsModule} from 'ngx-linkifyjs';
+import {UpdateService} from './serviceworker/update.service';
+import {AlertComponent} from './alert/alert.component';
+import {AlertService} from './alert/alert.service';
 
 @NgModule({
   imports: [
@@ -47,6 +49,7 @@ import { UpdateService } from './serviceworker/update.service';
     UserService,
     UpdateService,
     PostService,
+    AlertService,
     SnackbarService,
     {
       provide: HttpClient,
@@ -57,6 +60,7 @@ import { UpdateService } from './serviceworker/update.service';
       useClass: RouteReusableStrategy,
     },
   ],
+  entryComponents: [AlertComponent],
   exports: [
     FlexLayoutModule,
     AvatarModule,
@@ -66,12 +70,13 @@ import { UpdateService } from './serviceworker/update.service';
     TranslateModule,
     NgxLinkifyjsModule,
   ],
+  declarations: [AlertComponent],
 })
 export class CoreModule {
   constructor(
     @Optional()
     @SkipSelf()
-    parentModule: CoreModule,
+      parentModule: CoreModule,
   ) {
     // Import guard
     if (parentModule) {

@@ -81,4 +81,11 @@ export class UserService {
 
     return null;
   }
+
+  public async deleteUser(id: string) {
+    const response: any = await this.http.delete(`/users/${id}`).toPromise();
+    Log.debug('Got response', response);
+
+    return response.success;
+  }
 }

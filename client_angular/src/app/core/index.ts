@@ -16,3 +16,6 @@ export * from './user/user';
 export * from './snackbar/snackbar.service';
 export * from './role/role';
 export * from './serviceworker/update.service';
+export * from './alert/alert.service';
+export * from './alert/alert-box';
+export * from './alert/alert.component';

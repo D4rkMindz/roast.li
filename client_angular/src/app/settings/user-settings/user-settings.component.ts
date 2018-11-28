@@ -1,6 +1,16 @@
 import {Component, OnInit, ViewChild} from '@angular/core';
-import { AuthenticationService, CompleteUser, extract, Logger, SnackbarService, UserService } from '@app/core';
+import {
+  AlertService,
+  AuthenticationService,
+  CompleteUser,
+  extract,
+  Logger,
+  SnackbarService,
+  UserService
+} from '@app/core';
 import {AbstractControl, FormBuilder, FormGroup, FormGroupDirective, Validators} from '@angular/forms';
+import {AlertClose, AlertCloseType} from "@app/core/alert/alert-box";
+import {Router} from "@angular/router";
 
 const Log = new Logger('USER-SETTINGS');
 
@@ -38,6 +48,8 @@ export class UserSettingsComponent implements OnInit {
     private auth: AuthenticationService,
     private snackbar: SnackbarService,
     private formBuilder: FormBuilder,
+    private alert: AlertService,
+    private router: Router,
   ) {
     this.passwordForm = this.buildForm();
   }
@@ -75,6 +87,23 @@ export class UserSettingsComponent implements OnInit {
       this.passwordForm.controls[error.field].setErrors({message: error.message});
     }
     this.isLoadingPassword = false;
+  }
+
+  async deleteAccount() {
+    const alertClose: AlertClose = await this.alert.warning(
+      extract('DELETE ACCOUNT'),
+      extract('Do you really want to delete your account?')
+    ).toPromise();
+
+    if (alertClose.type === AlertCloseType.OK) {
+      const deleted = await this.userService.deleteUser(this.user.id);
+      if (deleted) {
+        this.auth.logout();
+        this.router.navigate(['/login']);
+      }
+    } else {
+      this.snackbar.notification(extract('Cancelled'))
+    }
   }
 
   private buildForm() {
