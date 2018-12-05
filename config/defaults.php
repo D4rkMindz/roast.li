@@ -5,12 +5,13 @@ use Symfony\Component\Translation\Translator;
 
 $config = [];
 
-$applicationName = 'Nicipedia';
+$applicationName = 'roastli';
 
 $config = [
     'displayErrorDetails' => true,
     'determineRouteBeforeAppMiddleware' => true,
     'addContentLengthHeader' => false,
+    'applicationName' => $applicationName,
 ];
 
 $config[Session::class] = [
@@ -26,14 +27,14 @@ $config[Translator::class] = [
 $config['migrations'] = __DIR__ . '/../resources/migrations';
 
 $config['db'] = [
-    'database' => 'modul-151_projekt',
+    'database' => 'roastli',
     'charset' => 'utf8',
     'encoding' => 'utf8',
     'collation' => 'utf8_unicode_ci',
 ];
 
 $config['db_test'] = [
-    'database' => 'modul-151_projekt_test',
+    'database' => 'roastli_test',
     'charset' => 'utf8',
     'encoding' => 'utf8',
     'collation' => 'utf8_unicode_ci',
@@ -54,7 +55,7 @@ $config['twig'] = [
 ];
 
 $config['session'] = [
-    'name' => 'app_template',
+    'name' => $applicationName,
     'autorefresh' => true,
     'lifetime' => '2 hours',
     'path' => '/', //default

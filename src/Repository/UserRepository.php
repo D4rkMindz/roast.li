@@ -252,7 +252,8 @@ class UserRepository extends AppRepository
         ?string $email,
         ?string $firstName,
         ?string $lastName
-    ) {
+    )
+    {
         $row = [];
         if (!empty($username)) {
             $row['username'] = $username;
@@ -303,9 +304,10 @@ class UserRepository extends AppRepository
      *
      * @param string $userId
      * @param string $executorId
+     * @param bool $hardDelete
      * @return bool
      */
-    public function archiveUser(string $userId, string $executorId)
+    public function archiveUser(string $userId, string $executorId, bool $hardDelete = true)
     {
         $query = $this->likedPostTable->newSelect(false);
         $query->select(['id'])->where(['user_id' => $userId]);
@@ -314,6 +316,9 @@ class UserRepository extends AppRepository
             $this->likedPostTable->delete($row['id']);
         }
 
+        if ($hardDelete) {
+            return (bool)$this->userTable->delete($userId);
+        }
         return (bool)$this->userTable->archive($userId, $executorId);
     }
 

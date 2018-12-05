@@ -60,7 +60,8 @@ $app->add(function (Request $request, Response $response, $next) {
 $app->add(function (Request $request, Response $response, $next) use ($container) {
     /** @var Session $session */
     $session = $container->get(Session::class);
-    $loggedIn = $session->getSegment('app')->get('logged_in');
+    $appname = $container->get('settings')->get('applicationName');
+    $loggedIn = $session->getSegment($appname)->get('logged_in');
     $allowedRoutes = $container->get('settings')->get('authentication')['allowed'];
     $route = $request->getUri()->getPath();
     $method = strtoupper($request->getMethod());
@@ -114,7 +115,8 @@ $app->add(function (Request $request, Response $response, $next) use ($container
     $session = $container->get(Session::class);
     /** @var Response $response */
     $response = $next($request, $response);
-    $response = $response->withHeader('X-Authenticated', $session->getSegment('app')->get('logged_in'));
+    $appName = $container->get('settings')->get('applicationName');
+    $response = $response->withHeader('X-Authenticated', $session->getSegment($appName)->get('logged_in'));
     $session->commit();
     return $response;
 });

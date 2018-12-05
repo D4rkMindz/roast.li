@@ -65,7 +65,8 @@ class AppController
         $this->request = $container->get('request');
         $this->response = $container->get('response');
         $this->sessionHandler = $container->get(Session::class);
-        $this->session = $this->sessionHandler->getSegment('app');
+        $appname = $container->get('settings')->get('applicationName');
+        $this->session = $this->sessionHandler->getSegment($appname);
         $this->router = $container->get('router');
         $this->logger = $container->get(Logger::class);
         $this->twig = $container->get(Twig::class);

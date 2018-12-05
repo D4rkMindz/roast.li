@@ -1,5 +1,7 @@
-import {Component, EventEmitter, Input, OnInit, Output} from '@angular/core';
+import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
 import {
+  AlertCloseType,
+  AlertService,
   AuthenticationService,
   extract,
   Logger,
@@ -8,8 +10,8 @@ import {
   SnackbarService,
 } from '@app/core';
 import * as moment from 'moment';
-import {finalize} from 'rxjs/operators';
-import {ScrollDirection} from '../scroll-direction';
+import { finalize } from 'rxjs/operators';
+import { ScrollDirection } from '../scroll-direction';
 
 const Log = new Logger('POST-STREAM');
 
@@ -36,6 +38,7 @@ export class PostStreamComponent implements OnInit {
     private postService: PostService,
     private auth: AuthenticationService,
     private snackbar: SnackbarService,
+    private alert: AlertService,
   ) {
     this.m = moment;
   }
@@ -75,6 +78,11 @@ export class PostStreamComponent implements OnInit {
   }
 
   async delete(post: Post) {
+    const alertClose = await this.alert.warning(extract('DELETE POST'), extract('Do you really want to delete that post?')).toPromise();
+    if (alertClose.type !== AlertCloseType.OK) {
+      this.snackbar.notification(extract('Cancelled'));
+      return;
+    }
     const deleted = await this.postService.deletePost(post.id);
     if (deleted) {
       this.snackbar.notification(extract('Post deleted'));

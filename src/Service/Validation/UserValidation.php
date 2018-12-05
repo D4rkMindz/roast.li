@@ -193,7 +193,7 @@ class UserValidation extends AppValidation
     {
         $this->validateLengthMax($password, 'password', $validationResult);
         $this->validateLengthMin($password, 'password', $validationResult, 6);
-        if (!preg_match('/[A-Za-z]/', $password)) {
+        if (!preg_match('/(?=.*[A-Z])(?=.*[a-z]).*/', $password)) {
             $validationResult->setError('password',
                 __('Password must contain at least one uppercase and one lowercase letter'));
         }
