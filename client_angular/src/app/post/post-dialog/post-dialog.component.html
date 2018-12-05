@@ -5,12 +5,16 @@
   <form [formGroup]="createPostForm" novalidate>
     <p translate>If you mention any real life names (or any that can be associated with a person) you will be
       banned!</p>
+    <p translate>Maximum 1000 charactes</p>
     <mat-form-field style="width: 100%;">
       <textarea matInput
                 rows="6"
                 placeholder="Post"
                 formControlName="post">
       </textarea>
+      <mat-error *ngIf="createPostForm.controls.post.hasError('maxLength')">
+        <span translate>Maximum 1000 characters</span>
+      </mat-error>
     </mat-form-field>
   </form>
 

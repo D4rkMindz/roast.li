@@ -22,6 +22,9 @@ export class PostDialogComponent implements OnInit {
   ngOnInit() {}
 
   async save() {
+    if (this.createPostForm.invalid) {
+      return;
+    }
     const text = this.createPostForm.controls.post.value;
     const response = await this.postService.createPost(text);
     if ('success' in response) {
@@ -37,7 +40,7 @@ export class PostDialogComponent implements OnInit {
 
   private createForm() {
     this.createPostForm = this.formBuilder.group({
-      post: ['', [Validators.required]],
+      post: ['', [Validators.required, Validators.maxLength(1000)]],
     });
   }
 }
